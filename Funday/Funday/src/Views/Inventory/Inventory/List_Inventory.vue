@@ -128,8 +128,8 @@ export default class List_Inventorys extends Vue {
     currentPage = 0;
     rows = 0;
     perPage = 50;
-      Rows: any[]=[];
-    Message='';
+      Rows: any[] = [];
+    Message = '';
     @Watch('currentPage') ChangecurrentPage(newval: number) {
         this.ListInventorys();
     }
@@ -143,7 +143,7 @@ export default class List_Inventorys extends Vue {
 
             }));
             if (InventorysList.Success) {
-                let inx = this.Inventorys.findIndex((A) => A.Id = Data.item.Id);
+                const inx = this.Inventorys.findIndex((A) => A.Id = Data.item.Id);
                 this.Inventorys[inx].Item1.Active = !this.Inventorys[inx].Item1.Active;
 
             } else {
@@ -163,10 +163,10 @@ export default class List_Inventorys extends Vue {
             return A.Item1;
         });
     }
-    FindByRow(Row :any){
+    FindByRow(Row: any){
         return this.Inventorys.find((A) => {
             A.Item1.Account = A.Item2;
-            if(Row.Id === A.Id) { return A; }
+            if (Row.Id === A.Id) { return A; }
         });
     }
 
@@ -185,7 +185,7 @@ export default class List_Inventorys extends Vue {
         }));
         if (InventorysList.Success) {
             this.Inventorys = InventorysList.Inventorys;
-            this.Rows= this.Inventorys.map((A) => {
+            this.Rows = this.Inventorys.map((A) => {
                 A.Item1.Account = A.Item2;
 
 
@@ -217,7 +217,7 @@ export default class List_Inventorys extends Vue {
                 this.Error = Response.Message;
 
             }
-            this.Message= `Field ${FieldName} Updated`;
+            this.Message = `Field ${FieldName} Updated`;
         } catch (e) {
             this.Error = e.Message;
 

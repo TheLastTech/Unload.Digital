@@ -75,54 +75,54 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import {client} from "@/shared";
-    import {CreateStockXAccountRequest} from "@/shared/dtos";
+import {Component, Vue} from 'vue-property-decorator';
+import {client} from '@/shared';
+import {CreateStockXAccountRequest} from '@/shared/dtos';
 
 
-    @Component({
-        components: {},
-    })
-    export default class Create_StockXAccount extends Vue {
-        NewId = -1;
-        Error = "";
-        Advanced=false;
-        Building=false;
-        Success = false;
-        TransitObject =
-            {
-                Email: "tenshihan@gmail.com",
-                Password: "_xvNYPu27qVFg:c",
-                ProxyUsername: "",
-                ProxyPassword: "",
-                ProxyHost: "",
-                ProxyPort: 8000,
-                ProxyActive: true,
-                Active: true,
-                CustomerID: 0,
-                Currency: "",
-                Country: "US",
-                UserAgent: "",
-                Token: ""
-            };
+@Component({
+    components: {},
+})
+export default class Create_StockXAccount extends Vue {
+    NewId = -1;
+    Error = '';
+    Advanced = false;
+    Building = false;
+    Success = false;
+    TransitObject =
+        {
+            Email: 'tenshihan@gmail.com',
+            Password: '_xvNYPu27qVFg:c',
+            ProxyUsername: '',
+            ProxyPassword: '',
+            ProxyHost: '',
+            ProxyPort: 8000,
+            ProxyActive: true,
+            Active: true,
+            CustomerID: 0,
+            Currency: '',
+            Country: 'US',
+            UserAgent: '',
+            Token: '',
+        };
 
-        async CreateStockXAccount() {
-            try {
-                this.Success = false;
-                this.Building=true;
-                this.Error = "";
-                const Response = await client.post(new CreateStockXAccountRequest(this.TransitObject));
-                if (Response.Success) {
-                    this.Success = true;
-                    this.NewId = Response.InsertedId;
-                } else {
-                    this.Error = Response.Message;
-                }
-            } catch (e) {
-                this.Error = e.message;
+    async CreateStockXAccount() {
+        try {
+            this.Success = false;
+            this.Building = true;
+            this.Error = '';
+            const Response = await client.post(new CreateStockXAccountRequest(this.TransitObject));
+            if (Response.Success) {
+                this.Success = true;
+                this.NewId = Response.InsertedId;
+            } else {
+                this.Error = Response.Message;
             }
-            this.Building=false;
+        } catch (e) {
+            this.Error = e.message;
         }
-
+        this.Building = false;
     }
+
+}
 </script>

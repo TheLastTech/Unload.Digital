@@ -45,11 +45,11 @@
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
-import {ListStockXAccountRequest, StockXAccount} from "@/shared/dtos";
-   import {client} from '@/shared';
+import {ListStockXAccountRequest, StockXAccount} from '@/shared/dtos';
+import {client} from '@/shared';
 
 
-   @Component({
+@Component({
     components: {},
 })
 export default class List_StockXAccounts extends Vue {

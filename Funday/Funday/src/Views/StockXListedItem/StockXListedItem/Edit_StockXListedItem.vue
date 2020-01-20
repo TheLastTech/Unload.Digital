@@ -30,7 +30,11 @@ export default class Edit_StockXListedItem extends Vue {
     Error = '';
     Success = false;
     Id = 0;
-    Message="";
+    Message = '';
+
+  TransitObject =
+
+        {StockXUrl: '', StockXListedItemId: -1};
 
     mounted() {
         this.Id = +this.$route.params.Id;
@@ -69,19 +73,15 @@ export default class Edit_StockXListedItem extends Vue {
             this.Error = Response.Message;
             return;
         }
-                //@ts-ignore
+                // @ts-ignore
         this.TransitObject = Response.StockXListedItemItem;
 
     }
 
-  TransitObject =
-
-        {"StockXUrl":"","StockXListedItemId":-1}
-
 
         async UpdateStockXListedItem() {
             this.TransitObject.StockXListedItemId = this.Id;
-        try{
+            try{
         this.Success = false;
         this.Error = '';
         const Response = await client.put(new UpdateStockXListedItemRequest(this.TransitObject));
@@ -90,7 +90,7 @@ export default class Edit_StockXListedItem extends Vue {
         }else{
             this.Error = Response.Message;
         }
-        }catch(e){
+        }catch (e){
             this.Error = e.Message;
         }
         }

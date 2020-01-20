@@ -145,116 +145,99 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import {client} from "@/shared";
-    import {redirect, Routes} from "@/shared/router";
-    import {DeleteStockXAccountRequest, ListOneStockXAccountRequest, UpdateStockXAccountRequest} from "@/shared/dtos";
+import {Component, Vue} from 'vue-property-decorator';
+import {client} from '@/shared';
+import {redirect, Routes} from '@/shared/router';
+import {DeleteStockXAccountRequest, ListOneStockXAccountRequest, UpdateStockXAccountRequest} from '@/shared/dtos';
 
 
-    @Component({
-        components: {},
-    })
-    export default class Edit_StockXAccount extends Vue {
+@Component({
+    components: {},
+})
+export default class Edit_StockXAccount extends Vue {
 
-        Error = "";
-        Success = false;
-        Id = 0;
+    Error = '';
+    Success = false;
+    Id = 0;
 
-        TransitObject =
+    TransitObject =
 
-            {
-                Email: "",
-                Password: "",
-                ProxyUsername: "",
-                ProxyPassword: "",
-                ProxyHost: "",
-                ProxyPort: 8000,
-                ProxyActive: true,
-                Active: true,
-                CustomerID: "",
-                Currency: "",
-                Country: "",
-                UserAgent: "",
-                Token: "",
-                StockXAccountId: -1
-            };
+        {
+            Email: '',
+            Password: '',
+            ProxyUsername: '',
+            ProxyPassword: '',
+            ProxyHost: '',
+            ProxyPort: 8000,
+            ProxyActive: true,
+            Active: true,
+            CustomerID: 0,
+            Currency: '',
+            Country: '',
+            UserAgent: '',
+            Token: '',
+            StockXAccountId: -1,
+        };
 
-        mounted() {
-            this.Id = +this.$route.params.Id;
-            if (isNaN(this.Id)) {
-                this.$router.push(Routes.Forbidden);
-                return;
-            }
-            this.GetStockXAccount();
+    mounted() {
+        this.Id = +this.$route.params.Id;
+        if (isNaN(this.Id)) {
+            this.$router.push(Routes.Forbidden);
+            return;
         }
+        this.GetStockXAccount();
+    }
 
-        async DeleteStockXAccount() {
-            if (!confirm("Are you sure you want to delete this StockXAccount? ")) {
-                return;
-            }
-            this.Error = "";
-            const Response = await client.delete(new DeleteStockXAccountRequest({
-                StockXAccountId: this.Id,
-            }));
-            if (!Response.Success) {
+    async DeleteStockXAccount() {
+        if (!confirm('Are you sure you want to delete this StockXAccount? ')) {
+            return;
+        }
+        this.Error = '';
+        const Response = await client.delete(new DeleteStockXAccountRequest({
+            StockXAccountId: this.Id,
+        }));
+        if (!Response.Success) {
 
+            this.Error = Response.Message;
+            return;
+        }
+        redirect(Routes.StockXAccounts);
+
+    }
+
+    async GetStockXAccount() {
+
+        this.Error = '';
+        const Response = await client.get(new ListOneStockXAccountRequest({
+            StockXAccountId: this.Id,
+        }));
+        if (!Response.Success) {
+
+            this.Error = Response.Message;
+            return;
+        }
+        // @ts-ignore
+        this.TransitObject = Response.StockXAccountItem;
+
+    }
+
+
+    async UpdateStockXAccount() {
+        this.TransitObject.StockXAccountId = this.Id;
+        try {
+            this.Success = false;
+            this.Error = '';
+            const Response = await client.put(new UpdateStockXAccountRequest(this.TransitObject));
+            if (Response.Success) {
+                this.Success = true;
+            } else {
                 this.Error = Response.Message;
-                return;
             }
-            redirect(Routes.StockXAccounts);
-
-        }
-
-        async GetStockXAccount() {
-
-            this.Error = "";
-            const Response = await client.get(new ListOneStockXAccountRequest({
-                StockXAccountId: this.Id,
-            }));
-            if (!Response.Success) {
-
-                this.Error = Response.Message;
-                return;
-            }
-            // @ts-ignore
-            this.TransitObject = Response.StockXAccountItem;
-
-        }
-
-
-        async UpdateStockXAccount() {
-            this.TransitObject.StockXAccountId = this.Id;
-            try {
-                this.Success = false;
-                this.Error = "";
-                const Response = await client.put(new UpdateStockXAccountRequest(this.TransitObject));
-                if (Response.Success) {
-                    this.Success = true;
-                } else {
-                    this.Error = Response.Message;
-                }
-            } catch (e) {
-                this.Error = e.Message;
-            }
+        } catch (e) {
+            this.Error = e.Message;
         }
     }
+}
 </script>
 
-/*
-
-//StockXAccount
-{path: Routes.StockXAccounts , component: List_StockXAccounts, beforeEnter: requiresAuth},
-{path: Routes.EditStockXAccounts , component: Edit_StockXAccount, beforeEnter: requiresAuth},
-{path: Routes.CreateStockXAccount, component: Create_StockXAccount, beforeEnter: requiresAuth},
-
-<b-nav-item-dropdown text="Lang" right v-if="userSession">
-    <b-dropdown-item :to="Routes.CreateStockXAccount">Make</b-dropdown-item>
-    <b-dropdown-item :to="Routes.StockXAccounts">List</b-dropdown-item>
-
-</b-nav-item-dropdown>
-
-//StockXAccount
-StockXAccounts = '/StockXAccounts',
-EditStockXAccounts = '/EditStockXAccounts/:Id',
-CreateStockXAccount = '/CreateStockXAccount',
-/*
+ 
