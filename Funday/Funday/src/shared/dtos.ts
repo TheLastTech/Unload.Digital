@@ -576,7 +576,7 @@ export class ListInventoryResponse
     public Total: number;
     public Success: boolean;
     public Message: string;
-    public Inventorys: Tuple_2<Inventory,StockXAccount>[];
+    public Inventorys: Array<Tuple_2<Inventory, StockXAccount>>;
 
     public constructor(init?: Partial<ListInventoryResponse>) { (Object as any).assign(this, init); }
 }
@@ -622,7 +622,7 @@ export class ListStockXListedItemResponse
     public Total: number;
     public Success: boolean;
     public Message: string;
-    public StockXListedItems: Tuple_3<StockXListedItem,AppUser,Inventory>[];
+    public StockXListedItems: Array<Tuple_3<StockXListedItem, AppUser, Inventory>>;
 
     public constructor(init?: Partial<ListStockXListedItemResponse>) { (Object as any).assign(this, init); }
 }

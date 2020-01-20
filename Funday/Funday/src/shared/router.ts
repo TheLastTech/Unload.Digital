@@ -30,7 +30,7 @@ export enum Routes {
   Inventorys = '/Inventorys',
   EditInventorys = '/EditInventorys/:Id',
   CreateInventory = '/CreateInventory',
-  //StockXListedItem
+  // StockXListedItem
   StockXListedItems = '/StockXListedItems',
   EditStockXListedItems = '/EditStockXListedItems/:Id',
   CreateStockXListedItem = '/CreateStockXListedItem',
@@ -87,7 +87,7 @@ const routes = [
   {path: Routes.StockXAccounts , component: List_StockXAccounts, beforeEnter: requiresAuth},
   {path: Routes.EditStockXAccounts , component: Edit_StockXAccount, beforeEnter: requiresAuth},
   {path: Routes.CreateStockXAccount, component: Create_StockXAccount, beforeEnter: requiresAuth},
-  //StockXListedItem
+  // StockXListedItem
   {path: Routes.StockXListedItems , component: List_StockXListedItems, beforeEnter: requiresAuth},
   {path: Routes.EditStockXListedItems , component: Edit_StockXListedItem, beforeEnter: requiresAuth},
 

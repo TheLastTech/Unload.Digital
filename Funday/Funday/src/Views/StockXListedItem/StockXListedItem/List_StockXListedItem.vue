@@ -66,7 +66,7 @@
         components: {},
     })
     export default class List_StockXListedItems extends Vue {
-        StockXListedItems: StockXListedItem[] = [];
+        StockXListedItems: any[] = [];
         Fields = [
             {"key": "Item1.Id", "sortable": true, label: "Id"},
             {"key": "Item1.Product.Brand", "sortable": true, label: "Brand"},
