@@ -73,12 +73,12 @@ export default class Edit_Inventory extends Vue {
 
         {
             StockXUrl: '',
-            Quantity: '',
+            Quantity: 0,
             MinSell: 0,
-            StartingAsk: '',
+            StartingAsk: 0,
             Size: '',
             Active: true,
-            StockXAccountId: '',
+            StockXAccountId: -1,
             DateSold: '',
             ChainId: '',
             Status: '',
@@ -165,18 +165,3 @@ export default class Edit_Inventory extends Vue {
 }
 </script>
 
-/*
-
-//Inventory
-{path: Routes.Inventorys , component: List_Inventorys, beforeEnter: requiresAuth},
-{path: Routes.EditInventorys , component: Edit_Inventory, beforeEnter: requiresAuth},
-{path: Routes.CreateInventory, component: Create_Inventory, beforeEnter: requiresAuth},
-
-<b-nav-item-dropdown text="Lang" right v-if="userSession">
-    <b-dropdown-item :to="Routes.CreateInventory">Make</b-dropdown-item>
-    <b-dropdown-item :to="Routes.Inventorys">List</b-dropdown-item>
-
-</b-nav-item-dropdown>
-
-
-/*

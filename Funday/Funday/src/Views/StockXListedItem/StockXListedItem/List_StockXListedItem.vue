@@ -57,62 +57,62 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Watch} from "vue-property-decorator";
-    import {ListStockXListedItemRequest, StockXListedItem} from "@/shared/dtos";
-    import {client} from "@/shared";
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import {ListStockXListedItemRequest, StockXListedItem} from '@/shared/dtos';
+import {client} from '@/shared';
 
 
-    @Component({
-        components: {},
-    })
-    export default class List_StockXListedItems extends Vue {
-        StockXListedItems: any[] = [];
-        Fields = [
-            {"key": "Item1.Id", "sortable": true, label: "Id"},
-            {"key": "Item1.Product.Brand", "sortable": true, label: "Brand"},
-            {"key": "Item1.Product.Shoe", "sortable": true, label: "Shoe"},
-            {"key": "Item1.Product.ShoeSize", "sortable": true, label: "Shoe Size"},
-            {"key": "Item1.Amount", "sortable": true, label: "Amount"},
-            {"key": "Item3.MinSell", "sortable": true, label: "MinSell"},
-            {"key": "Item3.StartingAsk", "sortable": true, label: "Starting Ask"},
-            {"key": "Item3.Quantity", "sortable": true, label: "Quantity"},
-            {"key": "Item2.Email", "sortable": true, label: "Email"},
-        ];
-        Error = "";
-        currentPage = 0;
-        rows = 0;
-        perPage = 50;
-        Message = "";
+@Component({
+    components: {},
+})
+export default class List_StockXListedItems extends Vue {
+    StockXListedItems: any[] = [];
+    Fields = [
+        {key: 'Item1.Id', sortable: true, label: 'Id'},
+        {key: 'Item1.Product.Brand', sortable: true, label: 'Brand'},
+        {key: 'Item1.Product.Shoe', sortable: true, label: 'Shoe'},
+        {key: 'Item1.Product.ShoeSize', sortable: true, label: 'Shoe Size'},
+        {key: 'Item1.Amount', sortable: true, label: 'Amount'},
+        {key: 'Item3.MinSell', sortable: true, label: 'MinSell'},
+        {key: 'Item3.StartingAsk', sortable: true, label: 'Starting Ask'},
+        {key: 'Item3.Quantity', sortable: true, label: 'Quantity'},
+        {key: 'Item2.Email', sortable: true, label: 'Email'},
+    ];
+    Error = '';
+    currentPage = 0;
+    rows = 0;
+    perPage = 50;
+    Message = '';
 
-        @Watch("currentPage") ChangecurrentPage(newval: number) {
-            this.ListStockXListedItems();
-        }
-
-        get Rows() {
-            return this.StockXListedItems;
-        }
-
-        mounted() {
-            this.ListStockXListedItems();
-        }
-
-        EditStockXListedItem(Id: number) {
-            this.$router.push("/EditStockXListedItem/" + Id);
-        }
-
-        async ListStockXListedItems() {
-            this.Error = "";
-            const StockXListedItemsList = await client.get(new ListStockXListedItemRequest({
-                Skip: 50 * this.currentPage
-            }));
-            if (StockXListedItemsList.Success) {
-                this.StockXListedItems = StockXListedItemsList.StockXListedItems;
-                this.rows = StockXListedItemsList.Total;
-            } else {
-                this.Error = StockXListedItemsList.Message;
-            }
-        }
-
-
+    @Watch('currentPage') ChangecurrentPage(newval: number) {
+        this.ListStockXListedItems();
     }
+
+    get Rows() {
+        return this.StockXListedItems;
+    }
+
+    mounted() {
+        this.ListStockXListedItems();
+    }
+
+    EditStockXListedItem(Id: number) {
+        this.$router.push('/EditStockXListedItem/' + Id);
+    }
+
+    async ListStockXListedItems() {
+        this.Error = '';
+        const StockXListedItemsList = await client.get(new ListStockXListedItemRequest({
+            Skip: 50 * this.currentPage,
+        }));
+        if (StockXListedItemsList.Success) {
+            this.StockXListedItems = StockXListedItemsList.StockXListedItems;
+            this.rows = StockXListedItemsList.Total;
+        } else {
+            this.Error = StockXListedItemsList.Message;
+        }
+    }
+
+
+}
 </script>

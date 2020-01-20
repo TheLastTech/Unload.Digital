@@ -240,4 +240,4 @@ export default class Edit_StockXAccount extends Vue {
 }
 </script>
 
- 
+
