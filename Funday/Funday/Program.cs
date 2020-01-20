@@ -19,10 +19,30 @@ namespace Funday
 
             BuildWebHost(args).Run();
         }
+        
+        public static IWebHost BuildWebHost(string[] args)
+        {
+#if DEBUG
+            return WebHost.CreateDefaultBuilder(args).UseUrls("http://*:5000;https://*:5001;http://*:80;https://*:443;")
+                .UseKestrel(options =>
+                {
+           
+                })
+                .UseStartup<Startup>().Build();
+#else
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+                  return WebHost.CreateDefaultBuilder(args).UseKestrel(options =>
+                  { 
+                      options.ListenAnyIP(80); 
+                      options.ListenAnyIP( 443, listenOptions =>
+                      {
+                          listenOptions.UseHttps("digital.pfx", "nerdpussy");
+                      });
+                  })
                 .UseStartup<Startup>()
                 .Build();
+#endif
+        }
     }
 }
+

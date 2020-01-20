@@ -39,6 +39,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Update="digital.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="NodeStuff\config.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
