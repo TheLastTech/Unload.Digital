@@ -1,0 +1,18 @@
+{
+  "Items": [
+    {
+      "Label": "UserID",
+      "Name": "StockXUrl",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "NotEditable": true,
+      "includeInRequest": true
+    }
+  ],
+
+  "Name": "StockXListedItem",
+  "subFolder": "Stockx\\StockXListedItems"
+
+}

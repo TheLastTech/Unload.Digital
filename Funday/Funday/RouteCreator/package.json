@@ -1,0 +1,8 @@
+{
+  "name": "RouteCreator",
+  "version": "1.0.0",
+  "dependencies": {
+    "args": "^5.0.1",
+      "pgtools": "0.3.0"
+  }
+}

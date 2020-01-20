@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Folder Include="NodeStuff\errors\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.7.1" />
+    <PackageReference Include="ServiceStack.Logging.NLog.Core" Version="5.8.1" />
+    <PackageReference Include="ServiceStack.OrmLite.Core" Version="5.7.1" />
+    <PackageReference Include="ServiceStack.OrmLite.PostgreSQL.Core" Version="5.7.1" />
+    <PackageReference Include="ServiceStack.Server" Version="5.8.0" />
+    <PackageReference Include="Timber.io.NLog" Version="1.0.2" />
+    <PackageReference Include="TimberLogger" Version="1.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Funday.ServiceInterface\Funday.ServiceInterface.csproj" />
+    <ProjectReference Include="..\Funday.ServiceModel\Funday.ServiceModel.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="NodeStuff\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="NodeStuff\tsconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="NodeStuff\config.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="NodeStuff\StockLoginator.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="OnFirstUse" BeforeTargets="Build" Condition=" !Exists('wwwroot\dist') ">
+    <Exec Command="node --version" ContinueOnError="true"><Output TaskParameter="ExitCode" PropertyName="ErrorCode" /></Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+  </Target>
+
+</Project>

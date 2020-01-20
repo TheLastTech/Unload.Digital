@@ -1,0 +1,124 @@
+{
+  "Items": [
+    {
+      "Label": "Email",
+      "Name": "Email",
+      "FormType": "email",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Password",
+      "PlaceHolder": "",
+      "Name": "Password",
+      "DefaultValue": "",
+      "FormType": "password",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Proxy Username",
+      "Name": "ProxyUsername",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Proxy Password",
+      "PlaceHolder": "",
+      "Name": "ProxyPassword",
+      "DefaultValue": "",
+      "FormType": "password",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Proxy Host",
+      "Name": "ProxyHost",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Proxy Port",
+      "PlaceHolder": "",
+      "Name": "ProxyPort",
+      "DefaultValue": 8000,
+      "FormType": "number",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Proxy Active",
+      "PlaceHolder": "",
+      "Name": "ProxyActive",
+      "DefaultValue": true,
+      "FormType": "checkbox",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Account Active",
+      "PlaceHolder": "",
+      "Name": "Active",
+      "DefaultValue": true,
+      "FormType": "checkbox",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Customer ID (this will be auto filled)",
+      "PlaceHolder": "",
+      "Name": "CustomerID",
+      "DefaultValue": "",
+      "FormType": "disabled",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Currency",
+      "Name": "Currency",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },{
+      "Label": "Country",
+      "Name": "Country",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "UserAgent",
+      "Name": "UserAgent",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    }, {
+      "Label": "Token (optional)",
+      "Name": "Token",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "Optional": true,
+      "includeInRequest": true
+    }
+  ],
+
+  "Name": "StockXAccount",
+  "subFolder": "Stockx\\Account"
+
+}

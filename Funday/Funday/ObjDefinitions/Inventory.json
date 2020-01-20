@@ -1,0 +1,110 @@
+{
+  "Items": [
+    {
+      "Label": "Stock X Url",
+      "Name": "StockXUrl",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "NotEditable": true,
+      "includeInRequest": true
+    },
+    {
+      "Label": "Quantity",
+      "PlaceHolder": "",
+      "Name": "Quantity",
+      "DefaultValue":  0,
+      "FormType": "number",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Min Sell",
+      "Name": "MinSell",
+      "FormType": "number",
+      "DefaultValue":  0,
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "StartingAsk",
+      "PlaceHolder": "",
+      "Name": "StartingAsk",
+      "DefaultValue":  0,
+      "FormType": "number",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Size",
+      "Name": "Size",
+      "FormType": "text",
+      "DefaultValue": "",
+      "NotEditable": true,
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "Inventory Active",
+      "PlaceHolder": "",
+      "Name": "Active",
+      "DefaultValue": true,
+      "FormType": "checkbox",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "",
+      "PlaceHolder": "",
+      "Name": "StockXAccountId",
+      "DefaultValue": 0,
+      "NotEditable": true,
+      "FormType": "number",
+      "FormArguments": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "",
+      "Name": "ChainId",
+      "FormType": "string",
+      "DefaultValue": "",
+      "NotCreatable": true,
+      "NotEditable": true,
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    },
+    {
+      "Label": "",
+      "Name": "Status",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "NotCreatable": true,
+      "NotEditable": true,
+      "PlaceHolder": "",
+      "includeInRequest": true
+    }
+  ,
+
+    {
+      "Label": "",
+      "Name": "Sku",
+      "FormType": "text",
+      "DefaultValue": "",
+      "NotCreatable": true,
+      "NotEditable": true,
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "includeInRequest": true
+    }
+
+  ],
+
+  "Name": "Inventory",
+  "subFolder": "Stockx\\Inventory"
+
+}
