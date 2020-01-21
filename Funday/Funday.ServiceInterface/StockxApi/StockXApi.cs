@@ -121,7 +121,7 @@ namespace Funday.ServiceInterface.StockxApi
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.InternalServerError,
-                    ResultText = ex.Message + outputtxt + jsontxt + tmpdr,
+                    ResultText = ex.Message + ex.StackTrace+ outputtxt + jsontxt + tmpdr,
                 };
             }
         }
