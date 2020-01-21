@@ -98,14 +98,14 @@ namespace Funday
             using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
             {
                 //if (!Db.TableExists<StockXAccount>())
-                      Db.DropAndCreateTable<StockXAccount>();
-                  Db.DropAndCreateTable<StockXListedItem>();
-                      Db.DropAndCreateTable<Inventory>();
+                //      Db.DropAndCreateTable<StockXAccount>();
+              //    Db.DropAndCreateTable<StockXListedItem>();
+            //          Db.DropAndCreateTable<Inventory>();
 
-                Db.DropAndCreateTable<StockXProxuct>();
-                Db.DropAndCreateTable<Audit>();
-                Db.DropAndCreateTable<StockXBid>();
-                Db.DropAndCreateTable<StockXAsk>();
+               // Db.DropAndCreateTable<StockXProxuct>();
+                //Db.DropAndCreateTable<Audit>();
+                //Db.DropAndCreateTable<StockXBid>();
+                //Db.DropAndCreateTable<StockXAsk>();
                 return;
 #if DEBUG
                 if (!Db.Exists<StockXAccount>(A => A.Email == "tenshihan@gmail.com"))
