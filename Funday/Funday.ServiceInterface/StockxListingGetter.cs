@@ -167,7 +167,7 @@ namespace Funday.ServiceInterface
 
             private async Task<bool> ProcessNewBid(StockXAccount login, PortfolioItem Item, Inventory Invntory)
             {
-                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Item.Amount).OrderByDescending(A => A.Bid));
+                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Invntory.StartingAsk).OrderByDescending(A => A.Bid));
                 var Bid = Bids.FirstOrDefault();
                 if (Bid != null)
                 {

@@ -21,6 +21,7 @@ namespace Funday.ServiceModel.Inventory
         public string Size { get; set; }
         [Index]
         public bool Active { get; set; }
+        
         [Index]
         public int StockXAccountId { get; set; }
         public string Status { get; set; }

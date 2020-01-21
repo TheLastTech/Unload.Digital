@@ -251,7 +251,7 @@ namespace Funday.ServiceInterface
                         return new CreateInventoryResponse()
                         {
                             Success = false,
-                            Message="This Inventory Exists for this Account, swap it to another account by removing quantity"
+                            Message="This Inventory Exists for this Account"
 
                         };
                     }
