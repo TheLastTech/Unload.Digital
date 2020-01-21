@@ -1,13 +1,13 @@
 [Unit]  
-Description=Dotnet Core Demo service  
+Description=Funday 
   
 [Service]  
-ExecStart=/bin/dotnet/dotnet Service.Sample.dll  
-WorkingDirectory=/etc/SampleService/  
-User=dotnetuser  
-Group=dotnetuser  
+ExecStart=/usr/bin/dotnet Funday.dll  
+WorkingDirectory=/home/generated-key/Unload.Digital/Funday/Funday/bin/Release/netcoreapp2.1/publish
+User=root  
+Group=root  
 Restart=on-failure  
-SyslogIdentifier=dotnet-sample-service  
+SyslogIdentifier=Funday
 PrivateTmp=true  
   
 [Install]  

@@ -33,7 +33,7 @@ using Funday.ServiceModel.Audit;
 namespace Funday
 {
     public class Startup : ModularStartup
-    {
+    { 
         public Startup(IConfiguration configuration) : base(configuration, typeof(MyServices).Assembly) { }
 
 
