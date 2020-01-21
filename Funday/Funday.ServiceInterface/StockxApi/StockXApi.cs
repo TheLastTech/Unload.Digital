@@ -103,7 +103,7 @@ namespace Funday.ServiceInterface.StockxApi
                     if (JsonObj != null&& JsonObj.error == null)
                         return new StockXApiResult<LoginCookieToken>()
                         {
-                            Code = HttpStatusCode.OK,
+                            Code = HttpStatusCode.OK, 
                             ResultText = jsontxt + outputtxt,
                             RO = JsonObj
                         };
