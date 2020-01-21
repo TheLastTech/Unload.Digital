@@ -17,7 +17,7 @@ if [ $LOCAL != $REMOTE ]; then
     #change back to home directory 
     
     
-    systemctl restart sunday
+    sudo systemctl restart sunday
     
   
 fi
