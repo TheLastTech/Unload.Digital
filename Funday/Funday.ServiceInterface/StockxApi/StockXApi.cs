@@ -101,7 +101,7 @@ namespace Funday.ServiceInterface.StockxApi
                     var JsonObj = JsonConvert.DeserializeObject<LoginCookieToken>(jsontxt, settings);
                     
                     if (JsonObj != null&& JsonObj.error == null)
-                        return new StockXApiResult<LoginCookieToken>()
+                        return new StockXApiResult<LoginCookieToken>() 
                         {
                             Code = HttpStatusCode.OK, 
                             ResultText = jsontxt + outputtxt,
