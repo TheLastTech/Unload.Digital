@@ -67,7 +67,7 @@ export class NightMareStocks {
         try {
 
 
-            await this.Browser.goto('https://stockx.com/');
+            await this.Browser.goto('https://accounts.stockx.com/login');
 
  
             let IsCaptcha = await this.DetectIfCaptcha();
@@ -82,7 +82,7 @@ export class NightMareStocks {
 
  
             console.log(this.Options);
-        //    await this.Browser.goto('https://accounts.stockx.com/login');
+        //    
                await this.Browser.click('#nav-login');
         //    await this.Browser.click('#site-header > div > nav > div > div.navbar-inner > ul > li:nth-child(7) > a');
             await this.Browser.wait(EmailSelector);
