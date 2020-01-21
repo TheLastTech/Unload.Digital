@@ -20,8 +20,6 @@
     <PackageReference Include="ServiceStack.OrmLite.Core" Version="5.7.1" />
     <PackageReference Include="ServiceStack.OrmLite.PostgreSQL.Core" Version="5.7.1" />
     <PackageReference Include="ServiceStack.Server" Version="5.8.0" />
-    <PackageReference Include="Timber.io.NLog" Version="1.0.2" />
-    <PackageReference Include="TimberLogger" Version="1.0.1" />
   </ItemGroup>
   
   <ItemGroup>

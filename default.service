@@ -1,0 +1,14 @@
+[Unit]  
+Description=Dotnet Core Demo service  
+  
+[Service]  
+ExecStart=/bin/dotnet/dotnet Service.Sample.dll  
+WorkingDirectory=/etc/SampleService/  
+User=dotnetuser  
+Group=dotnetuser  
+Restart=on-failure  
+SyslogIdentifier=dotnet-sample-service  
+PrivateTmp=true  
+  
+[Install]  
+WantedBy=multi-user.target 
