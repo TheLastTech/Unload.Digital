@@ -44,7 +44,7 @@ namespace Funday.ServiceInterface.StockxApi
                     UseShellExecute = true,
                     CreateNoWindow=true,
 
-                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
+                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory +   "NodeStuff"
                 };
             }
             else
