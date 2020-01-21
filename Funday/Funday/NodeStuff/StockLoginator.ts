@@ -44,7 +44,7 @@ export class NightMareStocks {
             },
             //   openDevTools: {detach: true},
             webPreferences: {
-                images: false ,
+            //    images: false ,
                 partition: this.stonks,
             },
             weak: false,
