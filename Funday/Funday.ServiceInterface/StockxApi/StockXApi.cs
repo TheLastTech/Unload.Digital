@@ -110,7 +110,7 @@ namespace Funday.ServiceInterface.StockxApi
                 }
                 return new StockXApiResult<LoginCookieToken>()
                 {
-                    Code = HttpStatusCode.Ambiguous,
+                    Code = HttpStatusCode.Ambiguous, 
                     ResultText = jsontxt + outputtxt + tmpdr,
                 };
             }
