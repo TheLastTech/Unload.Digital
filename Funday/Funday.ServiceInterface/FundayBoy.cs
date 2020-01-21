@@ -1,5 +1,4 @@
-﻿using Funday.ServiceInterface.StockxApi;
-using Funday.ServiceModel.StockXAccount;
+﻿using Funday.ServiceModel.StockXAccount;
 using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.Logging;
@@ -26,7 +25,7 @@ namespace Funday.ServiceInterface
             }
         }
 
-        private readonly FundayBoy Noance;
+        
         private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
 
         public FundayBoy()
@@ -35,7 +34,7 @@ namespace Funday.ServiceInterface
             {
                 var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = null, NextAccountInteraction = DateTime.Now });
             }
-            Noance = this;
+        
 
             DoWork += RunAccountJobs;
             RunWorkerCompleted += JobsCompletedRunAGain;
@@ -49,32 +48,29 @@ namespace Funday.ServiceInterface
         {
             using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
             {
-                    ProcessUnAccounts(Db);
-                    Task.WaitAll(ProcessNextVerifiedAccount(Db));
-                
+                ProcessUnAccounts(Db);
+                Task.WaitAll(ProcessNextVerifiedAccount(Db));
             }
         }
 
         private static async Task ProcessNextVerifiedAccount(IDbConnection Db)
         {
             StockXAccount Login = null;
+
             var SgGetter = new StockxListingGetter(Db);
             try
             {
                 Login = SgGetter.GetNextToUpdate();
-            }
-            catch (Exception ex)
-            {
-                LogInnerError(Db, Login);
-                return;
-            }
-            if (Login == null) { return; }
-            try
-            {
-                await ProcessSold(Db, Login, SgGetter);
 
-                await ProcessListsings(Db, Login, SgGetter);
-            }catch(Exception ex)
+                if (Login != null)
+                {
+                    await ProcessSold(Db, Login, SgGetter);
+
+                    await ProcessListsings(Db, Login, SgGetter);
+                }
+                PlaceAccountBakkInQueue(Login, Db);
+            }
+            catch (NeedsVerificaitonException nx)
             {
                 Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
             }
@@ -86,17 +82,15 @@ namespace Funday.ServiceInterface
             try
             {
                 ListedItems = await SgGetter.UpdateSoldToDb(Login);
-
             }
             catch (NeedsVerificaitonException nx)
             {
-                Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
-                return;
+                throw nx;
             }
             catch (Exception ex)
             {
-                LogInnerError(Db, Login);
-                return;
+                AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessNextVerifiedAccount", "ProcessSold", "Error", ex.Message, ex.StackTrace);
+                
             }
         }
 
@@ -109,49 +103,34 @@ namespace Funday.ServiceInterface
             }
             catch (NeedsVerificaitonException nx)
             {
-                Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
-                return;
+                throw nx;
             }
             catch (Exception ex)
             {
-                LogInnerError(Db, Login);
+                AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessListsings", "UpdateListingtoDb", "Error", ex.Message, ex.StackTrace);
                 return;
             }
             if (ListedItems == null)
             {
-                PlaceAccountBakkInQueue(Login, Db);
                 return;
             }
             try
             {
                 await SgGetter.UpdateListingsBidAsk(Login, ListedItems);
-                PlaceAccountBakkInQueue(Login, Db);
             }
             catch (NeedsVerificaitonException nx)
             {
-                Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
+                throw nx;
             }
             catch (Exception ex)
             {
-                LogInnerError(Db, Login);
+                AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessListsings", "UpdateListingsBidAsk", "Error", ex.Message, ex.StackTrace);
             }
         }
 
         private static void PlaceAccountBakkInQueue(StockXAccount Login, IDbConnection Db)
         {
             Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(2) }, A => A.Id == Login.Id);
-        }
-
-        private static void LogInnerError(IDbConnection Db, StockXAccount Login)
-        {
-            try
-            {
-                Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(1) }, A => A.Id == Login.Id);
-            }
-            catch (Exception ex2)
-            {
-                Console.Write(ex2);
-            }
         }
 
         private void ProcessUnAccounts(IDbConnection Db)
@@ -195,7 +174,5 @@ namespace Funday.ServiceInterface
         {
             public string error { get; set; }
         }
-
-
     }
 }

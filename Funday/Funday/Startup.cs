@@ -29,6 +29,7 @@ using TimberClient.Configuration;
 using TimberClient.Extensions;
 using Microsoft.Extensions.Logging;
 using Funday.ServiceModel.StockXListedItem;
+using Funday.ServiceModel.Audit;
 
 namespace Funday
 {
@@ -98,11 +99,12 @@ namespace Funday
             using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
             {
                 //if (!Db.TableExists<StockXAccount>())
-                    //       Db.DropAndCreateTable<StockXAccount>();
-                Db.DropAndCreateTable<StockXListedItem>();
-                //       Db.DropAndCreateTable<Inventory>();
-             
-                //        Db.DropAndCreateTable<StockXProxuct>();
+                      Db.DropAndCreateTable<StockXAccount>();
+                  Db.DropAndCreateTable<StockXListedItem>();
+                      Db.DropAndCreateTable<Inventory>();
+
+                Db.DropAndCreateTable<StockXProxuct>();
+                Db.DropAndCreateTable<Audit>();
                 Db.DropAndCreateTable<StockXBid>();
                 Db.DropAndCreateTable<StockXAsk>();
                 return;

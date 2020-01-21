@@ -42,13 +42,8 @@ namespace Funday.ServiceInterface
 
         public async Task<LoginCookieToken> GetAuth(StockXAccount Auth)
         {
-            var DidEnter = Monitor.TryEnter(Noance, 10 * 1000);
-            if (!DidEnter)
-            {
-                throw new ThreadBusyException();
-            }
-            try
-            {
+  
+          
                 var Output = await StockXApi.GetLogin(Auth); ;
                 if (Output.Code == System.Net.HttpStatusCode.OK)
                 {
@@ -56,15 +51,8 @@ namespace Funday.ServiceInterface
                 }
 
                 throw new Exception(Output.Code + " : " + Output.ResultText);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                Monitor.Exit(Noance);
-            }
+    
+       
         }
 
         private void FunBoy_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -117,6 +105,7 @@ namespace Funday.ServiceInterface
                 {
                     Db.Save(new StockXAsk()
                     {
+                        State= Act.State,
                         Sku = Act.SkuUuid,
                         Ask = (long)Act.LocalAmount,
                         ChainId = Act.ChainId,
@@ -144,6 +133,7 @@ namespace Funday.ServiceInterface
                     {
                         Db.Save(new StockXAsk()
                         {
+                            State = Act.State,
                             Sku = Act.SkuUuid,
                             ChainId = Act.ChainId,
                             Ask = (long)Act.LocalAmount
@@ -156,7 +146,7 @@ namespace Funday.ServiceInterface
                 }
             }catch(Exception ex)
             {
-
+                AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryAsks", "ProcessInventoryAsks", "Error", ex.Message, ex.StackTrace);
             }
             
         }
@@ -180,6 +170,7 @@ namespace Funday.ServiceInterface
                 {
                     Db.Save(new StockXBid()
                     {
+                        State = Act.State,
                         ChainId = Act.ChainId,
                         Sku = Act.SkuUuid,
                         Bid = (long)Act.LocalAmount
@@ -209,6 +200,7 @@ namespace Funday.ServiceInterface
                     {
                         Db.Save(new StockXBid()
                         {
+                            State = Act.State,
                             Sku = Act.SkuUuid,
                             ChainId = Act.ChainId,
                             Bid = (long)Act.LocalAmount
@@ -222,7 +214,7 @@ namespace Funday.ServiceInterface
                 
             }catch(Exception ex)
             {
-                
+                AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryBids", "ProcessInventoryBidsst", "Error", ex.Message, ex.StackTrace);
             }
         }
     }

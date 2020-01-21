@@ -116,6 +116,10 @@ export default class List_Inventorys extends Vue {
             key: 'MinSell',
             sortable: true,
         },
+        {
+            key: 'Sold',
+            sortable: true,
+        },
         {key: 'StartingAsk', sortable: true},
         {key: 'Size', sortable: true},
         {

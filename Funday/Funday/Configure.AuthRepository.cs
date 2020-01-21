@@ -40,6 +40,7 @@ namespace Funday
             authRepo.InitSchema();
 
             CreateUser(authRepo, "kooshesh@react-coder.com", "Ari", "Ender", "ItKN$!Mh1r8EeY^Cd^2", roles: new[] { RoleNames.Admin });
+            CreateUser(authRepo, "cronheim@unload.digital", "Greg", "Greg", "F&6ItKN$!Md^2", Array.Empty<string>());
 
         }
 

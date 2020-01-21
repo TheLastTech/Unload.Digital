@@ -56,7 +56,7 @@ export class SignIn extends Vue {
 
             if (Me.SessionId !== undefined) {
                 bus.$emit('signin', Me);
-                redirect(this.$route.query.redirect as string || Routes.Dashboard);
+                redirect(this.$route.query.redirect as string || Routes.SignIn);
 
             }
 

@@ -1,16 +1,16 @@
-﻿using Funday.ServiceModel.Inventory;
+﻿using Funday.ServiceModel;
+using Funday.ServiceModel.Inventory;
 using Funday.ServiceModel.StockXAccount;
 using Newtonsoft.Json;
 using StockxApi;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Funday.ServiceInterface.StockxApi
@@ -29,19 +29,35 @@ namespace Funday.ServiceInterface.StockxApi
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
+       
 
         public static async Task<StockXApiResult<LoginCookieToken>> GetLogin(this StockXAccount stockAuth)
         {
+           
             var tmpdr = Path.GetTempFileName();
             var Json = Base64Encode(JsonConvert.SerializeObject(stockAuth));
-            var Processstartinfo = new ProcessStartInfo("node", $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} ")
+            ProcessStartInfo Processstartinfo;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                UseShellExecute = false,
-                WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
-            };
-            string Output = "";
-            string Error = "";
+                Processstartinfo = new ProcessStartInfo("xvfb-run", $"node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} > {tmpdr}.txt  ")
+                {
+                    UseShellExecute = false,
+
+                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
+                };
+            }
+            else
+            {
+                Processstartinfo = new ProcessStartInfo("node", $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} > {tmpdr}.txt  ")
+                {
+                    UseShellExecute = false,
+
+                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
+                };
+            }
+   
             string jsontxt = "";
+            string outputtxt = "";
             try
             {
                 var Proc = new Process
@@ -49,16 +65,29 @@ namespace Funday.ServiceInterface.StockxApi
                     StartInfo = Processstartinfo
                 };
                 Proc.Start();
-                StringBuilder Opt = new StringBuilder();
-                StringBuilder ErR = new StringBuilder();
+
                 //Error = Proc.StandardError.ReadToEnd();
                 //   Output = Proc.StandardOutput.ReadToEnd();
-                var MaxWait = 5;
-                while (!Proc.WaitForExit(5000))
+                var MaxWait = 40;
+                while (!Proc.WaitForExit(5000) && MaxWait-- > 0)
                 {
                     await Task.Delay(500);
                 }
-
+                if (MaxWait == 0)
+                {
+                    try
+                    {
+                        Proc.Kill();
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                if (File.Exists(tmpdr + ".txt"))
+                {
+                    outputtxt = File.ReadAllText(tmpdr);
+                    File.Delete(tmpdr + ".txt");
+                }
                 if (File.Exists(tmpdr))
                 {
                     jsontxt = File.ReadAllText(tmpdr);
@@ -73,14 +102,14 @@ namespace Funday.ServiceInterface.StockxApi
                         return new StockXApiResult<LoginCookieToken>()
                         {
                             Code = HttpStatusCode.OK,
-                            ResultText = jsontxt,
+                            ResultText = jsontxt + outputtxt,
                             RO = JsonObj
                         };
                 }
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.Ambiguous,
-                    ResultText = jsontxt + Output + Error,
+                    ResultText = jsontxt + outputtxt,
                 };
             }
             catch (Exception ex)
@@ -88,7 +117,7 @@ namespace Funday.ServiceInterface.StockxApi
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.InternalServerError,
-                    ResultText = Output + Error + ex.Message + jsontxt,
+                    ResultText = ex.Message + outputtxt + jsontxt,
                 };
             }
         }
@@ -133,11 +162,12 @@ namespace Funday.ServiceInterface.StockxApi
                     {
                         Code = response.StatusCode,
                         ResultText = txt,
-                        RO = JsonConvert.DeserializeObject<GetPagedPortfolioItemsResponse>(txt,settings)
+                        RO = JsonConvert.DeserializeObject<GetPagedPortfolioItemsResponse>(txt, settings)
                     };
                 }
             }
         }
+
         public static async Task<List<PortfolioItem>> GetAllPending(this StockXAccount login)
         {
             List<PortfolioItem> OutputItems = new List<PortfolioItem>();
@@ -172,6 +202,7 @@ namespace Funday.ServiceInterface.StockxApi
             }
             return OutputItems;
         }
+
         public static async Task<List<PortfolioItem>> GetAllListings(this StockXAccount login)
         {
             List<PortfolioItem> OutputItems = new List<PortfolioItem>();
@@ -179,7 +210,8 @@ namespace Funday.ServiceInterface.StockxApi
             try
             {
                 GetListings = await login.GetCurrentListings(login.CustomerID.ToString(), 1);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return null;
             }
@@ -315,14 +347,13 @@ namespace Funday.ServiceInterface.StockxApi
                         NullValueHandling = NullValueHandling.Ignore,
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
-                    
-                        return new StockXApiResult<GetPagedPortfolioItemsResponse>()
-                        {
-                            Code = response.StatusCode,
-                            ResultText = txt,
-                            RO = JsonConvert.DeserializeObject<GetPagedPortfolioItemsResponse>(txt, settings)
-                        };
-                    
+
+                    return new StockXApiResult<GetPagedPortfolioItemsResponse>()
+                    {
+                        Code = response.StatusCode,
+                        ResultText = txt,
+                        RO = JsonConvert.DeserializeObject<GetPagedPortfolioItemsResponse>(txt, settings)
+                    };
                 }
             }
         }
@@ -494,20 +525,20 @@ namespace Funday.ServiceInterface.StockxApi
                     request.Headers.TryAddWithoutValidation("referer", "https://stockx.com/sell/" + ChainID);
                     request.Headers.TryAddWithoutValidation("accept-encoding", "gzip, deflate, br");
                     request.Headers.TryAddWithoutValidation("accept-language", "en-US,en;q=0.9");
-                    var NewListing = new
+                    var NewListing = new StockXUpdateAskRequest()
                     {
-                        action = "ask",
-                        PortfolioItem = new
+                        Action = "ask",
+                        PortfolioItem = new StockXUpdateAskPortfolioItem()
                         {
-                            localAmount = Amount,
-                            expiresAt = ExpiresDate,
-                            skuUuid,
-                            localCurrency = stockAuth.Currency,
-                            meta = new
+                            LocalAmount = Amount,
+                            ExpiresAt = ExpiresDate,
+                            SkuUuid = skuUuid,
+                            LocalCurrency = stockAuth.Currency,
+                            Meta = new StockXUpdateAskMeta()
                             {
-                                discountCode = "",
-                                chainId = ChainID,
-                            }
+                                DiscountCode = "",
+                            },
+                            ChainId = ChainID,
                         }
                     };
                     request.Content = new StringContent(JsonConvert.SerializeObject(NewListing));
@@ -538,7 +569,7 @@ namespace Funday.ServiceInterface.StockxApi
             }
         }
 
-        public static async Task<StockXApiResult<ListItemResponse>> MakeListing(this StockXAccount stockAuth,string RefUrl, string skuUuid, int Amount, string ExpiresDate)
+        public static async Task<StockXApiResult<ListItemResponse>> MakeListing(this StockXAccount stockAuth, string RefUrl, string skuUuid, int Amount, string ExpiresDate)
         {
             using (var httpClient = stockAuth.GetHttpClient())
             {
@@ -556,18 +587,18 @@ namespace Funday.ServiceInterface.StockxApi
                     request.Headers.TryAddWithoutValidation("accept", "*/*");
                     request.Headers.TryAddWithoutValidation("sec-fetch-site", "same-origin");
                     request.Headers.TryAddWithoutValidation("sec-fetch-mode", "cors");
-                  request.Headers.TryAddWithoutValidation("referer", RefUrl.Replace("//stockx.com/","//stockx.com/sell/" ));
-      
+                    request.Headers.TryAddWithoutValidation("referer", RefUrl.Replace("//stockx.com/", "//stockx.com/sell/"));
+
                     request.Headers.TryAddWithoutValidation("accept-encoding", "gzip, deflate, br");
                     request.Headers.TryAddWithoutValidation("accept-language", "en-US,en;q=0.9");
-                      var NewListing = new ListItemRequest()
-                      {
+                    var NewListing = new ListItemRequest()
+                    {
                         Action = "ask",
                         PortfolioItem = new ListItemRequestPortfolioItem()
                         {
                             LocalAmount = Amount,
                             ExpiresAt = ExpiresDate,
-                            SkuUuid=skuUuid,
+                            SkuUuid = skuUuid,
                             LocalCurrency = stockAuth.Currency,
                             Meta = new ListItemRequestMeta
                             {
@@ -581,12 +612,11 @@ namespace Funday.ServiceInterface.StockxApi
 
                     var response = await httpClient.SendAsync(request);
                     var txt = await response.Content.ReadAsStringAsync();
-                    
+
                     if ((int)response.StatusCode > 399)
                     {
                         return new StockXApiResult<ListItemResponse>()
                         {
-                
                             Code = response.StatusCode,
                             ResultText = txt
                         };
@@ -603,8 +633,6 @@ namespace Funday.ServiceInterface.StockxApi
                         Code = response.StatusCode,
                         ResultText = txt
                     };
-                    
-                    
                 }
             }
         }

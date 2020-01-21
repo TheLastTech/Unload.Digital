@@ -3,6 +3,7 @@ using Funday.ServiceModel.Inventory;
 using Funday.ServiceModel.StockXAccount;
 using Funday.ServiceModel.StockxInventoryStates;
 using Funday.ServiceModel.StockXListedItem;
+using Newtonsoft.Json;
 using ServiceStack.OrmLite;
 using StockxApi;
 using System;
@@ -106,6 +107,7 @@ namespace Funday.ServiceInterface
                         if (Listing.Code == System.Net.HttpStatusCode.OK)
                         {
                             Db.UpdateAdd(() => new Inventory() { Quantity = -1 }, Ab => Ab.Id == tory.Id);
+                            AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", "Inventory Created", Listing.RO.PortfolioItem.ChainId);
                             Created = true;
                             continue;
                         }
@@ -137,6 +139,7 @@ namespace Funday.ServiceInterface
                     //  continue;
                     return false;
                 }
+ 
 
                 return await ProcessNewBid(login, Item, Invntory) || await ProcessNewAsk(login, Item, Invntory);
             }
@@ -154,6 +157,7 @@ namespace Funday.ServiceInterface
                     }
                     if (Result.Code == System.Net.HttpStatusCode.OK)
                     {
+                        AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", $"Update Because Ask ({Item.Amount}) -> ({Ask.Ask})", Item.ChainId);
                         return true;
                     }
                     return true;
@@ -163,11 +167,12 @@ namespace Funday.ServiceInterface
 
             private async Task<bool> ProcessNewBid(StockXAccount login, PortfolioItem Item, Inventory Invntory)
             {
-                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Invntory.StartingAsk).OrderByDescending(A => A.Bid));
+                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Item.Amount).OrderByDescending(A => A.Bid));
                 var Bid = Bids.FirstOrDefault();
                 if (Bid != null)
                 {
                     var Result = await login.UpdateListing(Item.ChainId, Invntory.Sku, Item.ExpiresAt, (int)Bid.Bid);
+                    AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", $"Update Because Bid ({Item.Amount}) -> ({Bid.Bid})", JsonConvert.SerializeObject(Result));
                     if ((int)Result.Code > 399 && (int)Result.Code < 500)
                     {
                         throw new NeedsVerificaitonException(login);
@@ -187,6 +192,7 @@ namespace Funday.ServiceInterface
                 {
                     StockXListedItem itm = A;
                     itm.Id = Existing.Id;
+                    itm.Sold = Existing.Sold;
                     itm.UserId = login.UserId;
                     Db.Update(itm);
                 }

@@ -2,7 +2,35 @@
   "Items": [
     {
       "Label": "UserID",
-      "Name": "StockXUrl",
+      "Name": "UserID",
+      "FormType": "number",
+      "DefaultValue": -1,
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "NotEditable": true,
+      "includeInRequest": true
+    },
+    {
+      "Label": "Location",
+      "Name": "Location",
+      "FormType": "number",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "NotEditable": true,
+      "includeInRequest": true
+    }, {
+      "Label": "Action Taken",
+      "Name": "ActionTaken",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
+      "NotEditable": true,
+      "includeInRequest": true
+    }, {
+      "Label": "Result",
+      "Name": "Result",
       "FormType": "text",
       "DefaultValue": "",
       "FormArguments": "",
@@ -12,7 +40,7 @@
     }
   ],
 
-  "Name": "StockXListedItem",
-  "subFolder": "Stockx\\StockXListedItems"
+  "Name": "Audit",
+  "subFolder": "Admin\\Internal"
 
 }

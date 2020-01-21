@@ -10,6 +10,7 @@ namespace Funday.ServiceModel.StockxInventoryStates
         [PrimaryKey]
         public string ChainId { get; set; }
         public string Sku { get; set; }
-        public long Ask { get; set; }
+        public long Ask { get; set; } 
+        public double State { get; set; }
     }
 }

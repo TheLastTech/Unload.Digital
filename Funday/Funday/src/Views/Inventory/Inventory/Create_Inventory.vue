@@ -103,6 +103,7 @@ export default class Create_Inventory extends Vue {
 
         };
     StockXAccounts: StockXAccount[] = [];
+    rows: number=0;
     mounted(){
         this.ListStockXAccounts();
     }

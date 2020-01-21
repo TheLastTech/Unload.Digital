@@ -69,7 +69,7 @@ export class NightMareStocks {
 
             await this.Browser.goto('https://stockx.com/');
 
-/*
+ 
             const IsCaptcha = await this.DetectIfCaptcha();
             if (IsCaptcha && IsCaptcha.SiteKey) {
                 await this.DoCaptcha(IsCaptcha);
@@ -80,7 +80,7 @@ export class NightMareStocks {
                 return await this.LoginStockx();
             }
 
-*/
+ 
             console.log(this.Options);
         //    await this.Browser.goto('https://accounts.stockx.com/login');
                await this.Browser.click('#nav-login');
@@ -203,8 +203,7 @@ export class NightMareStocks {
 
     async DetectIfCaptcha() {
         try {
-            await this.Browser.wait('[data-sitekey]');
-
+     
             const captcha = await this.Browser.evaluate(() => {
                 const captcha = document.querySelector('[data-sitekey]');
                 if (captcha) {
@@ -216,7 +215,7 @@ export class NightMareStocks {
                     };
 
                 }
-                return {Message: 'no captcha found'};
+                
 
             });
             return captcha;

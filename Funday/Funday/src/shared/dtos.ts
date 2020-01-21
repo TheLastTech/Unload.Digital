@@ -1,5 +1,5 @@
 /* Options:
-Date: 2020-01-20 01:00:52
+Date: 2020-01-20 20:47:15
 Version: 5.81
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -37,6 +37,19 @@ export interface IHasBearerToken
 
 export interface IPost
 {
+}
+
+export class Audit
+{
+    public Id: number;
+    public UserID: number;
+    public Location: string;
+    public ActionTaken: string;
+    public Result: string;
+    public Error: string;
+    public StackTrace: string;
+
+    public constructor(init?: Partial<Audit>) { (Object as any).assign(this, init); }
 }
 
 export class StockXAccount
@@ -79,6 +92,7 @@ export class Inventory
     public UserId: number;
     public StockXUrl: string;
     public Quantity: number;
+    public TotalSold: number;
     public MinSell: number;
     public StartingAsk: number;
     public Size: string;
@@ -422,6 +436,7 @@ export class StockXListedItem
     public Customer: Customer;
     public LocalMarketValue: number;
     public LocalGainLoss: number;
+    public Sold: boolean;
 
     public constructor(init?: Partial<StockXListedItem>) { (Object as any).assign(this, init); }
 }
@@ -518,6 +533,25 @@ export class AppUser extends UserAuth
     public constructor(init?: Partial<AppUser>) { super(init); (Object as any).assign(this, init); }
 }
 
+export class ListAuditResponse
+{
+    public Total: number;
+    public Success: boolean;
+    public Message: string;
+    public Audits: Audit[];
+
+    public constructor(init?: Partial<ListAuditResponse>) { (Object as any).assign(this, init); }
+}
+
+export class ListOneAuditResponse
+{
+    public Success: boolean;
+    public Message: string;
+    public AuditItem: Audit;
+
+    public constructor(init?: Partial<ListOneAuditResponse>) { (Object as any).assign(this, init); }
+}
+
 export class HelloResponse
 {
     public Result: string;
@@ -576,7 +610,7 @@ export class ListInventoryResponse
     public Total: number;
     public Success: boolean;
     public Message: string;
-    public Inventorys: Array<Tuple_2<Inventory, StockXAccount>>;
+    public Inventorys: Tuple_2<Inventory,StockXAccount>[];
 
     public constructor(init?: Partial<ListInventoryResponse>) { (Object as any).assign(this, init); }
 }
@@ -622,7 +656,7 @@ export class ListStockXListedItemResponse
     public Total: number;
     public Success: boolean;
     public Message: string;
-    public StockXListedItems: Array<Tuple_3<StockXListedItem, AppUser, Inventory>>;
+    public StockXListedItems: Tuple_3<StockXListedItem,AppUser,Inventory>[];
 
     public constructor(init?: Partial<ListStockXListedItemResponse>) { (Object as any).assign(this, init); }
 }
@@ -772,6 +806,26 @@ export class GetAccessTokenResponse
     public ResponseStatus: ResponseStatus;
 
     public constructor(init?: Partial<GetAccessTokenResponse>) { (Object as any).assign(this, init); }
+}
+
+// @Route("/Audit/list", "Get")
+export class ListAuditRequest implements IReturn<ListAuditResponse>
+{
+    public Skip: number;
+
+    public constructor(init?: Partial<ListAuditRequest>) { (Object as any).assign(this, init); }
+    public createResponse() { return new ListAuditResponse(); }
+    public getTypeName() { return 'ListAuditRequest'; }
+}
+
+// @Route("/Audit/listone", "Get")
+export class ListOneAuditRequest implements IReturn<ListOneAuditResponse>
+{
+    public AuditId: number;
+
+    public constructor(init?: Partial<ListOneAuditRequest>) { (Object as any).assign(this, init); }
+    public createResponse() { return new ListOneAuditResponse(); }
+    public getTypeName() { return 'ListOneAuditRequest'; }
 }
 
 // @Route("/hello")

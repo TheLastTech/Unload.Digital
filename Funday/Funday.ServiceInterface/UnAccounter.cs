@@ -61,6 +61,7 @@ namespace Funday.ServiceInterface
                     try
                     {
                         var ErrorMessage = JsonConvert.DeserializeObject<FunBoyAutoErrorResponse>(Data.ResultText);
+                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", ErrorMessage.error);
                     }
                     catch (Exception ex)
                     {
@@ -70,6 +71,7 @@ namespace Funday.ServiceInterface
                     if (Account.LoginFails > 3)
                     {
                         DisableAccountDuetoLoginFailure(Account);
+                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled");
                     }
                     else
                     {

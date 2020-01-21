@@ -77,6 +77,7 @@ export default class List_StockXListedItems extends Vue {
         {key: 'Item3.StartingAsk', sortable: true, label: 'Starting Ask'},
         {key: 'Item3.Quantity', sortable: true, label: 'Quantity'},
         {key: 'Item2.Email', sortable: true, label: 'Email'},
+        {key: 'Item1.Sold', sortable: true, label: 'Sold'},
     ];
     Error = '';
     currentPage = 0;
