@@ -111,7 +111,7 @@ namespace Funday.ServiceInterface.StockxApi
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.Ambiguous,
-                    ResultText = jsontxt + outputtxt,
+                    ResultText = jsontxt + outputtxt + tmpdr,
                 };
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace Funday.ServiceInterface.StockxApi
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.InternalServerError,
-                    ResultText = ex.Message + outputtxt + jsontxt,
+                    ResultText = ex.Message + outputtxt + jsontxt + tmpdr,
                 };
             }
         }

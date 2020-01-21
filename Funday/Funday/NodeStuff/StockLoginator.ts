@@ -312,7 +312,7 @@ export class NightMareStocks {
 
     async CloseOut() {
         const SafeVersionOfLogin = this.stonks.replace(/[^a-zA-z]/, '');
-
+        await this.Browser.screenshot(Options.jobId + ".png");
         await this.Browser.end();
         rimraf.sync(UserProfileDirectory + path.sep + SafeVersionOfLogin);
     }
