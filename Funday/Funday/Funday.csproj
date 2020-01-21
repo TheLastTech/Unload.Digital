@@ -7,7 +7,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Folder Include="NodeStuff\errors\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
