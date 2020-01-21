@@ -66,12 +66,13 @@ namespace Funday.ServiceInterface
                     catch (Exception ex)
                     {
                     }
+                    AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", Data.ResultText);
                     Account.LoginFails++;
                     Account.NextVerification = DateTime.Now.AddMinutes(Account.LoginFails - 1 * 1.5 + 1);
                     if (Account.LoginFails > 3)
                     {
                         DisableAccountDuetoLoginFailure(Account);
-                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled");
+                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled",Data.ResultText);
                     }
                     else
                     {
