@@ -1,4 +1,4 @@
-
+cd Funday/Funday
 git fetch;
 LOCAL=$(git rev-parse HEAD);
 REMOTE=$(git rev-parse @{u});
