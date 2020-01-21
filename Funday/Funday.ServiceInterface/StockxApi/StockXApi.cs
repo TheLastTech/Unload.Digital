@@ -41,7 +41,8 @@ namespace Funday.ServiceInterface.StockxApi
             {
                 Processstartinfo = new ProcessStartInfo("xvfb-run", $"-a -e /dev/stdout -s \"-screen 0 2920x2580x24\" node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
+                    CreateNoWindow=true,
 
                     WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
                 };
@@ -51,7 +52,8 @@ namespace Funday.ServiceInterface.StockxApi
                 string arguments = $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} ";
                 Processstartinfo = new ProcessStartInfo("node", arguments)
                 {
-                    UseShellExecute = false,
+                    CreateNoWindow = false,
+                    UseShellExecute = true,
 
                     WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
                 };

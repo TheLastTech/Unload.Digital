@@ -38,7 +38,7 @@
 
            </template>
            <template slot="cell(NextVerification)" slot-scope="data">
-{{new Date(data.item.NextVerification).toTimeString()}}
+                {{new Date(data.item.NextVerification).toLocaleTimeString()}}
 
            </template>
        </b-table>
