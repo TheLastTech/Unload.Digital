@@ -25,8 +25,7 @@ using Funday.ServiceModel.StockXAccount;
 using Funday.ServiceModel.Inventory;
 using Funday.ServiceModel.StockxInventoryStates;
 using StockxApi;
-using TimberClient.Configuration;
-using TimberClient.Extensions;
+ 
 using Microsoft.Extensions.Logging;
 using Funday.ServiceModel.StockXListedItem;
 using Funday.ServiceModel.Audit;
