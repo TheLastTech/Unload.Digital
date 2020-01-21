@@ -33,9 +33,12 @@
       :current-page="currentPage"
 
     >
-
            <template slot="cell(Token)" slot-scope="data">
 
+
+           </template>
+           <template slot="cell(NextVerification)" slot-scope="data">
+{{new Date(data.item.NextVerification).toTimeString()}}
 
            </template>
        </b-table>
