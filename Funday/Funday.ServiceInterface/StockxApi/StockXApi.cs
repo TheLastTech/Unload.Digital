@@ -112,7 +112,7 @@ namespace Funday.ServiceInterface.StockxApi
                 {
                     Code = HttpStatusCode.Ambiguous, 
                     ResultText = jsontxt + outputtxt + tmpdr,
-                };
+                }; 
             }
             catch (Exception ex)
             {
