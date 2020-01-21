@@ -70,7 +70,7 @@ export class NightMareStocks {
             await this.Browser.goto('https://stockx.com/');
 
  
-            const IsCaptcha = await this.DetectIfCaptcha();
+            let IsCaptcha = await this.DetectIfCaptcha();
             if (IsCaptcha && IsCaptcha.SiteKey) {
                 await this.DoCaptcha(IsCaptcha);
                 await this.CloseOut();
@@ -98,7 +98,14 @@ export class NightMareStocks {
                 await this.CheckForInvalidPw();
 
                 try {
-
+                    IsCaptcha = await this.DetectIfCaptcha();
+                    if (IsCaptcha && IsCaptcha.SiteKey) {
+                        await this.DoCaptcha(IsCaptcha);
+                        await this.CloseOut();
+                        if (this.CaptchaProblems++ > 10) {
+                            return;
+                        }
+                    }
                     await this.Browser.wait('[href="/account"]');
 
                     const Cookies = await this.Browser.cookies.get();
