@@ -41,6 +41,10 @@
                 {{new Date(data.item.NextVerification).toLocaleTimeString()}}
 
            </template>
+           <template slot="cell(NextAccountInteraction)" slot-scope="data">
+               {{new Date(data.item.NextAccountInteraction).toLocaleTimeString()}}
+
+           </template>
        </b-table>
         </div>
     </div>
