@@ -10,14 +10,14 @@ if [ $LOCAL != $REMOTE ]; then
 
     #build the new site, you must install jekyll on the server, alternatively you could put the built _site
     #repo under version control and just update based off the changes in that folder. Jekyll outputs build into /_site
-    yarn install && yarn run build && ./run.sh
+    yarn install && yarn run build && dotnet publish -c Release
 
 
 
     #change back to home directory 
     
     
-    systemctl restart sleepy
+    systemctl restart sunday
     
   
 fi
