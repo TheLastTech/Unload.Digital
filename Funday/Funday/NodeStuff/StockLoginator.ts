@@ -216,7 +216,7 @@ export class NightMareStocks {
 
                 }
                 
-
+                return null;
             });
             return captcha;
         } catch (e) {

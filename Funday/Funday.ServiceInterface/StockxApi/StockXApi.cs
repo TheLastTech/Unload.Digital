@@ -39,7 +39,7 @@ namespace Funday.ServiceInterface.StockxApi
             ProcessStartInfo Processstartinfo;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Processstartinfo = new ProcessStartInfo("xvfb-run", $"node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} > {tmpdr}.txt  ")
+                Processstartinfo = new ProcessStartInfo("xvfb-run", $"node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
                 {
                     UseShellExecute = false,
 
@@ -48,7 +48,8 @@ namespace Funday.ServiceInterface.StockxApi
             }
             else
             {
-                Processstartinfo = new ProcessStartInfo("node", $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} > {tmpdr}.txt  ")
+                string arguments = $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} ";
+                Processstartinfo = new ProcessStartInfo("node", arguments)
                 {
                     UseShellExecute = false,
 
@@ -85,7 +86,7 @@ namespace Funday.ServiceInterface.StockxApi
                 }
                 if (File.Exists(tmpdr + ".txt"))
                 {
-                    outputtxt = File.ReadAllText(tmpdr);
+                    outputtxt = File.ReadAllText(tmpdr+".txt");
                     File.Delete(tmpdr + ".txt");
                 }
                 if (File.Exists(tmpdr))
@@ -98,7 +99,8 @@ namespace Funday.ServiceInterface.StockxApi
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
                     var JsonObj = JsonConvert.DeserializeObject<LoginCookieToken>(jsontxt, settings);
-                    if (JsonObj.error == null)
+                    
+                    if (JsonObj != null&& JsonObj.error == null)
                         return new StockXApiResult<LoginCookieToken>()
                         {
                             Code = HttpStatusCode.OK,
