@@ -293,7 +293,7 @@ export class NightMareStocks {
             return answertext.substr(3);
         }
         return null;
-    }
+    } 
 
     async DoUnKnownError(e: any) {
         this.NonCaptchaProblems++;
