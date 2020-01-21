@@ -91,8 +91,8 @@ export default class Create_StockXAccount extends Vue {
     Success = false;
     TransitObject =
         {
-            Email: 'tenshihan@gmail.com',
-            Password: '_xvNYPu27qVFg:c',
+            Email: '',
+            Password: '',
             ProxyUsername: '',
             ProxyPassword: '',
             ProxyHost: '',
