@@ -67,17 +67,15 @@ export class NightMareStocks {
         try {
 
 
-            await this.Browser.goto('https://accounts.stockx.com/login');
+            await this.Browser.goto('https://stockx.com/login');
 
  
             let IsCaptcha = await this.DetectIfCaptcha();
             if (IsCaptcha && IsCaptcha.SiteKey) {
                 await this.DoCaptcha(IsCaptcha);
                 await this.CloseOut();
-                if (this.CaptchaProblems++ > 10) {
-                    return;
-                }
-                return await this.LoginStockx();
+         
+                return { error: "capchta but solved" };
             }
 
  
