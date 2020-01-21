@@ -1,4 +1,3 @@
-cd /home/bloodorange/MuhBot/;
 
 git fetch;
 LOCAL=$(git rev-parse HEAD);
