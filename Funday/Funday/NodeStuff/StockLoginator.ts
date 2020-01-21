@@ -164,12 +164,12 @@ export class NightMareStocks {
                 };
             }
             try {
-                await this.Browser.wait('[class*=\'badGateway__Title\']');
-                console.log('Stockx pooping itself detected');
-                await this.CloseOut();
-                return {
-                    error: 'Stockx too busy'
-                };
+            //    await this.Browser.wait('[class*=\'badGateway__Title\']');
+              //  console.log('Stockx pooping itself detected');
+//                await this.CloseOut();
+  //              return {
+    //                error: 'Stockx too busy'
+      //          };
 
             } catch (e) {
 
