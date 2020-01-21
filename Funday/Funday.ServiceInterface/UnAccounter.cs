@@ -62,7 +62,7 @@ namespace Funday.ServiceInterface
                     {
                         var ErrorMessage = JsonConvert.DeserializeObject<FunBoyAutoErrorResponse>(Data.ResultText);
                         AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", ErrorMessage.error);
-                        if(ErrorMessage != null && ErrorMessage.error.Contains(".wait() for"))
+                        if(ErrorMessage != null && ErrorMessage.error.Contains(".wait() for") || ErrorMessage.error.Contains("capchta but solved"))
                         {
                             PushFailedLoginBackIntoqueue(Account);
                             return Account;

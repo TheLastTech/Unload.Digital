@@ -81,7 +81,7 @@ export class NightMareStocks {
  
             console.log(this.Options);
         //    
-               await this.Browser.click('#nav-login');
+         //      await this.Browser.click('#nav-login');
         //    await this.Browser.click('#site-header > div > nav > div > div.navbar-inner > ul > li:nth-child(7) > a');
             await this.Browser.wait(EmailSelector);
             await this.Browser.click(EmailSelector);
