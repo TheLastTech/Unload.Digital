@@ -56,7 +56,7 @@ namespace Funday.ServiceInterface
                     }, A => A.Id == Account.Id);
 
                     break;
-
+                     
                 default:
                     try
                     {
