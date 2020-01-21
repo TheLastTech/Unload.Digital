@@ -63,7 +63,7 @@ namespace Funday.ServiceInterface
                         var ErrorMessage = JsonConvert.DeserializeObject<FunBoyAutoErrorResponse>(Data.ResultText);
                         AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", ErrorMessage.error);
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) 
                     {
                     }
                     AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", Data.ResultText);
