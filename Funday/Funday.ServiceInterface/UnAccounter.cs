@@ -49,34 +49,36 @@ namespace Funday.ServiceInterface
                         Verified = true,
                         LoginFails = 0,
                         Disabled = false,
-                        NextVerification=DateTime.Now.AddMinutes(5),
-                        NextAccountInteraction=DateTime.Now,
-                        AccountThread=""
-                        
+                        NextVerification = DateTime.Now.AddMinutes(5),
+                        NextAccountInteraction = DateTime.Now,
+                        AccountThread = ""
                     }, A => A.Id == Account.Id);
 
-                    break; 
-                     
+                    break;
+
                 default:
                     try
                     {
                         var ErrorMessage = JsonConvert.DeserializeObject<FunBoyAutoErrorResponse>(Data.ResultText);
-                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", ErrorMessage.error);
-                        if(ErrorMessage != null && ErrorMessage.error.Contains(".wait() for") || ErrorMessage.error.Contains("capchta but solved"))
+                        if (ErrorMessage != null)
                         {
-                            PushFailedLoginBackIntoqueue(Account);
-                            return Account;
+                            AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Failed", ErrorMessage.error);
+                            if (ErrorMessage.error.Contains(".wait() for") || ErrorMessage.error.Contains("capchta but solved"))
+                            {
+                                PushFailedLoginBackIntoqueue(Account);
+                                return Account;
+                            }
                         }
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                     }
-                  Account.LoginFails++;
+                    Account.LoginFails++;
                     //Account.NextVerification = DateTime.Now.AddMinutes(Account.LoginFails - 1 * 1.5 + 1);
                     if (Account.LoginFails > 3)
                     {
                         DisableAccountDuetoLoginFailure(Account);
-                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled",Data.ResultText);
+                        AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled", Data.ResultText);
                     }
                     else
                     {
@@ -96,7 +98,6 @@ namespace Funday.ServiceInterface
                 LoginFails = Account.LoginFails,
                 NextVerification = Account.NextVerification,
                 AccountThread = ""
-
             }, A => A.Id == Account.Id);
         }
 
