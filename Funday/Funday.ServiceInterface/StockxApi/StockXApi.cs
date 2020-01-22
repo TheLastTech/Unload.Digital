@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Funday.ServiceInterface.StockxApi
@@ -84,7 +85,7 @@ namespace Funday.ServiceInterface.StockxApi
                     }
                     catch (Exception ex)
                     {
-                        AuditExtensions.CreateAudit(stockAuth.Id, "StockXApi", "GetLogin", "Error Killing Process",ex.Message,ex.StackTrace);
+                        AuditExtensions.CreateAudit(stockAuth.Id, "StockXApi", "GetLogin", "Error Killing Process", ex.Message, ex.StackTrace);
                     }
                 }
                 if (File.Exists(tmpdr + ".txt"))
@@ -261,6 +262,9 @@ namespace Funday.ServiceInterface.StockxApi
             }
             return OutputItems;
         }
+ 
+
+        // Define other methods, classes and namespaces here
 
         public static HttpClient GetHttpClient(this StockXAccount stockAuth)
         {
@@ -287,44 +291,44 @@ namespace Funday.ServiceInterface.StockxApi
             return new HttpClient(proxyhandler);
         }
 
-        public static async Task<ProductList> GetProductFromUrl(this StockXAccount stockAuth, string Url)
+        public static async Task<GetProductSizesReponse> GetProductFromUrl(this StockXAccount stockAuth, string Url)
         {
+
             using (var httpClient = stockAuth.GetHttpClient())
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), Url))
+                string requestUri = $"{Url.Replace("https://stockx.com/", $"https://stockx.com/api/products/")}?includes=market,360&currency={stockAuth.Currency}&country={stockAuth.Country}";
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), requestUri))
                 {
                     request.Headers.TryAddWithoutValidation("authority", "stockx.com");
                     request.Headers.TryAddWithoutValidation("dnt", "1");
-                    request.Headers.TryAddWithoutValidation("upgrade-insecure-requests", "1");
+
+                    request.Headers.TryAddWithoutValidation("appos", "web");
+                    request.Headers.TryAddWithoutValidation("x-requested-with", "XMLHttpRequest");
+                    request.Headers.TryAddWithoutValidation("x-anonymous-id", "undefined");
                     request.Headers.TryAddWithoutValidation("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36");
-                    request.Headers.TryAddWithoutValidation("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-                    request.Headers.TryAddWithoutValidation("sec-fetch-site", "none");
-                    request.Headers.TryAddWithoutValidation("sec-fetch-mode", "navigate");
+                    request.Headers.TryAddWithoutValidation("appversion", "0.1");
+                    request.Headers.TryAddWithoutValidation("accept", "*/*");
+                    request.Headers.TryAddWithoutValidation("sec-fetch-site", "same-origin");
+                    request.Headers.TryAddWithoutValidation("sec-fetch-mode", "cors");
+                    request.Headers.TryAddWithoutValidation("referer", Regex.Replace(Url.Replace("https://stockx.com/", "https://stockx.com/sell"), @"\??.*", ""));
                     request.Headers.TryAddWithoutValidation("accept-encoding", "gzip, deflate, br");
                     request.Headers.TryAddWithoutValidation("accept-language", "en-US,en;q=0.9");
 
                     var response = await httpClient.SendAsync(request);
                     var txt = await response.Content.ReadAsStringAsync();
-                    var StartProduct = txt.IndexOf(@"""@type"":""Product""");
-                    if (StartProduct >= 0)
-                    {
-                        var EndProduct = txt.IndexOf("</script", StartProduct);
-                        if (EndProduct > StartProduct)
-                        {
-                            var settings = new JsonSerializerSettings
-                            {
-                                NullValueHandling = NullValueHandling.Ignore,
-                                MissingMemberHandling = MissingMemberHandling.Ignore
-                            };
-                            var data = txt.Substring(StartProduct, EndProduct - StartProduct);
 
-                            return JsonConvert.DeserializeObject<ProductList>("{" + data, settings);
-                        }
-                    }
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+
+                    return JsonConvert.DeserializeObject<GetProductSizesReponse>(txt, settings);
+
                 }
-                return null;
             }
         }
+             
 
         public static async Task<StockXApiResult<GetPagedPortfolioItemsResponse>> GetCurrentListings(this StockXAccount stockAuth, string CusomterID, int Page, string IfNoneMatch = "")
         {

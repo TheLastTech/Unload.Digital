@@ -127,7 +127,7 @@ namespace Funday.ServiceInterface
             public ValidateCreateInventory()
             {
                 RuleFor(x => x.StockXUrl).NotEmpty().Matches(new Regex("^https://stockx.com/")).WithMessage("Must be Stockx Link");
-                RuleFor(x => x.Size).NotEmpty();
+                RuleFor(x => x.Size).NotNull();
             }
         }
 
@@ -168,13 +168,13 @@ namespace Funday.ServiceInterface
             };
             try
             {
-                var Existing = Db.Single(Db.From<StockXProxuct>().Where(A => A.Url == request.StockXUrl && A.Description == request.Size ));
+                var Existing = Db.Single(Db.From<StockXChildListing>().Where(A => A.Url == request.StockXUrl && A.ShoeSize == request.Size ));
                 if (Existing != null)
                 {
                     NewInventory.Active = true;
                     NewInventory.StockXAccountId = request.StockXAccountId;
-                    NewInventory.ParentSku = Existing.ParentSku;
-                    NewInventory.Sku = Existing.Sku;
+                    NewInventory.ParentSku = Existing.ParentUuid;
+                    NewInventory.Sku = Existing.Uuid;
                 }
                 else
                 {
@@ -191,7 +191,18 @@ namespace Funday.ServiceInterface
                             Message = "Could not get product data"
                         };
                     }
-                    if (List.Offers.OffersOffers.Length == 0)
+                    if (List.Product == null)
+                    {
+                        return new CreateInventoryResponse()
+                        {
+                            Success = false,
+                            Message = "Could not get product data"
+                        };  
+                    }
+                    var Offers = List.Product.Children.Keys.Select(A=>List.Product.Children[A]).ToList();
+
+
+                    if (Offers == null || Offers.Count == 0)
                     {
                         return new CreateInventoryResponse()
                         {
@@ -200,15 +211,15 @@ namespace Funday.ServiceInterface
                         };
                     }
 
-                    if (request.Size == "-1")
+                    if (request.Size == "")
                     {
-                        var Item = List.Offers.OffersOffers[0];
-                        NewInventory.Sku = Item.Sku;
-                        NewInventory.Size = "-1";
+                        var Item = Offers[0];
+                        NewInventory.Sku = Offers[0].Uuid;
+                        NewInventory.Size = "";
                     }
                     else
                     {
-                        var Sized = List.Offers.OffersOffers.Where(A => A.Description == request.Size).FirstOrDefault();
+                        var Sized = Offers.Where(A => A.ShoeSize == request.Size).FirstOrDefault();
                         if (Sized == null)
                         {
                             return new CreateInventoryResponse()
@@ -219,19 +230,18 @@ namespace Funday.ServiceInterface
                         }
                         NewInventory.Active = true;
                         NewInventory.StockXAccountId = request.StockXAccountId;
-                        NewInventory.ParentSku = List.Sku;
-                        NewInventory.Sku = Sized.Sku;
-                        
+                        NewInventory.ParentSku = Sized.ParentUuid;
+                        NewInventory.Sku = Sized.Uuid;
+
                     }
 
                     try
                     {
-                        foreach (var Offer in List.Offers.OffersOffers)
+                        foreach (var Offer in Offers)
                         {
-                            if (!Db.Exists<StockXProxuct>(A => A.Sku == NewInventory.Sku))
+                            if (!Db.Exists<StockXChildListing>(A => A.Uuid == NewInventory.Sku))
                             {
-                                Offer.Url = NewInventory.StockXUrl;
-                                Offer.ParentSku = NewInventory.ParentSku;
+                                Offer.Url = NewInventory.StockXUrl; 
                                 Db.Insert(Offer);
                             }
                         }

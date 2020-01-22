@@ -399,7 +399,180 @@ namespace StockxApi
         [JsonProperty("localCurrency")]
         public string LocalCurrency { get; set; }
     }
+    public   class GetProductSizesReponse
+    {
+        [JsonProperty("Product")]
+        public PageProductListing Product { get; set; }
+    }
 
+    public   class PageProductListing
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("uuid")]
+        public string Uuid { get; set; }
+
+      
+
+        [JsonProperty("contentGroup")]
+        public string ContentGroup { get; set; }
+
+        [JsonProperty("minimumBid")]
+        public long MinimumBid { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+ 
+
+        [JsonProperty("releaseDate")]
+        public DateTimeOffset ReleaseDate { get; set; }
+
+        [JsonProperty("retailPrice")]
+        public long RetailPrice { get; set; }
+
+        [JsonProperty("shoe")]
+        public string Shoe { get; set; }
+
+        [JsonProperty("shortDescription")]
+        public string ShortDescription { get; set; }
+ 
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("dataType")]
+        public string DataType { get; set; }
+
+        [JsonProperty("urlKey")]
+        public string UrlKey { get; set; }
+
+       
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+         
+
+        [JsonProperty("children")]
+        public Dictionary<string, StockXChildListing> Children { get; set; }
+    }
+
+    public   class Breadcrumb
+    {
+        [JsonProperty("level")]
+        public long Level { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonProperty("isBrand")]
+        public string IsBrand { get; set; }
+    }
+
+    public   class StockXChildListing
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("uuid")]
+        public string Uuid { get; set; }
+
+        [JsonProperty("brand")]
+        public string Brand { get; set; }
+
+        [JsonProperty("colorway")]
+        public string Colorway { get; set; }
+
+        [JsonProperty("condition")]
+        public string Condition { get; set; }
+
+        [JsonProperty("countryOfManufacture")]
+        public string CountryOfManufacture { get; set; }
+
+        [JsonProperty("gender")]
+        public string Gender { get; set; }
+
+        [JsonProperty("contentGroup")]
+        public string ContentGroup { get; set; }
+
+        [JsonProperty("minimumBid")]
+        public long MinimumBid { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("primaryCategory")]
+        public string PrimaryCategory { get; set; }
+
+        [JsonProperty("secondaryCategory")]
+        public string SecondaryCategory { get; set; }
+
+ 
+
+        [JsonProperty("releaseDate")]
+        public DateTimeOffset ReleaseDate { get; set; }
+
+        [JsonProperty("retailPrice")]
+        public long RetailPrice { get; set; }
+
+        [JsonProperty("shoe")]
+        public string Shoe { get; set; }
+
+        [JsonProperty("shortDescription")]
+        public string ShortDescription { get; set; }
+
+        [JsonProperty("styleId")]
+        public string StyleId { get; set; }
+
+        [JsonProperty("tickerSymbol")]
+        public string TickerSymbol { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+         
+
+        [JsonProperty("urlKey")]
+        public string UrlKey { get; set; }
+
+  
+        [JsonProperty("description")]
+        public string Description { get; set; } 
+
+        [JsonProperty("enhancedImage")]
+        public EnhancedImage EnhancedImage { get; set; } 
+         
+
+        [JsonProperty("parentId")]
+        public string ParentId { get; set; }
+
+        [JsonProperty("parentUuid")]
+        public string ParentUuid { get; set; }
+
+        [JsonProperty("shoeSize")]
+        public string ShoeSize { get; set; }
+
+        [JsonProperty("sizeSortOrder")]
+        public long SizeSortOrder { get; set; }
+
+        [JsonProperty("skuVariantGroup")]
+        public object SkuVariantGroup { get; set; }
+        public string Url { get; set; }
+    }
+
+    public   class EnhancedImage
+    {
+        [JsonProperty("productUuid")]
+        public string ProductUuid { get; set; }
+
+        [JsonProperty("imageKey")]
+        public string ImageKey { get; set; }
+
+        [JsonProperty("imageCount")]
+        public long ImageCount { get; set; }
+    }
     public class ProductList
     {
         [JsonProperty("@type")]
@@ -907,46 +1080,12 @@ namespace StockxApi
         public bool UpcValid { get; set; }
     }
 
-    public class Breadcrumb
-    {
-        [JsonProperty("level")]
-       public string  Level { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("url")]
-        public string Url { get; set; }
-
-        [JsonProperty("isBrand")]
-       public string  IsBrand { get; set; }
-    }
-
+ 
     public class Children
     {
     }
 
-    public class EnhancedImage
-    {
-        [JsonProperty("productUuid", NullValueHandling = NullValueHandling.Ignore)]
-        public string ProductUuid { get; set; }
-
-        [JsonProperty("imageHost", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri ImageHost { get; set; }
-
-        [JsonProperty("imageKey", NullValueHandling = NullValueHandling.Ignore)]
-        public string ImageKey { get; set; }
-
-        [JsonProperty("imageCount", NullValueHandling = NullValueHandling.Ignore)]
-       public string  ImageCount { get; set; }
-
-        [JsonProperty("updatedAt", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? UpdatedAt { get; set; }
-
-        [JsonProperty("createdAt", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? CreatedAt { get; set; }
-    }
-
+    
     public class Gtin
     {
         [JsonProperty("id")]
