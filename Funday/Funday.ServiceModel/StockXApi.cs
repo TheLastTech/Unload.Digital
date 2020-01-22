@@ -517,55 +517,55 @@ namespace StockxApi
         public string SkuUuid { get; set; }
 
         [JsonProperty("merchantId")]
-        public double MerchantId { get; set; }
+       public string  MerchantId { get; set; }
 
         [JsonProperty("condition")]
-        public double Condition { get; set; }
+       public string  Condition { get; set; }
 
         [JsonProperty("action")]
-        public double Action { get; set; }
+       public string  Action { get; set; }
 
         [JsonProperty("actionBy")]
-        public double ActionBy { get; set; }
+       public string  ActionBy { get; set; }
 
         [JsonProperty("amount")]
-        public double Amount { get; set; }
+       public long  Amount { get; set; }
 
         [JsonProperty("localCurrency")]
         public string LocalCurrency { get; set; }
 
         [JsonProperty("localAmount")]
-        public double LocalAmount { get; set; }
+       public long LocalAmount { get; set; }
 
         [JsonProperty("localExchangeRate")]
-        public double LocalExchangeRate { get; set; }
+       public string  LocalExchangeRate { get; set; }
 
         [JsonProperty("bidAskSpread")]
-        public double BidAskSpread { get; set; }
+       public string  BidAskSpread { get; set; }
 
         [JsonProperty("expiresAt")]
         public string ExpiresAt { get; set; }
 
         [JsonProperty("expiresAtTime")]
-        public double ExpiresAtTime { get; set; }
+       public string  ExpiresAtTime { get; set; }
 
         [JsonProperty("faqLink")]
         public string FaqLink { get; set; }
 
         [JsonProperty("gainLossDollars")]
-        public double GainLossDollars { get; set; }
+       public string  GainLossDollars { get; set; }
 
         [JsonProperty("gainLossPercentage")]
-        public double GainLossPercentage { get; set; }
+       public string  GainLossPercentage { get; set; }
 
         [JsonProperty("marketValue")]
-        public double? MarketValue { get; set; }
+       public string  MarketValue { get; set; }
 
         [JsonProperty("matchedWith")]
         public string MatchedWith { get; set; }
 
         [JsonProperty("matchedState")]
-        public double MatchedState { get; set; }
+       public string  MatchedState { get; set; }
 
         [JsonProperty("matchedWithDate")]
         public string MatchedWithDate { get; set; }
@@ -577,19 +577,19 @@ namespace StockxApi
         public string UserFullname { get; set; }
 
         [JsonProperty("purchasePrice")]
-        public double PurchasePrice { get; set; }
+       public string  PurchasePrice { get; set; }
 
         [JsonProperty("purchaseDate")]
         public DateTimeOffset? PurchaseDate { get; set; }
 
         [JsonProperty("purchaseDateTime")]
-        public double? PurchaseDateTime { get; set; }
+       public string  PurchaseDateTime { get; set; }
 
         [JsonProperty("shipByDate")]
         public string ShipByDate { get; set; }
 
         [JsonProperty("state")]
-        public double State { get; set; }
+       public string  State { get; set; }
 
         [JsonProperty("statusMessage")]
         public string StatusMessage { get; set; }
@@ -607,7 +607,7 @@ namespace StockxApi
         public DateTimeOffset CreatedAt { get; set; }
 
         [JsonProperty("createdAtTime")]
-        public double CreatedAtTime { get; set; }
+       public string  CreatedAtTime { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }
@@ -649,16 +649,16 @@ namespace StockxApi
         public Customer Customer { get; set; }
 
         [JsonProperty("localMarketValue")]
-        public double? LocalMarketValue { get; set; }
+       public string  LocalMarketValue { get; set; }
 
         [JsonProperty("localGainLoss")]
-        public double LocalGainLoss { get; set; }
+       public string  LocalGainLoss { get; set; }
     }
 
     public class Customer
     {
         [JsonProperty("id")]
-        public double Id { get; set; }
+       public string  Id { get; set; }
 
         [JsonProperty("uuid")]
         public string Uuid { get; set; }
@@ -715,7 +715,7 @@ namespace StockxApi
         public DateTimeOffset CreatedAt { get; set; }
 
         [JsonProperty("createdAtTime")]
-        public double CreatedAtTime { get; set; }
+       public string  CreatedAtTime { get; set; }
 
         [JsonProperty("isTrader")]
         public bool IsTrader { get; set; }
@@ -757,7 +757,7 @@ namespace StockxApi
         public string Category { get; set; }
 
         [JsonProperty("charityCondition")]
-        public double CharityCondition { get; set; }
+       public string  CharityCondition { get; set; }
 
         [JsonProperty("colorway")]
         public string Colorway { get; set; }
@@ -781,7 +781,7 @@ namespace StockxApi
         public string IpoDate { get; set; }
 
         [JsonProperty("minimumBid")]
-        public double MinimumBid { get; set; }
+       public string  MinimumBid { get; set; }
 
         [JsonProperty("Doppelgangers")]
         public List<object> Doppelgangers { get; set; }
@@ -820,7 +820,7 @@ namespace StockxApi
         public DateTimeOffset? ReleaseDate { get; set; }
 
         [JsonProperty("retailPrice")]
-        public double RetailPrice { get; set; }
+       public string  RetailPrice { get; set; }
 
         [JsonProperty("shoe")]
         public string Shoe { get; set; }
@@ -841,7 +841,7 @@ namespace StockxApi
         public string DataType { get; set; }
 
         [JsonProperty("type")]
-        public double Type { get; set; }
+       public string  Type { get; set; }
 
         [JsonProperty("sizeTitle")]
         public string SizeTitle { get; set; }
@@ -859,7 +859,7 @@ namespace StockxApi
         public string UrlKey { get; set; }
 
         [JsonProperty("year")]
-        public double? Year { get; set; }
+       public string  Year { get; set; }
 
         [JsonProperty("shippingGroup")]
         public string ShippingGroup { get; set; }
@@ -868,7 +868,7 @@ namespace StockxApi
         public bool Hold { get; set; }
 
         [JsonProperty("aLim")]
-        public double ALim { get; set; }
+       public string  ALim { get; set; }
 
         [JsonProperty("meta")]
         public ProductMeta Meta { get; set; }
@@ -889,7 +889,7 @@ namespace StockxApi
         public string ParentUuid { get; set; }
 
         [JsonProperty("sizeSortOrder")]
-        public double SizeSortOrder { get; set; }
+       public string  SizeSortOrder { get; set; }
 
         [JsonProperty("shoeSize")]
         public string ShoeSize { get; set; }
@@ -910,7 +910,7 @@ namespace StockxApi
     public class Breadcrumb
     {
         [JsonProperty("level")]
-        public double Level { get; set; }
+       public string  Level { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -919,7 +919,7 @@ namespace StockxApi
         public string Url { get; set; }
 
         [JsonProperty("isBrand")]
-        public double IsBrand { get; set; }
+       public string  IsBrand { get; set; }
     }
 
     public class Children
@@ -938,7 +938,7 @@ namespace StockxApi
         public string ImageKey { get; set; }
 
         [JsonProperty("imageCount", NullValueHandling = NullValueHandling.Ignore)]
-        public double? ImageCount { get; set; }
+       public string  ImageCount { get; set; }
 
         [JsonProperty("updatedAt", NullValueHandling = NullValueHandling.Ignore)]
         public DateTimeOffset? UpdatedAt { get; set; }
@@ -965,7 +965,7 @@ namespace StockxApi
     public class Market
     {
         [JsonProperty("productId")]
-        public double ProductId { get; set; }
+       public string  ProductId { get; set; }
 
         [JsonProperty("skuUuid")]
         public string SkuUuid { get; set; }
@@ -974,91 +974,91 @@ namespace StockxApi
         public string ProductUuid { get; set; }
 
         [JsonProperty("lowestAsk")]
-        public double LowestAsk { get; set; }
+       public string  LowestAsk { get; set; }
 
         [JsonProperty("lowestAskFloat")]
-        public double LowestAskFloat { get; set; }
+       public string  LowestAskFloat { get; set; }
 
         [JsonProperty("lowestAskSize")]
         public string LowestAskSize { get; set; }
 
         [JsonProperty("parentLowestAsk")]
-        public double ParentLowestAsk { get; set; }
+       public string  ParentLowestAsk { get; set; }
 
         [JsonProperty("numberOfAsks")]
-        public double NumberOfAsks { get; set; }
+       public string  NumberOfAsks { get; set; }
 
         [JsonProperty("salesThisPeriod")]
-        public double SalesThisPeriod { get; set; }
+       public string  SalesThisPeriod { get; set; }
 
         [JsonProperty("salesLastPeriod")]
-        public double SalesLastPeriod { get; set; }
+       public string  SalesLastPeriod { get; set; }
 
         [JsonProperty("highestBid")]
-        public double HighestBid { get; set; }
+       public string  HighestBid { get; set; }
 
         [JsonProperty("highestBidFloat")]
-        public double HighestBidFloat { get; set; }
+       public string  HighestBidFloat { get; set; }
 
         [JsonProperty("highestBidSize")]
-        public double? HighestBidSize { get; set; }
+        public string HighestBidSize { get; set; }
 
         [JsonProperty("numberOfBids")]
-        public double NumberOfBids { get; set; }
+       public string  NumberOfBids { get; set; }
 
         [JsonProperty("annualHigh")]
-        public double AnnualHigh { get; set; }
+       public string  AnnualHigh { get; set; }
 
         [JsonProperty("annualLow")]
-        public double AnnualLow { get; set; }
+       public string  AnnualLow { get; set; }
 
         [JsonProperty("deadstockRangeLow")]
-        public double DeadstockRangeLow { get; set; }
+       public string  DeadstockRangeLow { get; set; }
 
         [JsonProperty("deadstockRangeHigh")]
-        public double DeadstockRangeHigh { get; set; }
+       public string  DeadstockRangeHigh { get; set; }
 
         [JsonProperty("volatility")]
-        public double Volatility { get; set; }
+       public string  Volatility { get; set; }
 
         [JsonProperty("deadstockSold")]
-        public double DeadstockSold { get; set; }
+       public string  DeadstockSold { get; set; }
 
         [JsonProperty("pricePremium")]
-        public double PricePremium { get; set; }
+       public string  PricePremium { get; set; }
 
         [JsonProperty("averageDeadstockPrice")]
-        public double AverageDeadstockPrice { get; set; }
+       public string  AverageDeadstockPrice { get; set; }
 
         [JsonProperty("lastSale")]
-        public double LastSale { get; set; }
+       public string  LastSale { get; set; }
 
         [JsonProperty("lastSaleSize")]
-        public double? LastSaleSize { get; set; }
+       public string LastSaleSize { get; set; }
 
         [JsonProperty("salesLast72Hours")]
-        public double SalesLast72Hours { get; set; }
+       public string  SalesLast72Hours { get; set; }
 
         [JsonProperty("changeValue")]
-        public double ChangeValue { get; set; }
+       public string  ChangeValue { get; set; }
 
         [JsonProperty("changePercentage")]
-        public double ChangePercentage { get; set; }
+       public string  ChangePercentage { get; set; }
 
         [JsonProperty("absChangePercentage")]
-        public double AbsChangePercentage { get; set; }
+       public string  AbsChangePercentage { get; set; }
 
         [JsonProperty("totalDollars")]
-        public double TotalDollars { get; set; }
+       public string  TotalDollars { get; set; }
 
         [JsonProperty("updatedAt")]
-        public double UpdatedAt { get; set; }
+       public string  UpdatedAt { get; set; }
 
         [JsonProperty("lastLowestAskTime")]
-        public double LastLowestAskTime { get; set; }
+       public string  LastLowestAskTime { get; set; }
 
         [JsonProperty("lastHighestBidTime")]
-        public double? LastHighestBidTime { get; set; }
+       public string  LastHighestBidTime { get; set; }
 
         [JsonProperty("lastSaleDate")]
         public DateTimeOffset? LastSaleDate { get; set; }
@@ -1067,16 +1067,16 @@ namespace StockxApi
         public DateTimeOffset CreatedAt { get; set; }
 
         [JsonProperty("deadstockSoldRank")]
-        public double DeadstockSoldRank { get; set; }
+       public string  DeadstockSoldRank { get; set; }
 
         [JsonProperty("pricePremiumRank")]
-        public double PricePremiumRank { get; set; }
+       public string  PricePremiumRank { get; set; }
 
         [JsonProperty("averageDeadstockPriceRank")]
-        public double AverageDeadstockPriceRank { get; set; }
+       public string  AverageDeadstockPriceRank { get; set; }
 
         [JsonProperty("featured")]
-        public double? Featured { get; set; }
+       public string  Featured { get; set; }
     }
 
     public class Media
@@ -1139,7 +1139,7 @@ namespace StockxApi
         public string Name { get; set; }
 
         [JsonProperty("value")]
-        public Value Value { get; set; }
+        public string Value { get; set; }
 
         [JsonProperty("filterable")]
         public bool Filterable { get; set; }
@@ -1178,16 +1178,5 @@ namespace StockxApi
         public bool DeliveryDateTime { get; set; }
     }
 
-    public struct Value
-    {
-        public bool? Bool;
-        public double? Integer;
-        public string String;
-
-        public static implicit operator Value(bool Bool) => new Value { Bool = Bool };
-
-        public static implicit operator Value(double Integer) => new Value { Integer = Integer };
-
-        public static implicit operator Value(string String) => new Value { String = String };
-    }
+ 
 }

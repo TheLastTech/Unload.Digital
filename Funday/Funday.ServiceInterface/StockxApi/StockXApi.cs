@@ -8,7 +8,6 @@ using ServiceStack.OrmLite;
 using StockxApi;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -33,11 +32,9 @@ namespace Funday.ServiceInterface.StockxApi
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
-        
 
         public static async Task<StockXApiResult<LoginCookieToken>> GetLogin(this StockXAccount stockAuth)
         {
-           
             var tmpdr = Path.GetTempFileName();
             var Json = Base64Encode(JsonConvert.SerializeObject(stockAuth));
             ProcessStartInfo Processstartinfo;
@@ -46,9 +43,8 @@ namespace Funday.ServiceInterface.StockxApi
                 Processstartinfo = new ProcessStartInfo("/usr/bin/xvfb-run", $" /usr/bin/node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
                 {
                     UseShellExecute = false,
-                  
 
-                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory +   "NodeStuff"
+                    WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + "NodeStuff"
                 };
             }
             else
@@ -56,13 +52,12 @@ namespace Funday.ServiceInterface.StockxApi
                 string arguments = $"--require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr} ";
                 Processstartinfo = new ProcessStartInfo("node", arguments)
                 {
-                
                     UseShellExecute = true,
 
                     WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "NodeStuff"
                 };
             }
-   
+
             string jsontxt = "";
             string outputtxt = "";
             try
@@ -85,14 +80,16 @@ namespace Funday.ServiceInterface.StockxApi
                     try
                     {
                         Proc.Kill();
+                        AuditExtensions.CreateAudit(stockAuth.Id, "StockXApi", "GetLogin", "Killed Process");
                     }
                     catch (Exception ex)
                     {
+                        AuditExtensions.CreateAudit(stockAuth.Id, "StockXApi", "GetLogin", "Error Killing Process",ex.Message,ex.StackTrace);
                     }
                 }
                 if (File.Exists(tmpdr + ".txt"))
                 {
-                    outputtxt = File.ReadAllText(tmpdr+".txt");
+                    outputtxt = File.ReadAllText(tmpdr + ".txt");
                     File.Delete(tmpdr + ".txt");
                 }
                 if (File.Exists(tmpdr))
@@ -105,18 +102,17 @@ namespace Funday.ServiceInterface.StockxApi
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
                     var JsonObj = JsonConvert.DeserializeObject<LoginCookieToken>(jsontxt, settings);
-                    
-                    if (JsonObj != null&& JsonObj.error == null)
-                        return new StockXApiResult<LoginCookieToken>() 
+
+                    if (JsonObj != null && JsonObj.error == null)
+                        return new StockXApiResult<LoginCookieToken>()
                         {
-                            Code = HttpStatusCode.OK, 
+                            Code = HttpStatusCode.OK,
                             ResultText = jsontxt + outputtxt,
                             RO = JsonObj
                         };
                 }
                 else
                 {
-
                     using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
                     {
                         AuditExtensions.CreateAudit(Db, stockAuth.Id, "FunBoy/GetLogin", "Login Attempt", "Login Failed: " + jsontxt + outputtxt);
@@ -124,20 +120,20 @@ namespace Funday.ServiceInterface.StockxApi
                 }
                 return new StockXApiResult<LoginCookieToken>()
                 {
-                    Code = HttpStatusCode.Ambiguous, 
+                    Code = HttpStatusCode.Ambiguous,
                     ResultText = jsontxt + outputtxt + tmpdr,
-                }; 
+                };
             }
             catch (Exception ex)
             {
                 using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
                 {
-                    AuditExtensions.CreateAudit(Db, stockAuth.Id, "FunBoy/GetLogin", "Login Attempt", "Login Failed: " + jsontxt + outputtxt,ex.Message,ex.StackTrace);
+                    AuditExtensions.CreateAudit(Db, stockAuth.Id, "FunBoy/GetLogin", "Login Attempt", "Login Failed: " + jsontxt + outputtxt, ex.Message, ex.StackTrace);
                 }
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.InternalServerError,
-                    ResultText = AppDomain.CurrentDomain.BaseDirectory + "NodeStuff" + ex.Message + ex.StackTrace+ outputtxt + jsontxt + tmpdr,
+                    ResultText = AppDomain.CurrentDomain.BaseDirectory + "NodeStuff" + ex.Message + ex.StackTrace + outputtxt + jsontxt + tmpdr,
                 };
             }
         }
@@ -233,6 +229,7 @@ namespace Funday.ServiceInterface.StockxApi
             }
             catch (Exception ex)
             {
+                AuditExtensions.CreateAudit(login.Id, "StockXApi", "GetAllListings", "Error", ex.Message, ex.StackTrace);
                 return null;
             }
             if ((int)GetListings.Code > 399 && (int)GetListings.Code < 500)

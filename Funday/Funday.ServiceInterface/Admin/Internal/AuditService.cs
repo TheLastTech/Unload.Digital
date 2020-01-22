@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using ServiceStack;
 using ServiceStack.Auth;
 using ServiceStack.Configuration;
+using ServiceStack.Data;
 using ServiceStack.FluentValidation;
 using ServiceStack.Logging;
 using ServiceStack.OrmLite;
@@ -14,7 +15,26 @@ namespace Funday.ServiceInterface
 {
     public static class AuditExtensions
     {
-        public static long CreateAudit(this IDbConnection Db, int UserID, string Location, string ActionTaken,string Result="", string Error="", string StackTrace="")
+        public static long CreateAudit(int UserID, string Location, string ActionTaken, string Result = "", string Error = "", string StackTrace = "")
+        {
+            using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+            {
+                var NewAudit = new Audit()
+                {
+                    UserID = UserID,
+                    Location = Location,
+                    ActionTaken = ActionTaken,
+                    Result = Result,
+                    Error = Error,
+                    StackTrace = StackTrace,
+                    When = DateTime.Now
+                };
+                var InsertedId = Db.Insert(NewAudit, true);
+                return InsertedId;
+            }
+        }
+
+        public static long CreateAudit(this IDbConnection Db, int UserID, string Location, string ActionTaken, string Result = "", string Error = "", string StackTrace = "")
         {
             var NewAudit = new Audit()
             {
@@ -24,12 +44,13 @@ namespace Funday.ServiceInterface
                 Result = Result,
                 Error = Error,
                 StackTrace = StackTrace,
-                When=DateTime.Now
+                When = DateTime.Now
             };
             var InsertedId = Db.Insert(NewAudit, true);
             return InsertedId;
         }
     }
+
     public class AuditService : Service
     {
         private readonly IHostingEnvironment _env;
@@ -77,13 +98,12 @@ namespace Funday.ServiceInterface
             };
         }
 
-    
         [Authenticate]
-         [RequiresAnyRole("Admin")]
+        [RequiresAnyRole("Admin")]
         public ListOneAuditResponse Get(ListOneAuditRequest request)
         {
             AppUser User = this.GetCurrentAppUser();
-            var ExistingAudit = Db.Single<Audit>(A =>  A.Id == request.AuditId);
+            var ExistingAudit = Db.Single<Audit>(A => A.Id == request.AuditId);
             if (ExistingAudit == null)
             {
                 return new ListOneAuditResponse()

@@ -144,55 +144,55 @@ namespace Funday.ServiceModel.StockXListedItem
         public string SkuUuid { get; set; }
 
         [JsonProperty("merchantId")]
-        public double MerchantId { get; set; }
+       public string  MerchantId { get; set; }
 
         [JsonProperty("condition")]
-        public double Condition { get; set; }
+       public string  Condition { get; set; }
 
         [JsonProperty("action")]
-        public double Action { get; set; }
+       public string  Action { get; set; }
 
         [JsonProperty("actionBy")]
-        public double ActionBy { get; set; }
+       public string  ActionBy { get; set; }
 
         [JsonProperty("amount")]
-        public double Amount { get; set; }
+       public long  Amount { get; set; }
 
         [JsonProperty("localCurrency")]
         public string LocalCurrency { get; set; }
 
         [JsonProperty("localAmount")]
-        public double LocalAmount { get; set; }
+       public long LocalAmount { get; set; }
 
         [JsonProperty("localExchangeRate")]
-        public double LocalExchangeRate { get; set; }
+       public string  LocalExchangeRate { get; set; }
 
         [JsonProperty("bidAskSpread")]
-        public double BidAskSpread { get; set; }
+       public string  BidAskSpread { get; set; }
 
         [JsonProperty("expiresAt")]
         public string ExpiresAt { get; set; }
 
         [JsonProperty("expiresAtTime")]
-        public double ExpiresAtTime { get; set; }
+       public string  ExpiresAtTime { get; set; }
 
         [JsonProperty("faqLink")]
         public string FaqLink { get; set; }
 
         [JsonProperty("gainLossDollars")]
-        public double GainLossDollars { get; set; }
+       public string  GainLossDollars { get; set; }
 
         [JsonProperty("gainLossPercentage")]
-        public double GainLossPercentage { get; set; }
+       public string  GainLossPercentage { get; set; }
 
         [JsonProperty("marketValue")]
-        public double? MarketValue { get; set; }
+       public string  MarketValue { get; set; }
 
         [JsonProperty("matchedWith")]
         public string MatchedWith { get; set; }
 
         [JsonProperty("matchedState")]
-        public double MatchedState { get; set; }
+       public string  MatchedState { get; set; }
 
         [JsonProperty("matchedWithDate")]
         public string MatchedWithDate { get; set; }
@@ -204,19 +204,19 @@ namespace Funday.ServiceModel.StockXListedItem
         public string UserFullname { get; set; }
 
         [JsonProperty("purchasePrice")]
-        public double PurchasePrice { get; set; }
+       public string  PurchasePrice { get; set; }
 
         [JsonProperty("purchaseDate")]
         public DateTimeOffset? PurchaseDate { get; set; }
 
         [JsonProperty("purchaseDateTime")]
-        public double? PurchaseDateTime { get; set; }
+       public string  PurchaseDateTime { get; set; }
 
         [JsonProperty("shipByDate")]
         public string ShipByDate { get; set; }
 
         [JsonProperty("state")]
-        public double State { get; set; }
+       public string  State { get; set; }
 
         [JsonProperty("statusMessage")]
         public string StatusMessage { get; set; }
@@ -234,7 +234,7 @@ namespace Funday.ServiceModel.StockXListedItem
         public DateTimeOffset CreatedAt { get; set; }
 
         [JsonProperty("createdAtTime")]
-        public double CreatedAtTime { get; set; }
+       public string  CreatedAtTime { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }
@@ -276,10 +276,10 @@ namespace Funday.ServiceModel.StockXListedItem
         public Customer Customer { get; set; }
 
         [JsonProperty("localMarketValue")]
-        public double? LocalMarketValue { get; set; }
+       public string  LocalMarketValue { get; set; }
 
         [JsonProperty("localGainLoss")]
-        public double LocalGainLoss { get; set; }
+       public string  LocalGainLoss { get; set; }
         public bool Sold { get; set; }
     }
  
