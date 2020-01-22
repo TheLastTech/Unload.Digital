@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using NLog.Web;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,12 @@ namespace Funday
                 {
            
                 })
-                .UseStartup<Startup>().Build();
+                .UseStartup<Startup>().ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Warning);
+                })
+        .UseNLog().Build();
 #else
 
                   return WebHost.CreateDefaultBuilder(args).UseKestrel(options =>
@@ -39,8 +45,12 @@ namespace Funday
                           listenOptions.UseHttps("digital.pfx", "nerdpussy");
                       });
                   })
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>() .ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+                logging.SetMinimumLevel(LogLevel.Warning);
+        })
+        .UseNLog()               .Build();
 #endif
         }
     }
