@@ -55,7 +55,8 @@ namespace Funday.ServiceInterface
 
             try
             {
-                var Inventorys = Db.SelectMulti<Inventory, StockXAccount>(Db.From<Inventory>().Join<StockXAccount>((A, B) => A.StockXAccountId == B.Id).OrderBy(A => A.Id).Skip(request.Skip).Take(50));
+                var User = this.GetCurrentAppUser();
+                var Inventorys = Db.SelectMulti<Inventory, StockXAccount>(Db.From<Inventory>().Join<StockXAccount>((A, B) => A.StockXAccountId == B.Id).Where(A=>A.UserId == User.Id).OrderBy(A => A.Id).Skip(request.Skip).Take(50));
                 var CountOf = Db.Count<Inventory>();
                 return new ListInventoryResponse()
                 {
