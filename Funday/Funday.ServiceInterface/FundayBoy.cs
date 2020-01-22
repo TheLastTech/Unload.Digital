@@ -1,4 +1,5 @@
 ﻿using Funday.ServiceModel.StockXAccount;
+using Funday.ServiceModel.StockXListedItem;
 using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.Logging;
@@ -25,7 +26,7 @@ namespace Funday.ServiceInterface
             }
         }
 
-        
+        public string ThreadName = "Fredum";
         private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
 
         public FundayBoy()
@@ -43,13 +44,43 @@ namespace Funday.ServiceInterface
             WorkerReportsProgress = true;
             RunWorkerAsync();
         }
+        public static void UpdateThisThreadIsAlive(IDbConnection Db, string Name, string status = "Good", int UserId =-1)
+        {
+            try
+            {
+                var Item = new BoyStartUp()
+                {
+                    LastSeen = DateTime.Now,
+                    Name = Name,
+                    Status = status
+                };
+                Db.Save(Item);
+            }catch(Exception ex)
+            {
+                AuditExtensions.CreateAudit(Db, UserId, "FunBoy", "UpdateThisThreadIsAlive", "Error", ex.Message, ex.StackTrace);
+            }
+        }
 
         private void RunAccountJobs(object sender, DoWorkEventArgs e)
         {
-            using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+            try
             {
-                ProcessUnAccounts(Db);
-                Task.WaitAll(ProcessNextVerifiedAccount(Db));
+                using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+                {
+                    UpdateThisThreadIsAlive(Db, ThreadName, "Starting ProcessUnAccounts");
+                    ProcessUnAccounts(Db);
+                    UpdateThisThreadIsAlive(Db, ThreadName, "Starting ProcessNextVerifiedAccount");
+                    Task.WaitAll(ProcessNextVerifiedAccount(Db));
+                    UpdateThisThreadIsAlive(Db, ThreadName);
+                }
+            }catch(Exception ex)
+            {
+                Logger.Error(ex);
+                using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+                {
+                    AuditExtensions.CreateAudit(Db, -1, "FunBoy", "RunAccountJobs", "Error", ex.Message, ex.StackTrace);
+                }
+           
             }
         }
 
@@ -72,6 +103,7 @@ namespace Funday.ServiceInterface
             }
             catch (NeedsVerificaitonException nx)
             {
+           
                 Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
             }
         }
@@ -89,6 +121,7 @@ namespace Funday.ServiceInterface
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessNextVerifiedAccount", "ProcessSold", "Error", ex.Message, ex.StackTrace);
                 
             }
@@ -107,6 +140,7 @@ namespace Funday.ServiceInterface
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessListsings", "UpdateListingtoDb", "Error", ex.Message, ex.StackTrace);
                 return;
             }
@@ -124,6 +158,8 @@ namespace Funday.ServiceInterface
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
+
                 AuditExtensions.CreateAudit(Db, Login.Id, "FunBoy/ProcessListsings", "UpdateListingsBidAsk", "Error", ex.Message, ex.StackTrace);
             }
         }
@@ -145,6 +181,7 @@ namespace Funday.ServiceInterface
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 if (Login == null) return;
                 RetryVerificationLater(Db, Login);
             }

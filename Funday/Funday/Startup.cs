@@ -99,11 +99,11 @@ namespace Funday
             {
                 //if (!Db.TableExists<StockXAccount>())
                 //      Db.DropAndCreateTable<StockXAccount>();
-              //    Db.DropAndCreateTable<StockXListedItem>();
-            //          Db.DropAndCreateTable<Inventory>();
-
-               // Db.DropAndCreateTable<StockXProxuct>();
-           //     Db.DropAndCreateTable<Audit>();
+                  Db.DropAndCreateTable<StockXListedItem>();
+                //          Db.DropAndCreateTable<Inventory>();
+                Db.DropAndCreateTable<BoyStartUp>();
+                // Db.DropAndCreateTable<StockXProxuct>();
+                //     Db.DropAndCreateTable<Audit>();
                 //Db.DropAndCreateTable<StockXBid>();
                 //Db.DropAndCreateTable<StockXAsk>();
                 return;

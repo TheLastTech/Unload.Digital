@@ -4,6 +4,7 @@ using Funday.ServiceModel.StockXAccount;
 using Funday.ServiceModel.StockxInventoryStates;
 using ServiceStack;
 using ServiceStack.Data;
+using ServiceStack.Logging;
 using ServiceStack.OrmLite;
 using StockxApi;
 using System;
@@ -27,7 +28,7 @@ namespace Funday.ServiceInterface
         }
 
         private readonly SearchBoy Noance;
-
+        private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
         public SearchBoy()
         {
             Noance = this;
@@ -146,6 +147,7 @@ namespace Funday.ServiceInterface
                 }
             }catch(Exception ex)
              {
+                Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryAsks", "ProcessInventoryAsks", "Error", ex.Message, ex.StackTrace);
             }
             
@@ -214,6 +216,7 @@ namespace Funday.ServiceInterface
                 
             }catch(Exception ex)
             {
+                Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryBids", "ProcessInventoryBidsst", "Error", ex.Message, ex.StackTrace);
             }
         }

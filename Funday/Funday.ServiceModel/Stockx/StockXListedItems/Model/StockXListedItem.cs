@@ -1,11 +1,23 @@
 
 using Newtonsoft.Json;
+using ServiceStack;
+using ServiceStack.Data;
 using ServiceStack.DataAnnotations;
 using StockxApi;
-using System;
+using System; 
+using System.Data;
 
 namespace Funday.ServiceModel.StockXListedItem
 {
+    public class BoyStartUp
+    {
+
+        [PrimaryKey]
+       
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public DateTime LastSeen { get; set; }
+    }
     public class StockXListedItem
     {
         public static implicit operator StockXListedItem(PortfolioItem Item)

@@ -4,6 +4,7 @@ using Funday.ServiceModel.StockXAccount;
 using Funday.ServiceModel.StockxInventoryStates;
 using Funday.ServiceModel.StockXListedItem;
 using Newtonsoft.Json;
+using ServiceStack.Logging;
 using ServiceStack.OrmLite;
 using StockxApi;
 using System;
@@ -19,7 +20,7 @@ namespace Funday.ServiceInterface
         public class StockxListingGetter
         {
             public IDbConnection Db { get; }
-
+            private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy)); 
             public StockxListingGetter(IDbConnection db)
             {
                 Db = db;
@@ -42,6 +43,7 @@ namespace Funday.ServiceInterface
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error(ex);
                 }
                 return null;
             }
