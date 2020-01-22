@@ -2,9 +2,13 @@
 using Funday.ServiceModel.Inventory;
 using Funday.ServiceModel.StockXAccount;
 using Newtonsoft.Json;
+using ServiceStack;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 using StockxApi;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -110,6 +114,14 @@ namespace Funday.ServiceInterface.StockxApi
                             RO = JsonObj
                         };
                 }
+                else
+                {
+
+                    using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+                    {
+                        AuditExtensions.CreateAudit(Db, stockAuth.Id, "FunBoy/GetLogin", "Login Attempt", "Login Failed: " + jsontxt + outputtxt);
+                    }
+                }
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.Ambiguous, 
@@ -118,6 +130,10 @@ namespace Funday.ServiceInterface.StockxApi
             }
             catch (Exception ex)
             {
+                using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
+                {
+                    AuditExtensions.CreateAudit(Db, stockAuth.Id, "FunBoy/GetLogin", "Login Attempt", "Login Failed: " + jsontxt + outputtxt,ex.Message,ex.StackTrace);
+                }
                 return new StockXApiResult<LoginCookieToken>()
                 {
                     Code = HttpStatusCode.InternalServerError,
