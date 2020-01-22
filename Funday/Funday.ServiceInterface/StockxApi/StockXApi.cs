@@ -29,7 +29,7 @@ namespace Funday.ServiceInterface.StockxApi
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
-       
+        
 
         public static async Task<StockXApiResult<LoginCookieToken>> GetLogin(this StockXAccount stockAuth)
         {
@@ -39,7 +39,7 @@ namespace Funday.ServiceInterface.StockxApi
             ProcessStartInfo Processstartinfo;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Processstartinfo = new ProcessStartInfo("bash", $"-c xvfb-run -a -e /dev/stdout -s \"-screen 0 2920x2580x24\" node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
+                Processstartinfo = new ProcessStartInfo("bash", $"-c xvfb-run kil-a -e /dev/stdout -s \"-screen 0 2920x2580x24\" node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
                 {
                     UseShellExecute = true,
                     CreateNoWindow=true,
