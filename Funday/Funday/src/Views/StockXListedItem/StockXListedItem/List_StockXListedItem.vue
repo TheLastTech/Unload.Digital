@@ -85,9 +85,6 @@ export default class List_StockXListedItems extends Vue {
     perPage = 50;
     Message = '';
 
-    @Watch('currentPage') ChangecurrentPage(newval: number) {
-        this.ListStockXListedItems();
-    }
 
     get Rows() {
         return this.StockXListedItems;
@@ -101,17 +98,25 @@ export default class List_StockXListedItems extends Vue {
         this.$router.push('/EditStockXListedItem/' + Id);
     }
 
-    async ListStockXListedItems() {
+    async ListStockXListedItems(Page :number =0) {
         this.Error = '';
         const StockXListedItemsList = await client.get(new ListStockXListedItemRequest({
             Skip: 50 * this.currentPage,
         }));
         if (StockXListedItemsList.Success) {
-            this.StockXListedItems = StockXListedItemsList.StockXListedItems;
             this.rows = StockXListedItemsList.Total;
         } else {
             this.Error = StockXListedItemsList.Message;
+            return;
         }
+        StockXListedItemsList.StockXListedItems.forEach(a=>this.StockXListedItems.push(a));
+        if((Page + 1) * 50 < StockXListedItemsList.Total )
+        {
+
+
+            await this.ListStockXListedItems(Page+1);
+        }
+
     }
 
 

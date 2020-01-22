@@ -65,9 +65,7 @@ export default class List_StockXAccounts extends Vue {
       currentPage = 0;
     rows = 0;
     perPage = 50;
-     @Watch('currentPage') ChangecurrentPage(newval: number){
-        this.ListStockXAccounts();
-    }
+
     get Rows(){
         return this.StockXAccounts;
     }
@@ -80,16 +78,23 @@ export default class List_StockXAccounts extends Vue {
         this.$router.push('/EditStockXAccount/' + Id);
     }
 
-    async ListStockXAccounts() {
+    async ListStockXAccounts(Page : number =0) {
         this.Error = '';
         const StockXAccountsList = await client.get(new ListStockXAccountRequest(  {
                 Skip: 50 * this.currentPage,
             }));
         if (StockXAccountsList.Success) {
-            this.StockXAccounts = StockXAccountsList.StockXAccounts;
-            this.rows = StockXAccountsList.Total;
+          this.rows = StockXAccountsList.Total;
         } else {
             this.Error = StockXAccountsList.Message;
+            return;
+        }
+        StockXAccountsList.StockXAccounts.forEach(a=>this.StockXAccounts.push(a));
+        if((Page + 1) * 50 < StockXAccountsList.Total )
+        {
+
+
+            await this.ListStockXAccounts(Page+1);
         }
     }
 

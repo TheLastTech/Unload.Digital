@@ -28,7 +28,7 @@
 
         <b-table
                 responsive
-            :fields="Fields"
+                :fields="Fields"
                 id="Inventorys-table"
                 :items="Rows"
                 :per-page="perPage"
@@ -40,7 +40,7 @@
                 <b-button @click="EditInventory(data.item.Id)" variant="dark">Edit {{data.item.Id}}</b-button>
             </template>
             <template slot="cell(StockXUrl)" slot-scope="data">
-               <div v-if="data.item.StockXUrl">{{data.item.StockXUrl.replace("https://stockx.com/","")}}</div>
+                <div v-if="data.item.StockXUrl">{{data.item.StockXUrl.replace("https://stockx.com/","")}}</div>
             </template>
             <template slot="cell(Quantity)" slot-scope="data">
                 <div v-if="!data.item.Is_Updating_Now">
@@ -81,11 +81,10 @@
             <template slot="cell(Active)" slot-scope="data">
 
 
-
-                    <b-button @click="ToggleInventory(data)" :variant="`${data.item.Active?'dark':'light'}`">
-                        {{data.item.Active?
-                        "Active":"Paused"}}
-                    </b-button>
+                <b-button @click="ToggleInventory(data)" :variant="`${data.item.Active?'dark':'light'}`">
+                    {{data.item.Active?
+                    "Active":"Paused"}}
+                </b-button>
 
 
             </template>
@@ -99,136 +98,137 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
-import {Inventory, ListInventoryRequest, ToggleInventoryRequest, UpdateInventoryRequest} from '@/shared/dtos';
-import {client} from '@/shared';
+    import {Component, Vue, Watch} from "vue-property-decorator";
+    import {Inventory, ListInventoryRequest, ToggleInventoryRequest, UpdateInventoryRequest} from "@/shared/dtos";
+    import {client} from "@/shared";
 
 
-@Component({
-    components: {},
-})
-export default class List_Inventorys extends Vue {
-    Inventorys: any[] = [];
-    Fields = [
-        {key: 'StockXUrl', sortable: true},
-        {key: 'Quantity', sortable: true},
-        {
-            key: 'MinSell',
-            sortable: true,
-        },
-        {
-            key: 'TotalSold',
-            sortable: true,
-        },
-        {key: 'StartingAsk', sortable: true},
-        {key: 'Size', sortable: true},
-        {
-            key: 'Active',
-            sortable: true,
-        },
+    @Component({
+        components: {},
+    })
+    export default class List_Inventorys extends Vue {
+        Inventorys: any[] = [];
+        Fields = [
+            {key: "StockXUrl", sortable: true},
+            {key: "Quantity", sortable: true},
+            {
+                key: "MinSell",
+                sortable: true,
+            },
+            {
+                key: "TotalSold",
+                sortable: true,
+            },
+            {key: "StartingAsk", sortable: true},
+            {key: "Size", sortable: true},
+            {
+                key: "Active",
+                sortable: true,
+            },
 
-    ];
-    Error = '';
-    currentPage = 0;
-    rows = 0;
-    perPage = 50;
-      Rows: any[] = [];
-    Message = '';
-    @Watch('currentPage') ChangecurrentPage(newval: number) {
-        this.ListInventorys();
-    }
+        ];
+        Error = "";
+        currentPage = 0;
+        rows = 0;
+        perPage = 50;
+        Rows: any[] = [];
+        Message = "";
 
-    async ToggleInventory(Data: any) {
+        async ToggleInventory(Data: any) {
 
-        try {
-            this.Error = '';
-            const InventorysList = await client.post(new ToggleInventoryRequest({
-                InventoryId: Data.item.Id,
+            try {
+                this.Error = "";
+                const InventorysList = await client.post(new ToggleInventoryRequest({
+                    InventoryId: Data.item.Id,
 
-            }));
-            if (InventorysList.Success) {
-                const inx = this.Inventorys.findIndex((A) => A.Id = Data.item.Id);
-                this.Inventorys[inx].Item1.Active = !this.Inventorys[inx].Item1.Active;
+                }));
+                if (InventorysList.Success) {
+                    const inx = this.Inventorys.findIndex((A) => A.Id = Data.item.Id);
+                    this.Inventorys[inx].Item1.Active = !this.Inventorys[inx].Item1.Active;
 
-            } else {
-                this.Error = InventorysList.Message;
+                } else {
+                    this.Error = InventorysList.Message;
+                }
+            } catch (e) {
+
             }
-        } catch (e) {
-
         }
-    }
 
-    get Rows2() {
-        return this.Inventorys.map((A) => {
-            A.Item1.Account = A.Item2;
-
-            A.Item1.Is_Updating_Now = false;
-
-            return A.Item1;
-        });
-    }
-    FindByRow(Row: any){
-        return this.Inventorys.find((A) => {
-            A.Item1.Account = A.Item2;
-            if (Row.Id === A.Id) { return A; }
-        });
-    }
-
-    mounted() {
-        this.ListInventorys();
-    }
-
-    EditInventory(Id: number) {
-        this.$router.push('/EditInventory/' + Id);
-    }
-
-    async ListInventorys() {
-        this.Error = '';
-        const InventorysList = await client.get(new ListInventoryRequest({
-            Skip: 50 * this.currentPage,
-        }));
-        if (InventorysList.Success) {
-            this.Inventorys = InventorysList.Inventorys;
-            this.Rows = this.Inventorys.map((A) => {
+        get Rows2() {
+            return this.Inventorys.map((A) => {
                 A.Item1.Account = A.Item2;
 
+                A.Item1.Is_Updating_Now = false;
 
                 return A.Item1;
             });
-            this.rows = InventorysList.Total;
-        } else {
-            this.Error = InventorysList.Message;
         }
-    }
 
+        FindByRow(Row: any) {
+            return this.Inventorys.find((A) => {
+                A.Item1.Account = A.Item2;
+                if (Row.Id === A.Id) {
+                    return A;
+                }
+            });
+        }
 
-    async UpdateInventory(Item: any, FieldName: string) {
+        mounted() {
+            this.ListInventorys();
+        }
 
+        EditInventory(Id: number) {
+            this.$router.push("/EditInventory/" + Id);
+        }
 
-
-
-        try {
-
-
-            this.Error = '';
-            const Response = await client.put(new UpdateInventoryRequest({
-                InventoryId: Item.Id,
-                Quantity: Item.Quantity, MinSell: Item.MinSell, StartingAsk: Item.StartingAsk,
+        async ListInventorys(Page: number = 0) {
+            this.Error = "";
+            const InventorysList = await client.get(new ListInventoryRequest({
+                Skip: 50 * this.currentPage,
             }));
-            if (!Response.Success) {
+            if (InventorysList.Success) {
+
+                this.rows = InventorysList.Total;
+            } else {
+                this.Error = InventorysList.Message;
+                return;
+            }
+            InventorysList.Inventorys.forEach(A => {
+                //@ts-ignore
+                A.Item1.Account = A.Item2;
+                this.Rows.push(A);
+            });
+            if ((Page + 1) * 50 < InventorysList.Total) {
+                await this.ListInventorys(Page + 1);
+            }
+        }
 
 
-                this.Error = Response.Message;
+        async UpdateInventory(Item: any, FieldName: string) {
+
+
+            try {
+
+
+                this.Error = "";
+                const Response = await client.put(new UpdateInventoryRequest({
+                    InventoryId: Item.Id,
+                    Quantity: Item.Quantity, MinSell: Item.MinSell, StartingAsk: Item.StartingAsk,
+                }));
+                if (!Response.Success) {
+
+
+                    this.Error = Response.Message;
+
+                }
+                this.Message = `Field ${FieldName} Updated`;
+            } catch (e) {
+                this.Error = e.Message;
 
             }
-            this.Message = `Field ${FieldName} Updated`;
-        } catch (e) {
-            this.Error = e.Message;
+
 
         }
 
-
     }
-
-}
 </script>
