@@ -6,6 +6,7 @@ using ServiceStack.Configuration;
 using ServiceStack.FluentValidation;
 using ServiceStack.Logging;
 using ServiceStack.OrmLite;
+using System;
 using System.Data;
 using System.Linq;
 
@@ -22,7 +23,8 @@ namespace Funday.ServiceInterface
                 ActionTaken = ActionTaken,
                 Result = Result,
                 Error = Error,
-                StackTrace = StackTrace
+                StackTrace = StackTrace,
+                When=DateTime.Now
             };
             var InsertedId = Db.Insert(NewAudit, true);
             return InsertedId;

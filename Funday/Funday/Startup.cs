@@ -103,7 +103,7 @@ namespace Funday
             //          Db.DropAndCreateTable<Inventory>();
 
                // Db.DropAndCreateTable<StockXProxuct>();
-                //Db.DropAndCreateTable<Audit>();
+                Db.DropAndCreateTable<Audit>();
                 //Db.DropAndCreateTable<StockXBid>();
                 //Db.DropAndCreateTable<StockXAsk>();
                 return;
