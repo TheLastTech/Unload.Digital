@@ -145,7 +145,7 @@ namespace Funday.ServiceInterface
                     }
                 }
             }catch(Exception ex)
-            {
+             {
                 AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryAsks", "ProcessInventoryAsks", "Error", ex.Message, ex.StackTrace);
             }
             
