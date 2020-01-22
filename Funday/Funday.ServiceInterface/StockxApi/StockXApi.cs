@@ -43,7 +43,7 @@ namespace Funday.ServiceInterface.StockxApi
             ProcessStartInfo Processstartinfo;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Processstartinfo = new ProcessStartInfo("/usr/bin/xvfb-run", $"-a -e /dev/stdout -s '-screen 0 2920x2580x24' /usr/bin/node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
+                Processstartinfo = new ProcessStartInfo("/usr/bin/xvfb-run", $" /usr/bin/node --require ts-node/register StockLoginator.ts --BaseJson={Json} --JobID={tmpdr}   ")
                 {
                     UseShellExecute = false,
                   
