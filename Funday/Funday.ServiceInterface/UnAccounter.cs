@@ -74,8 +74,8 @@ namespace Funday.ServiceInterface
                     {
                     }
                     Account.LoginFails++;
-                    //Account.NextVerification = DateTime.Now.AddMinutes(Account.LoginFails - 1 * 1.5 + 1);
-                    if (Account.LoginFails > 3)
+                    Account.NextVerification = DateTime.Now.AddMinutes(Account.LoginFails - 1 * 1.5 + 1);
+                    if (Account.LoginFails > 12)
                     {
                         DisableAccountDuetoLoginFailure(Account);
                         AuditExtensions.CreateAudit(Db, Account.Id, "FunBoy/VerifyStockXAccount", "Login Disabled", Data.ResultText);
@@ -105,7 +105,7 @@ namespace Funday.ServiceInterface
         {
             Db.UpdateOnly(() => new StockXAccount()
             {
-                Disabled = false,
+                Disabled = true,
                 LoginFails = Account.LoginFails,
                 NextVerification = Account.NextVerification,
                 AccountThread = ""
