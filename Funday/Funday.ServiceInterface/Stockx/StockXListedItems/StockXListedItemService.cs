@@ -53,7 +53,7 @@ namespace Funday.ServiceInterface
                 };
             }
                     AppUser User = this.GetCurrentAppUser();
-            var findQl = Db.From<StockXListedItem>().Join<StockXAccount>((A, B) => A.AccountId == B.Id && A.UserId == User.Id ).Join<Inventory>((A, B) => A.SkuUuid == B.Sku && A.UserId == User.Id).Where(A => A.UserId == User.Id);
+            var findQl = Db.From<StockXListedItem>().Join<StockXAccount>((A, B) => A.AccountId == B.Id && A.UserId == B.UserId).Join<Inventory>((A, B) => A.SkuUuid == B.Sku && A.UserId == B.UserId && A.AccountId == B.StockXAccountId).Where(A => A.UserId == User.Id);
             var StockXListedItems = Db.SelectMulti<StockXListedItem, StockXAccount,Inventory>(findQl.OrderBy(A => A.Id).Skip(request.Skip).Take(50));
             var CountOf = Db.Count(findQl);
             return new ListStockXListedItemResponse()
