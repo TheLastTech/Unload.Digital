@@ -98,30 +98,36 @@ namespace Funday.ServiceInterface
             {
                 var Created = false;
                 var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.Active && A.Quantity > 0));
-                foreach (var tory in AllInventory)
+                var UnListedInventory = AllInventory.Where(A => !ListedItems.Any(B => B.SkuUuid == A.Sku));
+                var UnTaggedInventory = ListedItems.Where(B => !AllInventory.Any(A => B.SkuUuid == A.Sku));
+                foreach(var Listling in UnTaggedInventory)
                 {
-                    if (!ListedItems.Any(A => A.SkuUuid == tory.Sku))
+                    StockXListedItem Item = Listling;
+                    Item.UserId = login.UserId;
+                    Item.AccountId = login.Id;
+                    Db.Insert(Item);
+                }
+                foreach (var tory in UnListedInventory)
+                {
+                    var Listing = await login.MakeListing(tory.StockXUrl, tory.Sku, tory.StartingAsk, StockXAccount.MakeTimeString());
+
+                    if ((int)Listing.Code > 399 && (int)Listing.Code < 500)
                     {
-                        var Listing = await login.MakeListing(tory.StockXUrl, tory.Sku, tory.StartingAsk, StockXAccount.MakeTimeString());
-
-                        if ((int)Listing.Code > 399 && (int)Listing.Code < 500)
-                        {
-                            throw new NeedsVerificaitonException(login);
-                        }
-                        if (Listing.Code == System.Net.HttpStatusCode.OK)
-                        {
-                            StockXListedItem Item = Listing.RO.PortfolioItem;
-                            Item.UserId = login.Id;
-                            Item.AccountId = tory.StockXAccountId;
-                            Db.Insert(Item);
-
-                            Db.UpdateAdd(() => new Inventory() { Quantity = -1 }, Ab => Ab.Id == tory.Id);
-                            AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", "Inventory Created", Listing.RO.PortfolioItem.ChainId);
-                            Created = true;
-                            continue;
-                        }
-                        return false; //error 500+ -- their server is down end task.
+                        throw new NeedsVerificaitonException(login);
                     }
+                    if (Listing.Code == System.Net.HttpStatusCode.OK)
+                    {
+                        StockXListedItem Item = Listing.RO.PortfolioItem;
+                        Item.UserId = login.UserId;
+                        Item.AccountId = tory.StockXAccountId;
+                        Db.Insert(Item);
+
+                        Db.UpdateAdd(() => new Inventory() { Quantity = -1 }, Ab => Ab.Id == tory.Id);
+                        AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", "Inventory Created", Listing.RO.PortfolioItem.ChainId);
+                        Created = true;
+                        continue;
+                    }
+                    return false; //error 500+ -- their server is down end task.
                 }
 
                 return Created;
