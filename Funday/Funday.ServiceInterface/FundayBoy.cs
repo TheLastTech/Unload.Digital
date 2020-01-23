@@ -109,7 +109,10 @@ namespace Funday.ServiceInterface
                 Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
             }catch(Exception ex)
             {
-                PlaceAccountBakkInQueue(Login, Db);
+                if (Login != null)
+                {
+                    PlaceAccountBakkInQueue(Login, Db);
+                }
             }
             if(Login != null)
             {
