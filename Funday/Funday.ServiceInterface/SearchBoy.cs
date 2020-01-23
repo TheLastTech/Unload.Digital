@@ -114,6 +114,7 @@ namespace Funday.ServiceInterface
                 while (Pages.NextPage != null)
                 {
                     Bids = await DefaultAuth.GetASks(Inv, i++);
+
                     if (Bids.Code != System.Net.HttpStatusCode.OK)
                     {
                         return;
