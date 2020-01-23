@@ -98,8 +98,9 @@ namespace Funday.ServiceInterface
                     await ProcessSold(Db, Login, SgGetter);
 
                     await ProcessListsings(Db, Login, SgGetter);
+                    PlaceAccountBakkInQueue(Login, Db);
                 }
-                PlaceAccountBakkInQueue(Login, Db);
+                
             }
             catch (NeedsVerificaitonException nx)
             {
