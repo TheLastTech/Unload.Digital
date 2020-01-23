@@ -121,11 +121,16 @@ namespace Funday.ServiceInterface
                 while (Pages.NextPage != null)
                 {
                     Bids = await DefaultAuth.GetASks(Inv, i++);
-                    Pages = Bids.RO.Pagination;
                     if (Bids.Code != System.Net.HttpStatusCode.OK)
                     {
                         return;
                     }
+
+                    if (Bids.RO == null)
+                    {
+                        return;
+                    }                   
+                   
                     if (Bids.RO.ProductActivity == null)
                     {
                         return;
@@ -140,6 +145,7 @@ namespace Funday.ServiceInterface
                             Ask = (long)Act.LocalAmount
                         });
                     }
+                    Pages = Bids.RO.Pagination;
                     if (Pages == null)
                     {
                         return;
