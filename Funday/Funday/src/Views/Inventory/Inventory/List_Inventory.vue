@@ -154,14 +154,14 @@
             }
         }
 
-        get Rows2() {
-            return this.Inventorys.map((A) => {
+         Rows2(A:any) {
+
                 A.Item1.Account = A.Item2;
 
                 A.Item1.Is_Updating_Now = false;
 
                 return A.Item1;
-            });
+
         }
 
         FindByRow(Row: any) {
@@ -196,7 +196,7 @@
             InventorysList.Inventorys.forEach(A => {
                 //@ts-ignore
                 A.Item1.Account = A.Item2;
-                this.Rows.push(A);
+                this.Rows.push(this.Rows2(A));
             });
             if ((Page + 1) * 50 < InventorysList.Total) {
                 await this.ListInventorys(Page + 1);
