@@ -29,6 +29,7 @@ namespace Funday.ServiceInterface
 
         private readonly SearchBoy Noance;
         private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
+
         public SearchBoy()
         {
             Noance = this;
@@ -43,17 +44,13 @@ namespace Funday.ServiceInterface
 
         public async Task<LoginCookieToken> GetAuth(StockXAccount Auth)
         {
-  
-          
-                var Output = await StockXApi.GetLogin(Auth); ;
-                if (Output.Code == System.Net.HttpStatusCode.OK)
-                {
-                    return Output.RO;
-                }
+            var Output = await StockXApi.GetLogin(Auth); ;
+            if (Output.Code == System.Net.HttpStatusCode.OK)
+            {
+                return Output.RO;
+            }
 
-                throw new Exception(Output.Code + " : " + Output.ResultText);
-    
-       
+            throw new Exception(Output.Code + " : " + Output.ResultText);
         }
 
         private void FunBoy_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -71,21 +68,17 @@ namespace Funday.ServiceInterface
         {
             using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
             {
-
                 var ActiveInventory = Db.From<Inventory>().Where(A => A.Quantity > 0).Where(A => A.Active);
-                
+
                 var Inventories = Db.Select(ActiveInventory);
 
                 foreach (var Inv in Inventories)
                 {
                     Task.WaitAll(ProcessInventoryBids(Db, Inv));
                     Task.WaitAll(ProcessInventoryAsks(Db, Inv));
-
-       
                 }
             }
         }
-
 
         private async Task ProcessInventoryAsks(IDbConnection Db, Inventory Inv)
         {
@@ -104,9 +97,9 @@ namespace Funday.ServiceInterface
                 Db.Delete<StockXAsk>(A => A.Sku == Inv.Sku);
                 foreach (var Act in Bids.RO.ProductActivity)
                 {
-                    Db.Save(new StockXAsk()
+                    Db.Insert(new StockXAsk()
                     {
-                        State= Act.State,
+                        State = Act.State,
                         Sku = Act.SkuUuid,
                         Ask = (long)Act.LocalAmount,
                         ChainId = Act.ChainId,
@@ -129,15 +122,15 @@ namespace Funday.ServiceInterface
                     if (Bids.RO == null)
                     {
                         return;
-                    }                   
-                   
+                    }
+
                     if (Bids.RO.ProductActivity == null)
                     {
                         return;
                     }
                     foreach (var Act in Bids.RO.ProductActivity)
                     {
-                        Db.Save(new StockXAsk()
+                        Db.Insert(new StockXAsk()
                         {
                             State = Act.State,
                             Sku = Act.SkuUuid,
@@ -151,12 +144,12 @@ namespace Funday.ServiceInterface
                         return;
                     }
                 }
-            }catch(Exception ex)
-             {
+            }
+            catch (Exception ex)
+            {
                 Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryAsks", "ProcessInventoryAsks", "Error", ex.Message, ex.StackTrace);
             }
-            
         }
 
         private async Task ProcessInventoryBids(IDbConnection Db, Inventory Inv)
@@ -176,7 +169,7 @@ namespace Funday.ServiceInterface
                 Db.Delete<StockXBid>(A => A.Sku == Inv.Sku);
                 foreach (var Act in Bids.RO.ProductActivity)
                 {
-                    Db.Save(new StockXBid()
+                    Db.Insert(new StockXBid()
                     {
                         State = Act.State,
                         ChainId = Act.ChainId,
@@ -191,11 +184,11 @@ namespace Funday.ServiceInterface
                 }
                 var i = 2;
 
-                while(Pages.NextPage !=null)
+                while (Pages.NextPage != null)
                 {
                     Bids = await DefaultAuth.GetBids(Inv, i++);
                     Pages = Bids.RO.Pagination;
-                 
+
                     if (Bids.Code != System.Net.HttpStatusCode.OK)
                     {
                         return;
@@ -206,7 +199,7 @@ namespace Funday.ServiceInterface
                     }
                     foreach (var Act in Bids.RO.ProductActivity)
                     {
-                        Db.Save(new StockXBid()
+                        Db.Insert(new StockXBid()
                         {
                             State = Act.State,
                             Sku = Act.SkuUuid,
@@ -219,8 +212,8 @@ namespace Funday.ServiceInterface
                         return;
                     }
                 }
-                
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.Error(ex);
                 AuditExtensions.CreateAudit(Db, 1, "SearchBoy/ProcessInventoryBids", "ProcessInventoryBidsst", "Error", ex.Message, ex.StackTrace);
