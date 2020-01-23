@@ -34,13 +34,13 @@ namespace Funday.ServiceInterface
                 try
                 {
                     var Sql = Db.From<StockXAccount>().Where(A => (A.AccountThread == null || A.AccountThread.Length == 0) && A.Verified && ((A.Active && !A.Disabled) && A.NextAccountInteraction <= DateTime.Now)).OrderBy(A => A.NextAccountInteraction).Take(1);
-              //      var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = ThreadName }, Sql);
+                   var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = ThreadName }, Sql);
 
                  //   if (TotalUpdated == 0)
                 //    {
                    //     return null;
                    // }
-                    return Db.Single(Db.From<StockXAccount>().Where(A =>  A.Verified && A.AccountThread == "debug" && (A.Active && !A.Disabled)));
+                    return Db.Single(Db.From<StockXAccount>().Where(A =>  A.Verified && A.AccountThread == ThreadName && (A.Active && !A.Disabled)));
                 }
                 catch (Exception ex)
                 {
