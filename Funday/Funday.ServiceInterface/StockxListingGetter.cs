@@ -34,13 +34,13 @@ namespace Funday.ServiceInterface
                 try
                 {
                     var Sql = Db.From<StockXAccount>().Where(A => (A.AccountThread == null || A.AccountThread.Length == 0) && A.Verified && ((A.Active && !A.Disabled) && A.NextAccountInteraction <= DateTime.Now)).OrderBy(A => A.NextAccountInteraction).Take(1);
-                    var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = ThreadName }, Sql);
+              //      var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = ThreadName }, Sql);
 
-                    if (TotalUpdated == 0)
-                    {
-                        return null;
-                    }
-                    return Db.Single(Db.From<StockXAccount>().Where(A =>  A.Verified && A.AccountThread == ThreadName && (A.Active && !A.Disabled)));
+                 //   if (TotalUpdated == 0)
+                //    {
+                   //     return null;
+                   // }
+                    return Db.Single(Db.From<StockXAccount>().Where(A =>  A.Verified && A.AccountThread == "debug" && (A.Active && !A.Disabled)));
                 }
                 catch (Exception ex)
                 {
@@ -98,11 +98,15 @@ namespace Funday.ServiceInterface
             {
                 var Created = false;
                 var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.Active && A.Quantity > 0));
-                var AllListings = Db.Select(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.AccountId == login.Id));
+                
                 var UnListedInventory = AllInventory.Where(A => !ListedItems.Any(B => B.SkuUuid == A.Sku));
-                var UnTaggedInventory = ListedItems.Where(A => !AllListings.Any(B => B.ChainId == A.ChainId));
-                foreach (var Listling in UnTaggedInventory)
+                
+                foreach (var Listling in ListedItems)
                 {
+                    if(Db.Exists(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.AccountId == login.Id && A.ChainId == Listling.ChainId)))
+                    {
+                        continue;
+                    }
                     StockXListedItem Item = Listling;
                     Item.UserId = login.UserId;
                     Item.AccountId = login.Id;

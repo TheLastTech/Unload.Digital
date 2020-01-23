@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -195,10 +196,13 @@ namespace Funday.ServiceInterface.StockxApi
                 throw new NeedsVerificaitonException(login);
             }
             GetPagedPortfolioItemsResponse Items = GetListings.RO;
-
-            if (Items.PortfolioItems == null || Items.PortfolioItems.Count == 0)
+            if(Items.PortfolioItems == null)
             {
-                return null;
+                return Array.Empty<PortfolioItem>().ToList();
+            }
+            if ( Items.PortfolioItems.Count == 0)
+            {
+                return Items.PortfolioItems;
             }
             OutputItems.AddRange(Items.PortfolioItems);
             var i = 2;
