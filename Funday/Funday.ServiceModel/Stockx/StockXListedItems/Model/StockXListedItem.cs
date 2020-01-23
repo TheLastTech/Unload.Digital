@@ -136,7 +136,7 @@ namespace Funday.ServiceModel.StockXListedItem
 
         public int UserId { get; set; }
 
-        [Index]
+        [Unique]
         [JsonProperty("chainId")]
         public string ChainId { get; set; }
 

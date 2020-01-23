@@ -72,6 +72,7 @@ namespace Funday.ServiceInterface
                     UpdateThisThreadIsAlive(Db, ThreadName, "Starting ProcessNextVerifiedAccount");
                     Task.WaitAll(ProcessNextVerifiedAccount(Db));
                     UpdateThisThreadIsAlive(Db, ThreadName);
+
                 }
             }catch(Exception ex)
             {
@@ -98,7 +99,7 @@ namespace Funday.ServiceInterface
                     await ProcessSold(Db, Login, SgGetter);
 
                     await ProcessListsings(Db, Login, SgGetter);
-                    PlaceAccountBakkInQueue(Login, Db);
+               
                 }
                 
             }
@@ -106,6 +107,13 @@ namespace Funday.ServiceInterface
             {
            
                 Db.UpdateOnly(() => new StockXAccount() { AccountThread = "", NextAccountInteraction = DateTime.Now.AddMinutes(5), Verified = false }, A => A.Id == Login.Id);
+            }catch(Exception ex)
+            {
+                PlaceAccountBakkInQueue(Login, Db);
+            }
+            if(Login != null)
+            {
+                PlaceAccountBakkInQueue(Login, Db);
             }
         }
 

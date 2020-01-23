@@ -670,7 +670,7 @@ namespace StockxApi
 
     public class PortfolioItem
     {
-        [Index]
+        
         [JsonProperty("chainId")]
         public string ChainId { get; set; }
 

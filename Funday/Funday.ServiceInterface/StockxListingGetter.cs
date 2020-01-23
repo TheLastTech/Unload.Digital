@@ -98,13 +98,15 @@ namespace Funday.ServiceInterface
             {
                 var Created = false;
                 var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.Active && A.Quantity > 0));
+                var AllListings = Db.Select(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.AccountId == login.Id));
                 var UnListedInventory = AllInventory.Where(A => !ListedItems.Any(B => B.SkuUuid == A.Sku));
-                var UnTaggedInventory = ListedItems.Where(B => !AllInventory.Any(A => B.SkuUuid == A.Sku));
-                foreach(var Listling in UnTaggedInventory)
+                var UnTaggedInventory = ListedItems.Where(A => !AllListings.Any(B => B.ChainId == A.ChainId));
+                foreach (var Listling in UnTaggedInventory)
                 {
                     StockXListedItem Item = Listling;
                     Item.UserId = login.UserId;
                     Item.AccountId = login.Id;
+
                     Db.Insert(Item);
                 }
                 foreach (var tory in UnListedInventory)
