@@ -29,7 +29,7 @@ namespace Funday.ServiceModel.StockXListedItem
         public long Total { get;set; }
         public bool Success { get; set; }
         public string Message { get; set; }
-        public List<Tuple<StockXListedItem, AppUser, Inventory.Inventory>> StockXListedItems { get; set; }
+        public List<Tuple<StockXListedItem, StockXAccount.StockXAccount, Inventory.Inventory>> StockXListedItems { get; set; }
     }
       public class ListOneStockXListedItemResponse 
     { 

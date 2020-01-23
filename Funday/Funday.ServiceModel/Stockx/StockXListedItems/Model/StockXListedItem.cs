@@ -293,6 +293,7 @@ namespace Funday.ServiceModel.StockXListedItem
         [JsonProperty("localGainLoss")]
        public string  LocalGainLoss { get; set; }
         public bool Sold { get; set; }
+        public int AccountId { get; set; }
     }
  
 }

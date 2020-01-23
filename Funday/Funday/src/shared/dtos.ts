@@ -1,5 +1,5 @@
 /* Options:
-Date: 2020-01-20 20:47:15
+Date: 2020-01-22 18:13:49
 Version: 5.81
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -48,6 +48,7 @@ export class Audit
     public Result: string;
     public Error: string;
     public StackTrace: string;
+    public When: string;
 
     public constructor(init?: Partial<Audit>) { (Object as any).assign(this, init); }
 }
@@ -141,7 +142,7 @@ export class Breadcrumb
     public Level: number;
     public Name: string;
     public Url: string;
-    public IsBrand: number;
+    public IsBrand: string;
 
     public constructor(init?: Partial<Breadcrumb>) { (Object as any).assign(this, init); }
 }
@@ -211,11 +212,8 @@ export class Shipping
 export class EnhancedImage
 {
     public ProductUuid: string;
-    public ImageHost: string;
     public ImageKey: string;
     public ImageCount: number;
-    public UpdatedAt: string;
-    public CreatedAt: string;
 
     public constructor(init?: Partial<EnhancedImage>) { (Object as any).assign(this, init); }
 }
@@ -228,44 +226,44 @@ export class Children
 
 export class Market
 {
-    public ProductId: number;
+    public ProductId: string;
     public SkuUuid: string;
     public ProductUuid: string;
-    public LowestAsk: number;
-    public LowestAskFloat: number;
+    public LowestAsk: string;
+    public LowestAskFloat: string;
     public LowestAskSize: string;
-    public ParentLowestAsk: number;
-    public NumberOfAsks: number;
-    public SalesThisPeriod: number;
-    public SalesLastPeriod: number;
-    public HighestBid: number;
-    public HighestBidFloat: number;
-    public HighestBidSize: number;
-    public NumberOfBids: number;
-    public AnnualHigh: number;
-    public AnnualLow: number;
-    public DeadstockRangeLow: number;
-    public DeadstockRangeHigh: number;
-    public Volatility: number;
-    public DeadstockSold: number;
-    public PricePremium: number;
-    public AverageDeadstockPrice: number;
-    public LastSale: number;
-    public LastSaleSize: number;
-    public SalesLast72Hours: number;
-    public ChangeValue: number;
-    public ChangePercentage: number;
-    public AbsChangePercentage: number;
-    public TotalDollars: number;
-    public UpdatedAt: number;
-    public LastLowestAskTime: number;
-    public LastHighestBidTime: number;
+    public ParentLowestAsk: string;
+    public NumberOfAsks: string;
+    public SalesThisPeriod: string;
+    public SalesLastPeriod: string;
+    public HighestBid: string;
+    public HighestBidFloat: string;
+    public HighestBidSize: string;
+    public NumberOfBids: string;
+    public AnnualHigh: string;
+    public AnnualLow: string;
+    public DeadstockRangeLow: string;
+    public DeadstockRangeHigh: string;
+    public Volatility: string;
+    public DeadstockSold: string;
+    public PricePremium: string;
+    public AverageDeadstockPrice: string;
+    public LastSale: string;
+    public LastSaleSize: string;
+    public SalesLast72Hours: string;
+    public ChangeValue: string;
+    public ChangePercentage: string;
+    public AbsChangePercentage: string;
+    public TotalDollars: string;
+    public UpdatedAt: string;
+    public LastLowestAskTime: string;
+    public LastHighestBidTime: string;
     public LastSaleDate: string;
     public CreatedAt: string;
-    public DeadstockSoldRank: number;
-    public PricePremiumRank: number;
-    public AverageDeadstockPriceRank: number;
-    public Featured: number;
+    public DeadstockSoldRank: string;
+    public PricePremiumRank: string;
+    public AverageDeadstockPriceRank: string;
+    public Featured: string;
 
     public constructor(init?: Partial<Market>) { (Object as any).assign(this, init); }
 }
@@ -287,7 +285,7 @@ export class Product
     public Brand: string;
     public Breadcrumbs: Breadcrumb[];
     public Category: string;
-    public CharityCondition: number;
+    public CharityCondition: string;
     public Colorway: string;
     public Condition: string;
     public CountryOfManufacture: string;
@@ -295,7 +293,7 @@ export class Product
     public Gender: string;
     public ContentGroup: string;
     public IpoDate: string;
-    public MinimumBid: number;
+    public MinimumBid: string;
     public Doppelgangers: Object[];
     public Media: Media;
     public Name: string;
@@ -308,30 +306,30 @@ export class Product
     public UsHtsDescription: string;
     public ProductCategory: string;
     public ReleaseDate: string;
-    public RetailPrice: number;
+    public RetailPrice: string;
     public Shoe: string;
     public ShortDescription: string;
     public StyleId: string;
     public TickerSymbol: string;
     public Title: string;
     public DataType: string;
-    public Type: number;
+    public Type: string;
     public SizeTitle: string;
     public SizeDescriptor: string;
     public SizeAllDescriptor: string;
     public Url: string;
     public UrlKey: string;
-    public Year: number;
+    public Year: string;
     public ShippingGroup: string;
     public Hold: boolean;
-    public ALim: number;
+    public ALim: string;
     public Meta: ProductMeta;
     public Shipping: Shipping;
     public EnhancedImage: EnhancedImage;
     public Children: Children;
     public ParentId: string;
     public ParentUuid: string;
-    public SizeSortOrder: number;
+    public SizeSortOrder: string;
     public ShoeSize: string;
     public Market: Market;
     public Gtins: Gtin[];
@@ -353,7 +351,7 @@ export class Merchant
 
 export class Customer
 {
-    public Id: number;
+    public Id: string;
     public Uuid: string;
     public FirstName: string;
     public LastName: string;
@@ -372,7 +370,7 @@ export class Customer
     public HidePortfolioBanner: boolean;
     public ReferUrl: string;
     public CreatedAt: string;
-    public CreatedAtTime: number;
+    public CreatedAtTime: string;
     public IsTrader: boolean;
     public HasBuyerReward: boolean;
     public GdprStatus: string;
@@ -390,37 +388,37 @@ export class StockXListedItem
     public InventoryId: string;
     public ProductId: string;
     public SkuUuid: string;
-    public MerchantId: number;
-    public Condition: number;
-    public Action: number;
-    public ActionBy: number;
+    public MerchantId: string;
+    public Condition: string;
+    public Action: string;
+    public ActionBy: string;
     public Amount: number;
     public LocalCurrency: string;
     public LocalAmount: number;
-    public LocalExchangeRate: number;
-    public BidAskSpread: number;
+    public LocalExchangeRate: string;
+    public BidAskSpread: string;
     public ExpiresAt: string;
-    public ExpiresAtTime: number;
+    public ExpiresAtTime: string;
     public FaqLink: string;
-    public GainLossDollars: number;
-    public GainLossPercentage: number;
-    public MarketValue: number;
+    public GainLossDollars: string;
+    public GainLossPercentage: string;
+    public MarketValue: string;
     public MatchedWith: string;
-    public MatchedState: number;
+    public MatchedState: string;
     public MatchedWithDate: string;
     public Owner: string;
     public UserFullname: string;
-    public PurchasePrice: number;
+    public PurchasePrice: string;
     public PurchaseDate: string;
-    public PurchaseDateTime: number;
+    public PurchaseDateTime: string;
     public ShipByDate: string;
-    public State: number;
+    public State: string;
     public StatusMessage: string;
     public Text: string;
     public Notes: string;
     public CountryCode: string;
     public CreatedAt: string;
-    public CreatedAtTime: number;
+    public CreatedAtTime: string;
     public Url: string;
     public ReferUrl: string;
     public CanEdit: boolean;
@@ -434,9 +432,10 @@ export class StockXListedItem
     public Product: Product;
     public Merchant: Merchant;
     public Customer: Customer;
-    public LocalMarketValue: number;
-    public LocalGainLoss: number;
+    public LocalMarketValue: string;
+    public LocalGainLoss: string;
     public Sold: boolean;
+    public AccountId: number;
 
     public constructor(init?: Partial<StockXListedItem>) { (Object as any).assign(this, init); }
 }
@@ -478,59 +477,6 @@ export class ResponseStatus
     public Meta: { [index: string]: string; };
 
     public constructor(init?: Partial<ResponseStatus>) { (Object as any).assign(this, init); }
-}
-
-export class UserAuth
-{
-    public Id: number;
-    public UserName: string;
-    public Email: string;
-    public PrimaryEmail: string;
-    public PhoneNumber: string;
-    public FirstName: string;
-    public LastName: string;
-    public DisplayName: string;
-    public Company: string;
-    public BirthDate: string;
-    public BirthDateRaw: string;
-    public Address: string;
-    public Address2: string;
-    public City: string;
-    public State: string;
-    public Country: string;
-    public Culture: string;
-    public FullName: string;
-    public Gender: string;
-    public Language: string;
-    public MailAddress: string;
-    public Nickname: string;
-    public PostalCode: string;
-    public TimeZone: string;
-    public Salt: string;
-    public PasswordHash: string;
-    public DigestHa1Hash: string;
-    public Roles: string[];
-    public Permissions: string[];
-    public CreatedDate: string;
-    public ModifiedDate: string;
-    public InvalidLoginAttempts: number;
-    public LastLoginAttempt: string;
-    public LockedDate: string;
-    public RecoveryToken: string;
-    public RefId: number;
-    public RefIdStr: string;
-    public Meta: { [index: string]: string; };
-
-    public constructor(init?: Partial<UserAuth>) { (Object as any).assign(this, init); }
-}
-
-export class AppUser extends UserAuth
-{
-    public ProfileUrl: string;
-    public LastLoginIp: string;
-    public LastLoginDate: string;
-
-    public constructor(init?: Partial<AppUser>) { super(init); (Object as any).assign(this, init); }
 }
 
 export class ListAuditResponse
@@ -656,7 +602,7 @@ export class ListStockXListedItemResponse
     public Total: number;
     public Success: boolean;
     public Message: string;
-    public StockXListedItems: Tuple_3<StockXListedItem,AppUser,Inventory>[];
+    public StockXListedItems: Tuple_3<StockXListedItem,StockXAccount,Inventory>[];
 
     public constructor(init?: Partial<ListStockXListedItemResponse>) { (Object as any).assign(this, init); }
 }

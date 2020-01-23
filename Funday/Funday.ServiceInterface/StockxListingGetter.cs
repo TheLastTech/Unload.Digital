@@ -20,7 +20,8 @@ namespace Funday.ServiceInterface
         public class StockxListingGetter
         {
             public IDbConnection Db { get; }
-            private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy)); 
+            private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
+
             public StockxListingGetter(IDbConnection db)
             {
                 Db = db;
@@ -102,12 +103,18 @@ namespace Funday.ServiceInterface
                     if (!ListedItems.Any(A => A.SkuUuid == tory.Sku))
                     {
                         var Listing = await login.MakeListing(tory.StockXUrl, tory.Sku, tory.StartingAsk, StockXAccount.MakeTimeString());
+
                         if ((int)Listing.Code > 399 && (int)Listing.Code < 500)
                         {
                             throw new NeedsVerificaitonException(login);
                         }
                         if (Listing.Code == System.Net.HttpStatusCode.OK)
                         {
+                            StockXListedItem Item = Listing.RO.PortfolioItem;
+                            Item.UserId = login.Id;
+                            Item.AccountId = tory.StockXAccountId;
+                            Db.Insert(Item);
+
                             Db.UpdateAdd(() => new Inventory() { Quantity = -1 }, Ab => Ab.Id == tory.Id);
                             AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", "Inventory Created", Listing.RO.PortfolioItem.ChainId);
                             Created = true;
@@ -141,7 +148,6 @@ namespace Funday.ServiceInterface
                     //  continue;
                     return false;
                 }
- 
 
                 return await ProcessNewBid(login, Item, Invntory) || await ProcessNewAsk(login, Item, Invntory);
             }
@@ -169,11 +175,10 @@ namespace Funday.ServiceInterface
 
             private async Task<bool> ProcessNewBid(StockXAccount login, PortfolioItem Item, Inventory Invntory)
             {
-                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Invntory.StartingAsk ).OrderByDescending(A => A.Bid));
+                var Bids = Db.Select(Db.From<StockXBid>().Where(I => I.Sku == Item.SkuUuid && I.Bid >= Invntory.MinSell && I.Bid < Invntory.StartingAsk).OrderByDescending(A => A.Bid));
                 var Bid = Bids.FirstOrDefault();
                 if (Bid != null && Bid.Bid != Item.Amount)
                 {
-                    
                     var Result = await login.UpdateListing(Item.ChainId, Invntory.Sku, Item.ExpiresAt, (int)Bid.Bid);
                     AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", $"Update Because Bid ({Item.Amount}) -> ({Bid.Bid})", JsonConvert.SerializeObject(Result));
                     if ((int)Result.Code > 399 && (int)Result.Code < 500)
@@ -196,37 +201,24 @@ namespace Funday.ServiceInterface
                     StockXListedItem itm = A;
                     itm.Id = Existing.Id;
                     itm.Sold = Existing.Sold;
+                    itm.AccountId = Existing.AccountId;
                     itm.UserId = login.UserId;
                     Db.Update(itm);
-                }
-                else
-                {
-                    StockXListedItem itm = A;
-                    itm.UserId = login.UserId;
-                    Db.Insert(itm);
                 }
             }
 
             private bool UpdateToSold(StockXAccount login, PortfolioItem A)
             {
                 var Existing = Db.Single<StockXListedItem>(b => b.ChainId == A.ChainId && b.UserId == login.UserId && !b.Sold);
-                if (Existing != null)
-                {
-                    StockXListedItem itm = A;
-                    itm.Id = Existing.Id;
-                    itm.UserId = login.UserId;
-                    itm.Sold = true;
-                    Db.Update(itm);
-                    return true;
-                }
-                else
-                {
-                    StockXListedItem itm = A;
-                    itm.Sold = true;
-                    itm.UserId = login.UserId;
-                    Db.Insert(itm);
-                    return false;
-                }
+                if (Existing == null) return false;
+
+                StockXListedItem itm = A;
+                itm.Id = Existing.Id;
+                itm.AccountId = Existing.AccountId;
+                itm.UserId = login.UserId;
+                itm.Sold = true;
+                Db.Update(itm);
+                return true;
             }
         }
     }

@@ -56,7 +56,7 @@ namespace Funday.ServiceInterface
             try
             {
                 var User = this.GetCurrentAppUser();
-                var Inventorys = Db.SelectMulti<Inventory, StockXAccount>(Db.From<Inventory>().Join<StockXAccount>((A, B) => A.StockXAccountId == B.Id).Where(A=>A.UserId == User.Id).OrderBy(A => A.Id).Skip(request.Skip).Take(50));
+                var Inventorys = Db.SelectMulti<Inventory, StockXAccount>(Db.From<Inventory>().Join<StockXAccount>((A, B) => A.StockXAccountId == B.Id).Where(A => A.UserId == User.Id).OrderBy(A => A.Id).Skip(request.Skip).Take(50));
                 var CountOf = Db.Count<Inventory>();
                 return new ListInventoryResponse()
                 {
@@ -110,10 +110,8 @@ namespace Funday.ServiceInterface
                     Message = "No Such Inventory"
                 };
             }
- 
-            var TotalUpdated = Db.UpdateOnly(() => new Inventory() { StartingAsk = request.StartingAsk, MinSell = request.MinSell, Quantity = request.Quantity }, A => A.Id == ExistingInventory.Id);
 
-          
+            var TotalUpdated = Db.UpdateOnly(() => new Inventory() { StartingAsk = request.StartingAsk, MinSell = request.MinSell, Quantity = request.Quantity }, A => A.Id == ExistingInventory.Id);
 
             return new UpdateInventoryResponse()
             {
@@ -146,7 +144,7 @@ namespace Funday.ServiceInterface
                 };
             }
             var User = this.GetCurrentAppUser();
-                
+
             var ExistingStockXAccount = Db.Single<StockXAccount>(A => A.Id == request.StockXAccountId && A.UserId == User.Id);
             if (ExistingStockXAccount == null)
             {
@@ -162,13 +160,13 @@ namespace Funday.ServiceInterface
                 StockXUrl = request.StockXUrl,
                 Quantity = request.Quantity,
                 MinSell = request.MinSell,
-                UserId=User.Id,
+                UserId = User.Id,
                 StartingAsk = request.StartingAsk,
                 Size = request.Size,
             };
             try
             {
-                var Existing = Db.Single(Db.From<StockXChildListing>().Where(A => A.Url == request.StockXUrl && A.ShoeSize == request.Size ));
+                var Existing = Db.Single(Db.From<StockXChildListing>().Where(A => A.Url == request.StockXUrl && A.ShoeSize == request.Size));
                 if (Existing != null)
                 {
                     NewInventory.Active = true;
@@ -178,92 +176,24 @@ namespace Funday.ServiceInterface
                 }
                 else
                 {
-                    StockXAccount tmp = new StockXAccount()
-                    {
-                        
-                    };
-                    var List = await tmp.GetProductFromUrl(request.StockXUrl);
-                    if (List == null)
+                    var Pass = await GetOrListNewInventory(request, NewInventory);
+                    if (!Pass)
                     {
                         return new CreateInventoryResponse()
                         {
                             Success = false,
                             Message = "Could not get product data"
-                        };
-                    }
-                    if (List.Product == null)
-                    {
-                        return new CreateInventoryResponse()
-                        {
-                            Success = false,
-                            Message = "Could not get product data"
-                        };  
-                    }
-                    var Offers = List.Product.Children.Keys.Select(A=>List.Product.Children[A]).ToList();
-
-
-                    if (Offers == null || Offers.Count == 0)
-                    {
-                        return new CreateInventoryResponse()
-                        {
-                            Success = false,
-                            Message = "Could not get any product data"
-                        };
-                    }
-
-                    if (request.Size == "")
-                    {
-                        var Item = Offers[0];
-                        NewInventory.Sku = Offers[0].Uuid;
-                        NewInventory.Size = "";
-                    }
-                    else
-                    {
-                        var Sized = Offers.Where(A => A.ShoeSize == request.Size).FirstOrDefault();
-                        if (Sized == null)
-                        {
-                            return new CreateInventoryResponse()
-                            {
-                                Success = false,
-                                Message = "Could not get any product data with that size"
-                            };
-                        }
-                        NewInventory.Active = true;
-                        NewInventory.StockXAccountId = request.StockXAccountId;
-                        NewInventory.ParentSku = Sized.ParentUuid;
-                        NewInventory.Sku = Sized.Uuid;
-
-                    }
-
-                    try
-                    {
-                        foreach (var Offer in Offers)
-                        {
-                            if (!Db.Exists<StockXChildListing>(A => A.Uuid == NewInventory.Sku))
-                            {
-                                Offer.Url = NewInventory.StockXUrl; 
-                                Db.Insert(Offer);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        return new CreateInventoryResponse()
-                        {
-                            Success = false,
-                            Message = ex.Message
                         };
                     }
                 }
                 try
                 {
-                    if (Db.Exists<Inventory>(A => A.Sku == NewInventory.Sku && A.StockXAccountId == request.StockXAccountId))
+                    if (Db.Exists<Inventory>(A => A.Sku == NewInventory.Sku && A.StockXAccountId == request.StockXAccountId && A.UserId == User.Id))
                     {
                         return new CreateInventoryResponse()
                         {
                             Success = false,
-                            Message="This Inventory Exists for this Account"
-
+                            Message = "This Inventory Exists for this Account"
                         };
                     }
                     var InsertedId = Db.Insert(NewInventory, true);
@@ -290,6 +220,56 @@ namespace Funday.ServiceInterface
                     Message = ex.Message
                 };
             }
+        }
+
+        private async Task<bool> GetOrListNewInventory(CreateInventoryRequest request, Inventory NewInventory)
+        {
+            StockXAccount tmp = new StockXAccount()
+            {
+            };
+            var List = await tmp.GetProductFromUrl(request.StockXUrl);
+            if (List == null)
+            {
+                return false;
+            }
+            if (List.Product == null)
+            {
+            }
+            var Offers = List.Product.Children.Keys.Select(A => List.Product.Children[A]).ToList();
+
+            if (Offers == null || Offers.Count == 0)
+            {
+                return false;
+            }
+
+            if (request.Size == "")
+            {
+                var Item = Offers[0];
+                NewInventory.Sku = Offers[0].Uuid;
+                NewInventory.Size = "";
+            }
+            else
+            {
+                var Sized = Offers.Where(A => A.ShoeSize == request.Size).FirstOrDefault();
+                if (Sized == null)
+                {
+                    return false;
+                }
+                NewInventory.Active = true;
+                NewInventory.StockXAccountId = request.StockXAccountId;
+                NewInventory.ParentSku = Sized.ParentUuid;
+                NewInventory.Sku = Sized.Uuid;
+            }
+
+            foreach (var Offer in Offers)
+            {
+                if (!Db.Exists<StockXChildListing>(A => A.Uuid == NewInventory.Sku))
+                {
+                    Offer.Url = NewInventory.StockXUrl;
+                    Db.Insert(Offer);
+                }
+            }
+            return true;
         }
 
         [Authenticate]
