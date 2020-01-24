@@ -242,8 +242,11 @@ namespace Funday.ServiceInterface.StockxApi
                 throw new NeedsVerificaitonException(login);
             }
             GetPagedPortfolioItemsResponse Items = GetListings.RO;
-
-            if (Items.PortfolioItems == null || Items.PortfolioItems.Count == 0)
+            if (Items.PortfolioItems.Count == 0)
+            {
+                return OutputItems;
+            }
+            if (Items.PortfolioItems == null )
             {
                 return null;
             }
