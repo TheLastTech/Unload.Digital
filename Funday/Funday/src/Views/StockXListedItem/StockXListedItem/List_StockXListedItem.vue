@@ -67,13 +67,12 @@ export default class List_StockXListedItems extends Vue {
     StockXListedItems: any[] = [];
     Fields = [
         {key: 'Item1.Id', sortable: true, label: 'Id'},
-        {key: 'Item1.Product.Brand', sortable: true, label: 'Brand'},
-        {key: 'Item1.Product.Shoe', sortable: true, label: 'Shoe'},
-        {key: 'Item1.Product.ShoeSize', sortable: true, label: 'Shoe Size'},
-        {key: 'Item1.Amount', sortable: true, label: 'Amount'},
+         {key: 'Item1.Product.Shoe', sortable: true, label: 'Shoe'},
+        {key: 'Item1.Product.ShoeSize', sortable: true, label: 'Size'},
+        {key: 'Item1.Amount', sortable: true, label: '$$'},
         {key: 'Item3.MinSell', sortable: true, label: 'MinSell'},
-        {key: 'Item3.StartingAsk', sortable: true, label: 'Starting Ask'},
-        {key: 'Item3.Quantity', sortable: true, label: 'Quantity'},
+        {key: 'Item3.StartingAsk', sortable: true, label: 'Start'},
+        {key: 'Item3.Quantity', sortable: true, label: 'Qty'},
         {key: 'Item2.Email', sortable: true, label: 'Email'},
         {key: 'Item1.Sold', sortable: true, label: 'Sold'},
     ];
