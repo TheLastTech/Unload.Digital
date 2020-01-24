@@ -100,7 +100,7 @@ namespace Funday
                 //if (!Db.TableExists<StockXAccount>())
                 //  Db.DropAndCreateTable<StockXChildListing>();
                 
-                Db.DropAndCreateTable<StockXListingEvent>();
+            //    Db.DropAndCreateTable<StockXListingEvent>();
               //        Db.DropAndCreateTable<StockXAccount>();
                 // Db.DropAndCreateTable<StockXListedItem>();
                   //       Db.DropAndCreateTable<Inventory>();

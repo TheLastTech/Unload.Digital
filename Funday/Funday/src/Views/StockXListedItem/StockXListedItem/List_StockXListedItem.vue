@@ -38,7 +38,7 @@
                 small
         >
 
-            <template slot="cell(Id)" slot-scope="data">
+            <template slot="cell(Item1.Id)" slot-scope="data">
                 <b-button @click="EditStockXListedItem(data.item.Id)" variant="dark">Edit {{data.item.Id}}</b-button>
             </template>
             <template slot="cell(Item1.Product.Shoe)" slot-scope="data">
