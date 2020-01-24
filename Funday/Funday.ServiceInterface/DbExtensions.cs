@@ -50,7 +50,7 @@ namespace Funday.ServiceInterface
                 {
                     return null;
                 }
-                return Db.Single(Db.From<StockXAccount>().Where(A => A.Verified && A.AccountThread == ThreadName && (A.Active && !A.Disabled)));
+                return Db.Single(Db.From<StockXAccount>().Where(A => A.Id == Item.Id &&   A.AccountThread == ThreadName));
             }
             catch (Exception ex)
             {
