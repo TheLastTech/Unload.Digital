@@ -474,6 +474,9 @@ namespace StockxApi
 
     public   class StockXChildListing
     {
+        [AutoIncrement]
+        [PrimaryKey]
+        public int IDuh { get; set; }
         [JsonProperty("id")]
         public string Id { get; set; }
 

@@ -98,13 +98,13 @@ namespace Funday
             using (var Db = HostContext.Resolve<IDbConnectionFactory>().Open())
             {
                 //if (!Db.TableExists<StockXAccount>())
-        //        Db.DropAndCreateTable<StockXChildListing>();
-                //      Db.DropAndCreateTable<StockXAccount>();
-         //        Db.DropAndCreateTable<StockXListedItem>();
-                //          Db.DropAndCreateTable<Inventory>();
-          //      Db.DropAndCreateTable<BoyStartUp>();
-                // Db.DropAndCreateTable<StockXProxuct>();
-             //     Db.DropAndCreateTable<Audit>();
+                Db.DropAndCreateTable<StockXChildListing>();
+              //        Db.DropAndCreateTable<StockXAccount>();
+                // Db.DropAndCreateTable<StockXListedItem>();
+                  //       Db.DropAndCreateTable<Inventory>();
+                //Db.DropAndCreateTable<BoyStartUp>();
+                 //Db.DropAndCreateTable<StockXProxuct>();
+                  ///Db.DropAndCreateTable<Audit>();
                 //Db.DropAndCreateTable<StockXBid>();
                 //Db.DropAndCreateTable<StockXAsk>();
                 return;
