@@ -77,7 +77,7 @@
                 sortable: true,
             },
             {key: "AccountThread", sortable: true},
-            {key: "Size", sortable: true},
+
             {
                 key: "NextAccountInteraction",
                 sortable: true,
