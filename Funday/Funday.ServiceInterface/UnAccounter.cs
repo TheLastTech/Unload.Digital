@@ -21,17 +21,7 @@ namespace Funday.ServiceInterface
 
         public static string ThreadName = "Joe";
 
-        public StockXAccount UpdateUnAccounts()
-        {
-            var Sql = Db.From<StockXAccount>().Where(A => (A.AccountThread == null || A.AccountThread == "") && !A.Verified && ((A.Active && !A.Disabled) && A.NextVerification <= DateTime.Now)).OrderBy(A => A.NextAccountInteraction).Take(1);
-            var TotalUpdated = Db.UpdateOnly(() => new StockXAccount() { AccountThread = ThreadName }, Sql);
-
-            if (TotalUpdated == 0)
-            {
-                return null;
-            }
-            return Db.Single(Db.From<StockXAccount>().Where(A => A.AccountThread == ThreadName && !A.Verified && (A.Active && !A.Disabled)));
-        }
+ 
 
         public async Task<StockXAccount> VerifyStockXAccount(StockXAccount Account)
         {

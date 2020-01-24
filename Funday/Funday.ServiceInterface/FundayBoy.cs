@@ -26,7 +26,7 @@ namespace Funday.ServiceInterface
             }
         }
 
-        public string ThreadName = "Fredum";
+        public static string ThreadName = "Fredum";
         private static readonly ILog Logger = LogManager.LogFactory.GetLogger(typeof(FundayBoy));
 
         public FundayBoy()
@@ -92,7 +92,7 @@ namespace Funday.ServiceInterface
             var SgGetter = new StockxListingGetter(Db);
             try
             {
-                Login = SgGetter.GetNextToUpdate();
+                Login = Db.GetNextToUpdate(ThreadName);
 
                 if (Login != null)
                 {
@@ -187,7 +187,7 @@ namespace Funday.ServiceInterface
             try
             {
                 var UAccounts = new UnAccounter(Db);
-                Login = UAccounts.UpdateUnAccounts();
+                Login = Db.GetNextToUpdate(ThreadName);
                 if (Login == null) return;
                 Task.WaitAll(UAccounts.VerifyStockXAccount(Login));
             }
