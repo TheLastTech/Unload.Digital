@@ -4,7 +4,7 @@
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
         <b-table
                 responsive
-
+                :fields="Fields"
 
                 id="StockXListedItemsHistory-table"
                 :items="History"
