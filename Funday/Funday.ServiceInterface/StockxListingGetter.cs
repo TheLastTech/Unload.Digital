@@ -98,7 +98,7 @@ namespace Funday.ServiceInterface
             {
                 var Created = false;
                 var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.StockXAccountId == login.Id && A.Active && A.Quantity > 0));
-                var AllListed = Db.Select(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.Id == login.Id));
+                var AllListed = Db.Select(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.Id == login.Id && !A.Sold));
                 var UnListedInventory = AllInventory.Where(A => !ListedItems.Any(B => B.SkuUuid == A.Sku));
                 
                 if(ListedItems.Count > 0)
