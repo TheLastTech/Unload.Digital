@@ -26,7 +26,7 @@
 
             <b-table
                     responsive
-
+                    :fields="Fields"
                     id="StockXAccounts-table"
                     :items="Rows"
                     :per-page="perPage"
@@ -67,7 +67,7 @@
         perPage = 50;
         Fields = [
             {key: "Email", sortable: true},
- 
+
             {
                 key: "Active",
                 sortable: true,
