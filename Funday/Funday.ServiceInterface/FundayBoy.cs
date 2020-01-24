@@ -187,7 +187,7 @@ namespace Funday.ServiceInterface
             try
             {
                 var UAccounts = new UnAccounter(Db);
-                Login = Db.GetNextToUpdate(ThreadName);
+                Login = Db.GetNextToLogin(ThreadName);
                 if (Login == null) return;
                 Task.WaitAll(UAccounts.VerifyStockXAccount(Login));
             }
