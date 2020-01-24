@@ -13,6 +13,7 @@ using System.Linq;
 
 namespace Funday.ServiceInterface
 {
+
     public static class AuditExtensions
     {
         public static long CreateAudit(int UserID, string Location, string ActionTaken, string Result = "", string Error = "", string StackTrace = "")

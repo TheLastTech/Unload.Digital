@@ -63,6 +63,8 @@ namespace Funday.ServiceInterface
                 {
                     if (UpdateToSold(login, A))
                     {
+                        ListingExtensions.CreateStockXListingEvent("Sold", A.ChainId, A.SkuUuid, (int)A.LocalAmount, login.UserId, "Sold");
+
                         Db.UpdateAdd(() => new Inventory() { TotalSold = 1 }, Db.From<Inventory>().Where(Ab => Ab.UserId == login.UserId && Ab.Sku == A.SkuUuid));
                     }
                 }
@@ -186,7 +188,9 @@ namespace Funday.ServiceInterface
                     }
                     if (Result.Code == System.Net.HttpStatusCode.OK)
                     {
-                        AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", $"Update Because Ask ({Item.Amount}) -> ({Ask.Ask})", Item.ChainId);
+                        string actionTaken= $"Update Because Ask ({Item.Amount}) -> ({Ask.Ask})";
+                        AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", actionTaken, Item.ChainId);
+                        ListingExtensions.CreateStockXListingEvent("Bid", Item.ChainId, Invntory.Sku, (int)Ask.Ask, login.UserId, actionTaken);
                         return true;
                     }
                     return true;
@@ -201,7 +205,9 @@ namespace Funday.ServiceInterface
                 if (Bid != null && Bid.Bid != Item.Amount)
                 {
                     var Result = await login.UpdateListing(Item.ChainId, Invntory.Sku, Item.ExpiresAt, (int)Bid.Bid);
-                    AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", $"Update Because Bid ({Item.Amount}) -> ({Bid.Bid})", JsonConvert.SerializeObject(Result));
+                    string actionTaken = $"Update Because Bid ({Item.Amount}) -> ({Bid.Bid})";
+                    AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", actionTaken, JsonConvert.SerializeObject(Result));
+                    ListingExtensions.CreateStockXListingEvent("Bid", Item.ChainId, Invntory.Sku, (int)Bid.Bid, login.UserId, actionTaken);
                     if ((int)Result.Code > 399 && (int)Result.Code < 500)
                     {
                         throw new NeedsVerificaitonException(login);

@@ -479,7 +479,7 @@ namespace StockxApi
         public int IDuh { get; set; }
         [JsonProperty("id")]
         public string Id { get; set; }
-
+        [Index]
         [JsonProperty("uuid")]
         public string Uuid { get; set; }
 
@@ -535,8 +535,8 @@ namespace StockxApi
 
         [JsonProperty("title")]
         public string Title { get; set; }
-         
 
+        [Index]
         [JsonProperty("urlKey")]
         public string UrlKey { get; set; }
 
@@ -550,10 +550,10 @@ namespace StockxApi
 
         [JsonProperty("parentId")]
         public string ParentId { get; set; }
-
+        [Index]
         [JsonProperty("parentUuid")]
         public string ParentUuid { get; set; }
-
+        [Index]
         [JsonProperty("shoeSize")]
         public string ShoeSize { get; set; }
 
