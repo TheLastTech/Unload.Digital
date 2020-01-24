@@ -39,14 +39,14 @@
         >
 
             <template slot="cell(Item1.Id)" slot-scope="data">
-                <b-button @click="EditStockXListedItem(data.item.Item1.Id)" variant="dark">View History ({{data.item.Item1.Id}})</b-button>
+                <b-button @click="EditStockXListedItem(data.item.Item1.Id)" small variant="dark">History ({{data.item.Item1.Id}})</b-button>
             </template>
             <template slot="cell(Item1.Product.Shoe)" slot-scope="data">
                 <router-link :to="`/editInventorys/${data.item.Item3.Id}`" variant="dark">{{data.item.Item1.Product.Shoe}}</router-link>
             </template>
 
             <template slot="cell(Item2.Email)" slot-scope="data">
-                <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" variant="dark">{{data.item.Item2.Email}}</b-button>
+                <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" small variant="dark">{{data.item.Item2.Email}}</b-button>
             </template>
 
         </b-table>
