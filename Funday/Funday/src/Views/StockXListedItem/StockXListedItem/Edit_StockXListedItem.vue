@@ -10,7 +10,10 @@
                 :items="History"
 
         >
+            <template slot="cell(When)" slot-scope="data">
+                {{new Date(data.item.NextAccountInteraction).toLocaleDateString()}}
 
+            </template>
 
 
         </b-table>
@@ -37,7 +40,12 @@
         Success = false;
         Id = 0;
         Message = "";
-
+        Fields = [
+            {key: 'Name', sortable: true, label: 'Name'},
+            {key: 'Additional', sortable: true, label: 'Action Taken'},
+            {key: 'Amount', sortable: true, label: 'Amount'},
+            {key: 'When', sortable: true, label: 'When'},
+        ]
         TransitObject =
 
             {StockXUrl: "", StockXListedItemId: -1};
