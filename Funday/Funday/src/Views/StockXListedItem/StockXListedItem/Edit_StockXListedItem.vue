@@ -11,7 +11,7 @@
 
         >
             <template slot="cell(When)" slot-scope="data">
-                {{new Date(data.item.When).toLocaleDateString()}}
+                {{new Date(data.item.When).toLocaleDateString()}} {{new Date(data.item.When).toLocaleTimeString()}}
 
             </template>
 
