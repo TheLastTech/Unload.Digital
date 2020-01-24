@@ -10,6 +10,7 @@ using ServiceStack.FluentValidation;
 using Funday.ServiceModel.StockXListedItem;
 using Funday.ServiceModel.Inventory;
 using Funday.ServiceModel.StockXAccount;
+using Funday.ServiceModel.Audit;
 
 namespace Funday.ServiceInterface
 {
@@ -203,10 +204,12 @@ namespace Funday.ServiceInterface
                     Message = "No Such StockXListedItem"
                 };
             }
+            var History = Db.Select<StockXListingEvent>(A => A.ChainId == ExistingStockXListedItem.ChainId && A.UserId == User.Id);
             return new ListOneStockXListedItemResponse()
             {
                 StockXListedItemItem = ExistingStockXListedItem,
                 Success = true,
+                History=History
                
             };
         }

@@ -1,5 +1,5 @@
 /* Options:
-Date: 2020-01-22 18:56:07
+Date: 2020-01-24 14:29:56
 Version: 5.81
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -440,6 +440,20 @@ export class StockXListedItem
     public constructor(init?: Partial<StockXListedItem>) { (Object as any).assign(this, init); }
 }
 
+export class StockXListingEvent
+{
+    public Id: number;
+    public Additional: string;
+    public When: string;
+    public Sku: string;
+    public Name: string;
+    public UserId: number;
+    public ChainId: string;
+    public Amount: number;
+
+    public constructor(init?: Partial<StockXListingEvent>) { (Object as any).assign(this, init); }
+}
+
 // @DataContract
 export class ResponseError
 {
@@ -639,6 +653,7 @@ export class ListOneStockXListedItemResponse
     public Success: boolean;
     public Message: string;
     public StockXListedItemItem: StockXListedItem;
+    public History: StockXListingEvent[];
 
     public constructor(init?: Partial<ListOneStockXListedItemResponse>) { (Object as any).assign(this, init); }
 }

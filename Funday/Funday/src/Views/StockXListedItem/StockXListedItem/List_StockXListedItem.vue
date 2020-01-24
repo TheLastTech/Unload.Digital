@@ -44,9 +44,7 @@
             <template slot="cell(Item1.Product.Shoe)" slot-scope="data">
                 <router-link :to="`/editInventorys/${data.item.Item3.Id}`" variant="dark">{{data.item.Item1.Product.Shoe}}</router-link>
             </template>
-            <template slot="cell(Name)" slot-scope="data">
-                <b-button @click="EditStockXListedItem(data.item.Id)" variant="dark">Edit {{data.item.Id}}</b-button>
-            </template>
+
             <template slot="cell(Item2.Email)" slot-scope="data">
                 <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" variant="dark">{{data.item.Item2.Email}}</b-button>
             </template>
@@ -95,7 +93,7 @@ export default class List_StockXListedItems extends Vue {
     }
 
     EditStockXListedItem(Id: number) {
-        this.$router.push('/EditStockXListedItem/' + Id);
+        this.$router.push('/EditStockXListedItems/' + Id);
     }
 
     async ListStockXListedItems(Page :number =0) {

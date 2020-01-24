@@ -1,4 +1,5 @@
 
+using Funday.ServiceModel.Audit;
 using System;
 using System.Collections.Generic;
 namespace Funday.ServiceModel.StockXListedItem
@@ -36,6 +37,7 @@ namespace Funday.ServiceModel.StockXListedItem
         public bool Success { get; set; }
         public string Message { get; set; }
         public StockXListedItem StockXListedItemItem { get; set; }
+        public List<StockXListingEvent> History { get; set; }
     }
     
     
