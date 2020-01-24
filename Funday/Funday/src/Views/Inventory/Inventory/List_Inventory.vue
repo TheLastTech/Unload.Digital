@@ -79,7 +79,7 @@
                 <div v-else>Updating...</div>
             </template>
             <template slot="cell(Account.Email)" slot-scope="data">
-                <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" variant="dark">{{data.item.Item2.Email}}</b-button>
+                <b-button :to="`/editStockXAccounts/${data.item.Account.Id}`" variant="dark">{{data.item.Account.Email}}</b-button>
             </template>
             <template slot="cell(Active)" slot-scope="data">
 
