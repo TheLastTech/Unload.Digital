@@ -124,6 +124,9 @@
             {
                 key: "Active",
                 sortable: true,
+            }, {
+                key: "Account.Email",
+                sortable: true,
             },
 
         ];
@@ -154,13 +157,13 @@
             }
         }
 
-         Rows2(A:any) {
+        Rows2(A: any) {
 
-                A.Item1.Account = A.Item2;
+            A.Item1.Account = A.Item2;
 
-                A.Item1.Is_Updating_Now = false;
+            A.Item1.Is_Updating_Now = false;
 
-                return A.Item1;
+            return A.Item1;
 
         }
 
