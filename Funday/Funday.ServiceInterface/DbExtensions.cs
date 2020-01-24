@@ -38,7 +38,7 @@ namespace Funday.ServiceInterface
         {
             try
             {
-                var Sql = Db.From<StockXAccount>().Where(A => (A.AccountThread == null || A.AccountThread.Length == 0) && !A.Verified && ((A.Active && !A.Disabled) && A.NextVerification <= DateTime.Now)).OrderBy(A => A.NextVerification).Take(1);
+                var Sql = Db.From<StockXAccount>().Where(A => A.AccountThread == null || A.AccountThread.Length == 0).Where(A=> !A.Verified ).Where(A => A.Active && !A.Disabled).Where(A => A.NextVerification <= DateTime.Now).OrderBy(A => A.NextVerification).Take(1);
                 var Item = Db.Single(Sql);
                 if (Item == null)
                 {
