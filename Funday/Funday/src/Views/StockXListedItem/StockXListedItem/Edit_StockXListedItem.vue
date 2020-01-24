@@ -24,7 +24,7 @@
     import {
         DeleteStockXListedItemRequest,
         ListOneStockXListedItemRequest,
-        UpdateStockXListedItemRequest
+        StockXListingEvent
     } from "@/shared/dtos";
 
 
@@ -37,10 +37,11 @@
         Success = false;
         Id = 0;
         Message = "";
-        History=[];
+
         TransitObject =
 
             {StockXUrl: "", StockXListedItemId: -1};
+         History: StockXListingEvent[]= []
 
         mounted() {
             this.Id = +this.$route.params.Id;
