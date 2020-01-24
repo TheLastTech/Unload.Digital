@@ -97,10 +97,19 @@ namespace Funday.ServiceInterface
             private async Task<bool> CreateAnyNewInventory(StockXAccount login, List<PortfolioItem> ListedItems)
             {
                 var Created = false;
-                var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.Active && A.Quantity > 0));
-                
+                var AllInventory = Db.Select(Db.From<Inventory>().Where(A => A.UserId == login.UserId && A.StockXAccountId == login.Id && A.Active && A.Quantity > 0));
+                var AllListed = Db.Select(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.Id == login.Id));
                 var UnListedInventory = AllInventory.Where(A => !ListedItems.Any(B => B.SkuUuid == A.Sku));
                 
+                if(ListedItems.Count > 0)
+                {
+                    var Deleted = AllListed.Where(A => !ListedItems.Any(B => B.ChainId == A.ChainId));
+                    foreach(var Delete in Deleted)
+                    {
+                        Db.Delete(Delete);
+                    }
+
+                }
                 foreach (var Listling in ListedItems)
                 {
                     if(Db.Exists(Db.From<StockXListedItem>().Where(A => A.UserId == login.UserId && A.AccountId == login.Id && A.ChainId == Listling.ChainId)))
