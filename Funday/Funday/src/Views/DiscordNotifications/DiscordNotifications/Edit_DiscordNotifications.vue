@@ -29,7 +29,7 @@
             </b-col>
         </b-row>
         <b-button block @click="UpdateDiscordNotifications">Update</b-button>
-        <p v-if="Success">DiscordNotifications Updated</p> 
+        <p v-if="Success">DiscordNotifications Updated</p>
     </div>
 </template>
 

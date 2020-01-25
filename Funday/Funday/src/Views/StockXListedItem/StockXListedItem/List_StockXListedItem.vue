@@ -2,11 +2,13 @@
     <div class="col-12">
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
-<b-row>
-    <div class="col-md-4 col-sm-6">
-        <select
-    </div>
-</b-row>
+        <b-row>
+            <div class="col-md-12">
+                <b-form-group label="Filter">
+                    <b-input :v-model="FilterBy"></b-input>
+                </b-form-group>
+            </div>
+        </b-row>
         <router-link to="/createStockXListedItem" class="float-right">Create</router-link>
         <b-pagination
                 v-model="currentPage"
@@ -43,14 +45,20 @@
         >
 
             <template slot="cell(Item1.Id)" slot-scope="data">
-                <b-button @click="EditStockXListedItem(data.item.Item1.Id)" small variant="dark">History ({{data.item.Item1.Id}})</b-button>
+                <b-button @click="EditStockXListedItem(data.item.Item1.Id)" small variant="dark">History
+                    ({{data.item.Item1.Id}})
+                </b-button>
             </template>
             <template slot="cell(Item1.Product.Shoe)" slot-scope="data">
-                <router-link :to="`/editInventorys/${data.item.Item3.Id}`" variant="dark">{{data.item.Item1.Product.Shoe}}</router-link>
+                <router-link :to="`/editInventorys/${data.item.Item3.Id}`" variant="dark">
+                    {{data.item.Item1.Product.Shoe}}
+                </router-link>
             </template>
 
             <template slot="cell(Item2.Email)" slot-scope="data">
-                <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" small variant="dark">{{data.item.Item2.Email}}</b-button>
+                <b-button :to="`/editStockXAccounts/${data.item.Item2.Id}`" small variant="dark">
+                    {{data.item.Item2.Email}}
+                </b-button>
             </template>
 
         </b-table>
@@ -59,67 +67,66 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
-import {ListStockXListedItemRequest, StockXListedItem} from '@/shared/dtos';
-import {client} from '@/shared';
+    import {Component, Vue, Watch} from "vue-property-decorator";
+    import {ListStockXListedItemRequest, StockXListedItem} from "@/shared/dtos";
+    import {client} from "@/shared";
 
 
-@Component({
-    components: {},
-})
-export default class List_StockXListedItems extends Vue {
-    StockXListedItems: any[] = [];
-    Fields = [
-        {key: 'Item1.Id', sortable: true, label: 'Id'},
-         {key: 'Item1.Product.Shoe', sortable: true, label: 'Shoe'},
-        {key: 'Item1.Product.ShoeSize', sortable: true, label: 'Size'},
-        {key: 'Item1.Amount', sortable: true, label: '$$'},
-        {key: 'Item3.MinSell', sortable: true, label: 'MinSell'},
-        {key: 'Item3.StartingAsk', sortable: true, label: 'Start'},
-        {key: 'Item3.Quantity', sortable: true, label: 'Qty'},
-        {key: 'Item2.Email', sortable: true, label: 'Email'},
-        {key: 'Item1.Sold', sortable: true, label: 'Sold'},
-    ];
-    Error = '';
-    currentPage = 0;
-    rows = 0;
-    perPage = 50;
-    Message = '';
+    @Component({
+        components: {},
+    })
+    export default class List_StockXListedItems extends Vue {
+        StockXListedItems: any[] = [];
+        Fields = [
+            {key: "Item1.Id", sortable: true, label: "Id"},
+            {key: "Item1.Product.Shoe", sortable: true, label: "Shoe"},
+            {key: "Item1.Product.ShoeSize", sortable: true, label: "Size"},
+            {key: "Item1.Amount", sortable: true, label: "$$"},
+            {key: "Item3.MinSell", sortable: true, label: "MinSell"},
+            {key: "Item3.StartingAsk", sortable: true, label: "Start"},
+            {key: "Item3.Quantity", sortable: true, label: "Qty"},
+            {key: "Item2.Email", sortable: true, label: "Email"},
+            {key: "Item1.Sold", sortable: true, label: "Sold"},
+        ];
+        Error = "";
+        currentPage = 0;
+        rows = 0;
+        perPage = 50;
+        Message = "";
+        FilterBy = "";
 
-
-    get Rows() {
-        return this.StockXListedItems;
-    }
-
-    mounted() {
-        this.ListStockXListedItems();
-    }
-
-    EditStockXListedItem(Id: number) {
-        this.$router.push('/EditStockXListedItems/' + Id);
-    }
-
-    async ListStockXListedItems(Page :number =0) {
-        this.Error = '';
-        const StockXListedItemsList = await client.get(new ListStockXListedItemRequest({
-            Skip: 50 * this.currentPage,
-        }));
-        if (StockXListedItemsList.Success) {
-            this.rows = StockXListedItemsList.Total;
-        } else {
-            this.Error = StockXListedItemsList.Message;
-            return;
-        }
-        StockXListedItemsList.StockXListedItems.forEach(a=>this.StockXListedItems.push(a));
-        if((Page + 1) * 50 < StockXListedItemsList.Total )
-        {
-
-
-            await this.ListStockXListedItems(Page+1);
+        get Rows() {
+            return this.StockXListedItems;
         }
 
+        mounted() {
+            this.ListStockXListedItems();
+        }
+
+        EditStockXListedItem(Id: number) {
+            this.$router.push("/EditStockXListedItems/" + Id);
+        }
+
+        async ListStockXListedItems(Page: number = 0) {
+            this.Error = "";
+            const StockXListedItemsList = await client.get(new ListStockXListedItemRequest({
+                Skip: 50 * this.currentPage,
+            }));
+            if (StockXListedItemsList.Success) {
+                this.rows = StockXListedItemsList.Total;
+            } else {
+                this.Error = StockXListedItemsList.Message;
+                return;
+            }
+            StockXListedItemsList.StockXListedItems.forEach(a => this.StockXListedItems.push(a));
+            if ((Page + 1) * 50 < StockXListedItemsList.Total) {
+
+
+                await this.ListStockXListedItems(Page + 1);
+            }
+
+        }
+
+
     }
-
-
-}
 </script>
