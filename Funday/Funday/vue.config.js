@@ -2,6 +2,7 @@
 module.exports = {
     outputDir: 'wwwroot',
     devServer: {
-        proxy: 'https://localhost:5001'
+        //proxy: 'https://localhost:5001'
+        proxy: 'https://unload.digital'
     }
 };

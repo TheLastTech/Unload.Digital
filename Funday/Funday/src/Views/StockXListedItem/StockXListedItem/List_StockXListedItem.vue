@@ -2,15 +2,9 @@
     <div class="col-12">
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
-        <b-row>
-            <div class="col-md-12">
-                <b-form-group label="Filter">
-                    <b-input :v-model="FilterBy"></b-input>
-                </b-form-group>
-            </div>
-        </b-row>
+
         <router-link to="/createStockXListedItem" class="float-right">Create</router-link>
-        <b-pagination
+        <b-pagination v-if="perPage<rows"
                 v-model="currentPage"
                 :total-rows="rows"
                 :fields="Fields"
@@ -32,10 +26,9 @@
             </template>
         </b-pagination>
 
-
         <b-table
                 responsive
-                :filter="FilterBy"
+
                 :fields="Fields"
                 id="StockXListedItems-table"
                 :items="Rows"
@@ -44,6 +37,12 @@
                 small
         >
 
+            <template slot="head(Item1.Product.Shoe)" slot-scope="data">
+                Shoe <b-input v-model="FilterShoe"></b-input>
+            </template>
+            <template slot="head(Item2.Email)" slot-scope="data">
+                Email <b-input v-model="FilterEmail"></b-input>
+            </template>
             <template slot="cell(Item1.Id)" slot-scope="data">
                 <b-button @click="EditStockXListedItem(data.item.Item1.Id)" small variant="dark">History
                     ({{data.item.Item1.Id}})
@@ -93,10 +92,19 @@
         rows = 0;
         perPage = 50;
         Message = "";
-        FilterBy = "";
+        FilterEmail="";
+        FilterShoe="";
 
         get Rows() {
-            return this.StockXListedItems;
+
+            let items =this.StockXListedItems;
+            if(this.FilterEmail.trim().length >0){
+                items=items.filter(A=>A.Item2.Email.toLowerCase().indexOf(this.FilterEmail)>=0)
+            }
+            if(this.FilterShoe.trim().length >0){
+                items=items.filter(A=>A.Item1.Product.Shoe.toLowerCase().indexOf(this.FilterShoe)>=0)
+            }
+            return items;
         }
 
         mounted() {
