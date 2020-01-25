@@ -42,11 +42,11 @@
 
                 </template>
                 <template slot="cell(NextVerification)" slot-scope="data">
-                    {{new Date(data.item.NextVerification).toLocaleTimeString()}}
+                    {{new Date(data.item.NextVerification).toLocaleString()}}
 
                 </template>
                 <template slot="cell(NextAccountInteraction)" slot-scope="data">
-                    {{new Date(data.item.NextAccountInteraction).toLocaleTimeString()}}
+                    {{new Date(data.item.NextAccountInteraction).toLocaleString()}}
 
                 </template>
             </b-table>

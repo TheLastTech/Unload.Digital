@@ -1,5 +1,6 @@
 <template>
     <div  >
+        <h1 class="major">Currently Listed Items</h1>
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
 

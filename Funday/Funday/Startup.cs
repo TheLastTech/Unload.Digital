@@ -90,9 +90,9 @@ namespace Funday
             container.Register(c => new UnBoy());
             container.Register(c => new FundayBoy());
             container.Register(c => new SearchBoy());
-     //       var SB = HostContext.Resolve<SearchBoy>();
-         //   var AB = HostContext.Resolve<UnBoy>();
-  //          var FB = HostContext.Resolve<FundayBoy>();
+            var SB = HostContext.Resolve<SearchBoy>();
+            var AB = HostContext.Resolve<UnBoy>();
+            var FB = HostContext.Resolve<FundayBoy>();
         }
 
         private void Seed()
