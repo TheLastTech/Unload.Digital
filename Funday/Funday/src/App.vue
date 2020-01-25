@@ -9,6 +9,11 @@
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
+                    <b-nav-item-dropdown text="Discord" right    v-if="userSession">
+                        <b-dropdown-item :to="Routes.EditDiscordNotificationss">Edit</b-dropdown-item>
+
+
+                    </b-nav-item-dropdown>
                     <b-nav-item-dropdown text="Listed" right    v-if="userSession">
 
                         <b-dropdown-item :to="Routes.StockXListedItems">List</b-dropdown-item>

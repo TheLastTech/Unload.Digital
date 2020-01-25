@@ -49,6 +49,8 @@ namespace Funday.ServiceInterface
                         ListingExtensions.CreateStockXListingEvent("Sold", A.ChainId, A.SkuUuid, (int)A.LocalAmount, login.UserId, "Sold");
 
                         Db.UpdateAdd(() => new Inventory() { TotalSold = 1 }, Db.From<Inventory>().Where(Ab => Ab.UserId == login.UserId && Ab.Sku == A.SkuUuid));
+
+                        await StockxListingEvent.Sold(A, login);
                     }
                 }
 
@@ -125,6 +127,7 @@ namespace Funday.ServiceInterface
                         Db.UpdateAdd(() => new Inventory() { Quantity = -1 }, Ab => Ab.Id == tory.Id);
                         AuditExtensions.CreateAudit(Db, login.Id, "StockxListingGetter", "Inventory Created", Listing.RO.PortfolioItem.ChainId);
                         Created = true;
+                        await StockxListingEvent.Listed(Item, login);
                         continue;
                     }
                     return false; //error 500+ -- their server is down end task.

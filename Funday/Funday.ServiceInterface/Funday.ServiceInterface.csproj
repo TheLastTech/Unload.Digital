@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Discord.Net.Webhook" Version="2.1.1" />
     <PackageReference Include="ServiceStack" Version="5.*" />
     <PackageReference Include="ServiceStack.OrmLite.Core" Version="5.7.1" />
   </ItemGroup>
@@ -14,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="UnBoy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="SearchBoy.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -100,6 +100,7 @@ namespace Funday.ServiceInterface
                 NextVerification = Account.NextVerification,
                 AccountThread = ""
             }, A => A.Id == Account.Id);
+            Task.WaitAll(StockxListingEvent.Disabled(Account));
         }
     }
 }

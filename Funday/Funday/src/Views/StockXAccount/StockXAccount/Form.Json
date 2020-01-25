@@ -7,40 +7,39 @@
       "DefaultValue": -1,
       "FormArguments": "",
       "PlaceHolder": "",
-      "NotEditable": true,
       "includeInRequest": true
     },
     {
-      "Label": "Location",
-      "Name": "Location",
-      "FormType": "number",
-      "DefaultValue": "",
-      "FormArguments": "",
-      "PlaceHolder": "",
-      "NotEditable": true,
-      "includeInRequest": true
-    }, {
-      "Label": "Action Taken",
-      "Name": "ActionTaken",
+      "Label": "Sold Web Hook",
+      "Name": "Sold",
       "FormType": "text",
       "DefaultValue": "",
       "FormArguments": "",
       "PlaceHolder": "",
-      "NotEditable": true,
       "includeInRequest": true
-    }, {
-      "Label": "Result",
-      "Name": "Result",
+    } ,
+    {
+      "Label": "Listing Web Hook",
+      "Name": "Listing",
       "FormType": "text",
       "DefaultValue": "",
       "FormArguments": "",
       "PlaceHolder": "",
-      "NotEditable": true,
+      "includeInRequest": true
+    }
+  ,
+    {
+      "Label": "Error Web Hook  ",
+      "Name": "Error",
+      "FormType": "text",
+      "DefaultValue": "",
+      "FormArguments": "",
+      "PlaceHolder": "",
       "includeInRequest": true
     }
   ],
 
-  "Name": "Audit",
-  "subFolder": "Admin\\Internal"
+  "Name": "DiscordNotifications",
+  "subFolder": "Discord"
 
 }

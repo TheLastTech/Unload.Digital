@@ -18,6 +18,9 @@ import Edit_Inventory from '@/Views/Inventory/Inventory/Edit_Inventory.vue';
 import Create_Inventory from '@/Views/Inventory/Inventory/Create_Inventory.vue';
 import List_StockXListedItems from '@/Views/StockXListedItem/StockXListedItem/List_StockXListedItem.vue';
 import Edit_StockXListedItem from '@/Views/StockXListedItem/StockXListedItem/Edit_StockXListedItem.vue';
+import List_DiscordNotificationss from '@/Views/DiscordNotifications/DiscordNotifications/List_DiscordNotifications.vue';
+import Edit_DiscordNotifications from '@/Views/DiscordNotifications/DiscordNotifications/Edit_DiscordNotifications.vue';
+import Create_DiscordNotifications from '@/Views/DiscordNotifications/DiscordNotifications/Create_DiscordNotifications.vue';
 
 export enum Routes {
   Home = '/',
@@ -37,6 +40,8 @@ export enum Routes {
   StockXAccounts = '/StockXAccounts',
     EditStockXAccounts = '/EditStockXAccounts/:Id',
   CreateStockXAccount = '/CreateStockXAccount',
+  //DiscordNotifications
+  EditDiscordNotificationss = '/EditDiscordNotificationss/:Id',
 }
 
 Vue.use(Router);
@@ -94,6 +99,8 @@ const routes = [
   {path: Routes.Inventorys , component: List_Inventorys, beforeEnter: requiresAuth},
   {path: Routes.EditInventorys , component: Edit_Inventory, beforeEnter: requiresAuth},
   {path: Routes.CreateInventory, component: Create_Inventory, beforeEnter: requiresAuth},
+
+  {path: Routes.EditDiscordNotificationss , component: Edit_DiscordNotifications, beforeEnter: requiresAuth},
 
 
   { path: '*', redirect: '/' },

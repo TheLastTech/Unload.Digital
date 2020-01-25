@@ -1,5 +1,5 @@
 /* Options:
-Date: 2020-01-24 14:29:56
+Date: 2020-01-24 18:10:37
 Version: 5.81
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://localhost:5001
@@ -51,6 +51,18 @@ export class Audit
     public When: string;
 
     public constructor(init?: Partial<Audit>) { (Object as any).assign(this, init); }
+}
+
+export class DiscordNotifications
+{
+    public Id: number;
+    public UserID: number;
+    public UserId: number;
+    public Sold: string;
+    public Listing: string;
+    public Error: string;
+
+    public constructor(init?: Partial<DiscordNotifications>) { (Object as any).assign(this, init); }
 }
 
 export class StockXAccount
@@ -512,6 +524,24 @@ export class ListOneAuditResponse
     public constructor(init?: Partial<ListOneAuditResponse>) { (Object as any).assign(this, init); }
 }
 
+export class UpdateDiscordNotificationsResponse
+{
+    public Success: boolean;
+    public Message: string;
+    public TotalUpdated: number;
+
+    public constructor(init?: Partial<UpdateDiscordNotificationsResponse>) { (Object as any).assign(this, init); }
+}
+
+export class ListOneDiscordNotificationsResponse
+{
+    public Success: boolean;
+    public Message: string;
+    public DiscordNotificationsItem: DiscordNotifications;
+
+    public constructor(init?: Partial<ListOneDiscordNotificationsResponse>) { (Object as any).assign(this, init); }
+}
+
 export class HelloResponse
 {
     public Result: string;
@@ -787,6 +817,30 @@ export class ListOneAuditRequest implements IReturn<ListOneAuditResponse>
     public constructor(init?: Partial<ListOneAuditRequest>) { (Object as any).assign(this, init); }
     public createResponse() { return new ListOneAuditResponse(); }
     public getTypeName() { return 'ListOneAuditRequest'; }
+}
+
+// @Route("/DiscordNotifications/update", "Put")
+export class UpdateDiscordNotificationsRequest implements IReturn<UpdateDiscordNotificationsResponse>
+{
+    public UserID: number;
+    public Sold: string;
+    public Listing: string;
+    public Error: string;
+    public DiscordNotificationsId: number;
+
+    public constructor(init?: Partial<UpdateDiscordNotificationsRequest>) { (Object as any).assign(this, init); }
+    public createResponse() { return new UpdateDiscordNotificationsResponse(); }
+    public getTypeName() { return 'UpdateDiscordNotificationsRequest'; }
+}
+
+// @Route("/DiscordNotifications/listone", "Get")
+export class ListOneDiscordNotificationsRequest implements IReturn<ListOneDiscordNotificationsResponse>
+{
+    public DiscordNotificationsId: number;
+
+    public constructor(init?: Partial<ListOneDiscordNotificationsRequest>) { (Object as any).assign(this, init); }
+    public createResponse() { return new ListOneDiscordNotificationsResponse(); }
+    public getTypeName() { return 'ListOneDiscordNotificationsRequest'; }
 }
 
 // @Route("/hello")

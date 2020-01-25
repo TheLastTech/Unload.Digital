@@ -2,7 +2,11 @@
     <div class="col-12">
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
-
+<b-row>
+    <div class="col-md-4 col-sm-6">
+        <select
+    </div>
+</b-row>
         <router-link to="/createStockXListedItem" class="float-right">Create</router-link>
         <b-pagination
                 v-model="currentPage"

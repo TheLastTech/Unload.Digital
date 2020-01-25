@@ -29,6 +29,7 @@ using StockxApi;
 using Microsoft.Extensions.Logging;
 using Funday.ServiceModel.StockXListedItem;
 using Funday.ServiceModel.Audit;
+using Funday.ServiceModel.DiscordNotifications;
 
 namespace Funday
 {
@@ -85,12 +86,13 @@ namespace Funday
             Seed();
             JsConfig.TextCase = TextCase.PascalCase;
             JsConfig.DateHandler = DateHandler.UnixTimeMs;
-            
 
+            container.Register(c => new UnBoy());
             container.Register(c => new FundayBoy());
             container.Register(c => new SearchBoy());
-            var SB = HostContext.Resolve<SearchBoy>();
-            var FB = HostContext.Resolve<FundayBoy>();
+     //       var SB = HostContext.Resolve<SearchBoy>();
+         //   var AB = HostContext.Resolve<UnBoy>();
+  //          var FB = HostContext.Resolve<FundayBoy>();
         }
 
         private void Seed()
@@ -99,14 +101,14 @@ namespace Funday
             {
                 //if (!Db.TableExists<StockXAccount>())
                 //  Db.DropAndCreateTable<StockXChildListing>();
-                
-            //    Db.DropAndCreateTable<StockXListingEvent>();
-              //        Db.DropAndCreateTable<StockXAccount>();
+                Db.DropAndCreateTable<DiscordNotifications>();
+                //    Db.DropAndCreateTable<StockXListingEvent>();
+                //        Db.DropAndCreateTable<StockXAccount>();
                 // Db.DropAndCreateTable<StockXListedItem>();
-                  //       Db.DropAndCreateTable<Inventory>();
+                //       Db.DropAndCreateTable<Inventory>();
                 //Db.DropAndCreateTable<BoyStartUp>();
-                 //Db.DropAndCreateTable<StockXProxuct>();
-                  ///Db.DropAndCreateTable<Audit>();
+                //Db.DropAndCreateTable<StockXProxuct>();
+                ///Db.DropAndCreateTable<Audit>();
                 //Db.DropAndCreateTable<StockXBid>();
                 //Db.DropAndCreateTable<StockXAsk>();
                 return;
