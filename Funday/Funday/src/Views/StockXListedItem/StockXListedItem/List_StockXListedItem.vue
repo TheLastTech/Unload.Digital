@@ -6,7 +6,7 @@
         <router-link to="/createStockXListedItem" class="float-right">Create</router-link>
         <b-pagination v-if="perPage<rows"
                 v-model="currentPage"
-                :total-rows="rows"
+                :total-rows="RowCount"
                 :fields="Fields"
                 :per-page="perPage"
                 class="mt-4"
@@ -90,11 +90,13 @@
         Error = "";
         currentPage = 0;
         rows = 0;
-        perPage = 50;
+        perPage = 25;
         Message = "";
         FilterEmail="";
         FilterShoe="";
-
+        get RowCount() {
+            return this.Rows.length;
+        }
         get Rows() {
 
             let items =this.StockXListedItems;
