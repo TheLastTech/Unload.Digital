@@ -1,15 +1,15 @@
 <template>
-    <div class="col-12">
+    <div  >
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
 
-        <router-link to="/createStockXListedItem" class="float-right">Create</router-link>
         <b-pagination v-if="perPage<rows"
                 v-model="currentPage"
                 :total-rows="RowCount"
                 :fields="Fields"
                 :per-page="perPage"
                 class="mt-4"
+
         >
             <template v-slot:first-text><span class="text-success">First</span></template>
             <template v-slot:prev-text><span class="text-danger">Prev</span></template>

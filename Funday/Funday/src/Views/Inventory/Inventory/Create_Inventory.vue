@@ -1,5 +1,6 @@
 <template>
-    <div class="offset-2 col-8">
+    <div >
+        <h1 class="major">Create An Inventory Slot</h1>
         <b-row class="my-1">
             <b-col sm="2">
                 <label for="input-StockXUrl">Stock X Url</label>

@@ -1,5 +1,6 @@
 <template>
-    <div class="offset-2 col-8">
+    <div class="">
+        <h1 class="major">Add StockX Account</h1>
         <p v-if="Error.length > 0">{{Error}}</p>
         <b-row class="my-1" v-if="!Building">
             <b-col sm="2">
@@ -67,10 +68,10 @@
                                placeholder=""></b-form-select>
             </b-col>
         </b-row>
-        <div v-if="Building">Creating Account</div>
+        <div v-if="Building">Sending out goons ... </div>
         <b-button block @click="CreateStockXAccount" v-if="!Building">Create</b-button>
         <a class="button btn-sm btn-danger" v-if="NewId>0" :href="'/EditStockXAccounts/' + NewId">New Item
-            {{TransitObject.Email}}</a>. It may take upto 15 minutes for your account to be verified by our system.
+            {{TransitObject.Email}}. It may take upto 15 minutes for your account to be verified by our system.</a>
     </div>
 </template>
 

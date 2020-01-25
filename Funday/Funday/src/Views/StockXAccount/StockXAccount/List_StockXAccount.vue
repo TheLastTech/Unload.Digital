@@ -1,8 +1,12 @@
 <template>
-    <div class="col-12 text-light ">
+    <div class="text-light ">
+        <h1 class="major">Current StockX Accounts
+            <router-link to="/createStockXAccount" class="float-right">Create</router-link>
+        </h1>
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
-        <router-link to="/createStockXAccount" class="float-right">Create</router-link>
+
         <b-pagination
+                v-if="perPage<rows"
                 v-model="currentPage"
                 :total-rows="rows"
                 :per-page="perPage"

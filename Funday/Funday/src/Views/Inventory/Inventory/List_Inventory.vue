@@ -1,14 +1,17 @@
 <template>
-    <div class="col-12">
+    <div>
+        <h1 class="major">Current Inventory
+            <router-link to="/createInventory" class="float-right">Create</router-link>
+        </h1>
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <p v-if="Message.length >0" class="alert-success">{{Message}}</p>
-        <router-link to="/createInventory" class="float-right">Create</router-link>
-        <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :fields="Fields"
-                :per-page="perPage"
-                class="mt-4"
+
+        <b-pagination v-if="perPage<rows"
+                      v-model="currentPage"
+                      :total-rows="rows"
+                      :fields="Fields"
+                      :per-page="perPage"
+                      class="mt-4"
         >
             <template v-slot:first-text><span class="text-success">First</span></template>
             <template v-slot:prev-text><span class="text-danger">Prev</span></template>
@@ -79,7 +82,9 @@
                 <div v-else>Updating...</div>
             </template>
             <template slot="cell(Account.Email)" slot-scope="data">
-                <b-button :to="`/editStockXAccounts/${data.item.Account.Id}`" variant="dark">{{data.item.Account.Email}}</b-button>
+                <b-button :to="`/editStockXAccounts/${data.item.Account.Id}`" variant="dark">
+                    {{data.item.Account.Email}}
+                </b-button>
             </template>
             <template slot="cell(Active)" slot-scope="data">
 
@@ -137,7 +142,7 @@
         Error = "";
         currentPage = 0;
         rows = 0;
-        perPage = 50;
+        perPage = 25;
         Rows: any[] = [];
         Message = "";
 

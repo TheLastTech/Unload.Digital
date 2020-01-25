@@ -1,5 +1,6 @@
 <template>
-    <div class="col-12 ">
+    <div class="  ">
+        <h1 class="major">Edit StockX Account</h1>
         <p v-if="Error.length >0" class="alert-danger">{{Error}}</p>
         <b-row class="my-1">
             <b-col sm="2">
