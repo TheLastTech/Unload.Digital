@@ -51,7 +51,7 @@ namespace Funday.ServiceInterface
                 if (WebHook == null || WebHook.Sold == null) return;
 
                 Discord.Webhook.DiscordWebhookClient discordWebhookClient = new Discord.Webhook.DiscordWebhookClient(WebHook.Sold);
-                var Success = await discordWebhookClient.SendMessageAsync($"{$"{Login.Email} has sold a "}{I.Product.Shoe} at {I.LocalCurrency}{I.LocalAmount}");
+                var Success = await discordWebhookClient.SendMessageAsync($"{$"{Login.Email} has sold a "}{I.Product.Shoe} ({I.Product.ShoeSize}) at {I.LocalCurrency}{I.LocalAmount}");
                 if (WebHook.Errors > 0)
                 {
                     WebHook.ResetErrors();
@@ -84,7 +84,7 @@ namespace Funday.ServiceInterface
                 if (WebHook == null || WebHook.Listing == null) return;
 
                 Discord.Webhook.DiscordWebhookClient discordWebhookClient = new Discord.Webhook.DiscordWebhookClient(WebHook.Listing);
-                var Success = await discordWebhookClient.SendMessageAsync($"{$"{Login.Email} has listed a "}{I.Product.Shoe} at {I.LocalCurrency}{I.LocalAmount}");
+                var Success = await discordWebhookClient.SendMessageAsync($"{$"{Login.Email} has listed a "}{I.Product.Shoe} ({I.Product.ShoeSize}) at {I.LocalCurrency}{I.LocalAmount}");
                 if (WebHook.Errors > 0)
                 {
                     WebHook.ResetErrors();
