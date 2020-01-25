@@ -35,7 +35,7 @@
 
         <b-table
                 responsive
-
+                :filter="FilterBy"
                 :fields="Fields"
                 id="StockXListedItems-table"
                 :items="Rows"
